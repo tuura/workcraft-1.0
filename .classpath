@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="workcraft/petri/FlyingToken.java|workcraft/counterflow/CFPetriConverter.java|workcraft/spreadtoken/STPetriConverter.java" kind="src" path="">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="D:/mech/Workcraft/dll"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="jython.jar"/>
+	<classpathentry kind="lib" path="jogl.jar"/>
+	<classpathentry kind="output" path=""/>
+</classpath>
