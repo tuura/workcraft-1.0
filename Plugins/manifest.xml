@@ -75,8 +75,6 @@
 	<class name="workcraft.gate.BlackBox"/>
 	
 	<class name="workcraft.gate.ExtractInterface"/>
-	<class name="workcraft.gate.TestGateGrouping"/>
-	<class name="workcraft.gate.TestGateGrouping2"/>
 
   <class name="workcraft.common.PetriNetMapper"/>
   <class name="workcraft.common.SchematicNetDeadlockCheck"/>
