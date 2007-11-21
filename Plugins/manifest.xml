@@ -68,13 +68,15 @@
 	<class name="workcraft.gate.NotGate"/>
 	<class name="workcraft.gate.ComplexGate"/>
 	<class name="workcraft.gate.CElement"/>
-    <class name ="workcraft.gate.GatesBlifSaver"/>
 		
 	<class name="workcraft.gate.Joint"/>
 	<class name="workcraft.gate.Input"/>
 	<class name="workcraft.gate.Output"/>
+	<class name="workcraft.gate.BlackBox"/>
 	
 	<class name="workcraft.gate.ExtractInterface"/>
+	<class name="workcraft.gate.TestGateGrouping"/>
+	<class name="workcraft.gate.TestGateGrouping2"/>
 
   <class name="workcraft.common.PetriNetMapper"/>
   <class name="workcraft.common.SchematicNetDeadlockCheck"/>
