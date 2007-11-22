@@ -12,6 +12,9 @@ import workcraft.util.Vec2;
 import workcraft.visual.LineMode;
 import workcraft.visual.Painter;
 import workcraft.visual.ShapeMode;
+import workcraft.visual.shapes.CompoundPath;
+import workcraft.visual.shapes.Shape;
+import workcraft.visual.shapes.Vertex;
 
 public class Input extends BasicGate {
 	public static final UUID _modeluuid = UUID.fromString("6f704a28-e691-11db-8314-0800200c9a66");
@@ -20,6 +23,19 @@ public class Input extends BasicGate {
 	private static Colorf setFillColor = new Colorf(0.0f, 1.0f, 0.0f, 1.0f);
 	
 	private GateContact.StateType state = GateContact.StateType.reset;
+
+	private static Shape shape = null;
+
+	private static Shape createGateShape() {
+		CompoundPath p = new CompoundPath();
+		p.addElement(new Vertex(-0.02f, -0.015f));
+		p.addElement(new Vertex(0.02f, -0.015f));
+		p.addElement(new Vertex(0.04f, 0.0f));
+		p.addElement(new Vertex(0.02f, 0.015f));
+		p.addElement(new Vertex(-0.02f, 0.015f));
+		p.setClosed(true);
+		return new Shape(p);
+	}
 
 	public Input(BasicEditable parent) throws UnsupportedComponentException {
 		super(parent);
@@ -39,11 +55,13 @@ public class Input extends BasicGate {
 		p.setLineWidth(0.005f);
 		p.setLineColor((selected)?selectedOutlineColor:outlineColor);
 		p.setFillColor((state==GateContact.StateType.set)?setFillColor:(selected)?selectedFillColor:fillColor);
-		p.drawRect(-rad, rad, rad, -rad);
+		p.drawShape(shape);
 	}
 	
 	protected void updateContactOffsets() {
-		boundingBox.setExtents(new Vec2(-0.02f, -0.02f), new Vec2(0.02f, 0.02f));
+		if(shape==null)
+			shape = createGateShape();
+		boundingBox.setExtents(new Vec2(-0.02f, -0.015f), new Vec2(0.04f, 0.015f));
 		for(GateContact c : out) {
 			Vec2 offs = new Vec2(0.0f, 0.0f);
 			c.setOffs(offs);
