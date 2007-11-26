@@ -627,7 +627,7 @@ public class DefaultConnection extends EditableConnection  {
 		return res;
 	}
 
-	private Vec2 getPointOnConnection(float t)
+	protected Vec2 getPointOnConnection(float t)
 	{
 		Vec2 res = new Vec2();
 		switch(connectionType)
