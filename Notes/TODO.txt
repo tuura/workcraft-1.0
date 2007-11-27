@@ -1,0 +1,27 @@
+Read-only integer IDs
+Decouple documents from script namespace
+Kill Python, put Javascript
+MDI interface
+GUI independent document manager
+Toolboxes
+  (library)
+  (tools)
+  (sim controls)
+  (document manager)
+  (property editor)
+  (custom)
+Context menu
+
+Metamodel
+Metaobject
+
+Verilog import
+In-place renderable modules
+Databuses
+
+AA *angry*
+Hairlines
+
+Changeable look and feel
+Smiles
+Animation export
