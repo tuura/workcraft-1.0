@@ -3,7 +3,7 @@ package workcraft.spreadtoken;
 import java.awt.event.KeyEvent;
 import java.util.UUID;
 
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.UnsupportedComponentException;
 import workcraft.editor.BasicEditable;
 import workcraft.sdfs.SDFSLogic1Way;

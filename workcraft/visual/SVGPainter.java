@@ -1,7 +1,7 @@
 package workcraft.visual;
 
 import java.util.Stack;
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 
 import workcraft.editor.BoundingBox;
@@ -14,7 +14,7 @@ import workcraft.visual.shapes.PathElement;
 import workcraft.visual.shapes.Shape;
 
 public class SVGPainter implements Painter {
-	private Document doc;
+	private org.w3c.dom.Document doc;
 
 	Stack<Element> gstack=new Stack<Element>();
 	Element root, g;

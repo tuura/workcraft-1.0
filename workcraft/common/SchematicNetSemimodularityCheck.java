@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import workcraft.DocumentOpenException;
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.Tool;
 import workcraft.ToolType;
 import workcraft.WorkCraftServer;
@@ -44,7 +44,7 @@ public class SchematicNetSemimodularityCheck implements Tool {
 	}
 
 	public void run(Editor editor, WorkCraftServer server) {
-		Model doc = editor.getDocument();
+		Document doc = editor.getDocument();
 		PetriNetMapper mapper = (PetriNetMapper)server.getToolInstance(PetriNetMapper.class);
 		if (mapper == null) {
 			JOptionPane.showMessageDialog(null, "This tool requires Petri Net Mapper tool, which was not loaded", "Error", JOptionPane.ERROR_MESSAGE);

@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.UUID;
 
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -109,7 +109,7 @@ public class EnvironmentBox extends BasicEditable implements XmlSerializable {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
-		Document d = ee.getOwnerDocument();
+		org.w3c.dom.Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("environment");
 		ppe.setAttribute("environment-stg-path", environmentStg);
 		ppe.setAttribute("active", Boolean.toString(active));

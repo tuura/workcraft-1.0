@@ -109,7 +109,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -374,7 +373,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 	}
 
 	public void beginSimulation() {
-		Model document = editorView.getDocument();
+		Document document = editorView.getDocument();
 
 		if ( document == null)
 			return;
@@ -458,7 +457,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 		if (dialog.modalResult==1) {
 			try {
-				setDocumentUI((Model)dialog.choice.getModelClass().newInstance());
+				setDocumentUI((Document)dialog.choice.getModelClass().newInstance());
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
@@ -485,7 +484,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		if (fc.showOpenDialog(this)!=JFileChooser.APPROVE_OPTION)
 			return;
 
-		Model doc;
+		Document doc;
 		try {
 			doc = load(fc.getSelectedFile().getAbsolutePath());
 			setDocumentUI(doc);
@@ -532,7 +531,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 	}
 	private void doDocumentSave(String file_name) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		Document doc; DocumentBuilder db;
+		org.w3c.dom.Document doc; DocumentBuilder db;
 		try {
 			db = dbf.newDocumentBuilder();
 			doc = db.newDocument();
@@ -600,7 +599,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 				path += ".svg";
 
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			Document doc; DocumentBuilder db;
+			org.w3c.dom.Document doc; DocumentBuilder db;
 			try {
 				db = dbf.newDocumentBuilder();
 				doc = db.newDocument();
@@ -1519,7 +1518,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		Clipboard cb = getToolkit().getSystemClipboard();
 
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		Document doc; DocumentBuilder db;
+		org.w3c.dom.Document doc; DocumentBuilder db;
 		try {
 			db = dbf.newDocumentBuilder();
 			doc = db.newDocument();
@@ -1537,10 +1536,10 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 	}
 
 	private void paste() {
-		Document doc; 
+		org.w3c.dom.Document doc; 
 
 		try {
-			doc = (Document) getToolkit().getSystemClipboard().getData(TransferableDocumentFragment.DOCUMENT_FRAGMENT_FLAVOR);
+			doc = (org.w3c.dom.Document) getToolkit().getSystemClipboard().getData(TransferableDocumentFragment.DOCUMENT_FRAGMENT_FLAVOR);
 		} catch (HeadlessException e) {
 			e.printStackTrace();
 			return;
@@ -1554,7 +1553,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		editorView.pasteFromXml(doc);		
 	}
 
-	private void setDocumentUI(Model document) {
+	private void setDocumentUI(Document document) {
 		stopSimulation();
 				
 		Class model_class = document.getClass();
@@ -1775,7 +1774,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			return;
 
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		Document doc; 
+		org.w3c.dom.Document doc; 
 		DocumentBuilder db;
 
 		try {
@@ -1836,7 +1835,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 	public void savePreferences() {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		Document doc; DocumentBuilder db;
+		org.w3c.dom.Document doc; DocumentBuilder db;
 		try {
 			db = dbf.newDocumentBuilder();
 			doc = db.newDocument();
@@ -1885,7 +1884,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		}
 	}
 
-	public void setDocument(Model document) {
+	public void setDocument(Document document) {
 		checkChanges();
 		setDocumentUI(document);
 		file_name = null;
@@ -1992,7 +1991,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 	}
 
 	public void stepSimulation() {
-		Model document = editorView.getDocument();
+		Document document = editorView.getDocument();
 		
 		if (document == null)
 			return;
@@ -2001,7 +2000,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 	}
 
 	public void stopSimulation() {
-		Model document = editorView.getDocument();
+		Document document = editorView.getDocument();
 		
 		if (document==null)
 			return;
@@ -2020,7 +2019,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 	}
 
 	public void updateTitle() {
-		Model document = editorView.getDocument();
+		Document document = editorView.getDocument();
 		
 		String title = "";
 		if (file_name!=null)
@@ -2039,8 +2038,8 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		setTitle(title);
 	}
 
-	public Model getDocument() {
-		Model document = editorView.getDocument();
+	public Document getDocument() {
+		Document document = editorView.getDocument();
 		return document;
 	}
 
@@ -2055,10 +2054,10 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 	}
 
-	public Model load(String path) throws DocumentOpenException {
+	public Document load(String path) throws DocumentOpenException {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		Document xmldoc;
-		Model doc;
+		org.w3c.dom.Document xmldoc;
+		Document doc;
 		DocumentBuilder db;
 
 		try {
@@ -2099,7 +2098,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 				throw new DocumentOpenException("Unrecognized model id - "+d.getAttribute("model-uuid"));
 
 
-			doc = (Model)model_class.newInstance();
+			doc = (Document)model_class.newInstance();
 			
 			server.python.set("_loading", true);
 			doc.loadStart();

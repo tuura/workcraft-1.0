@@ -11,7 +11,7 @@ import workcraft.DuplicateIdException;
 import workcraft.DocumentBase;
 import workcraft.ModelValidationException;
 import workcraft.InvalidConnectionException;
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;

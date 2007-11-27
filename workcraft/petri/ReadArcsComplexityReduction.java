@@ -10,7 +10,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 import workcraft.InvalidConnectionException;
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.DocumentBase;
 import workcraft.Tool;
 import workcraft.ToolType;

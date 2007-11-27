@@ -4,12 +4,12 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import org.python.core.PyObject;
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.UnsupportedComponentException;
 import workcraft.XmlSerializable;
 import workcraft.common.DefaultConnection;
@@ -224,7 +224,7 @@ public abstract class SDFSNode extends BasicEditable implements XmlSerializable{
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
-		Document d = ee.getOwnerDocument();
+		org.w3c.dom.Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("sdfs-node");
 		ppe.setAttribute("user-edited", Boolean.toString(userEdited));
 		ee.appendChild(ppe);

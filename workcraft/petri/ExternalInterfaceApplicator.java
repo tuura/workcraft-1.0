@@ -13,7 +13,7 @@ import org.python.core.Py;
 import org.python.core.PyObject;
 
 import workcraft.DocumentOpenException;
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.Tool;
 import workcraft.ToolType;
 import workcraft.WorkCraftServer;
@@ -37,7 +37,7 @@ public class ExternalInterfaceApplicator implements Tool {
 		if (fc.showOpenDialog(null)==JFileChooser.APPROVE_OPTION)
 		{
 			try {
-				Model env = editor.load(fc.getSelectedFile().getAbsolutePath());
+				Document env = editor.load(fc.getSelectedFile().getAbsolutePath());
 				if (env.getClass() != PetriModel.class)
 					JOptionPane.showMessageDialog(null, "Hmmmm... that is not a Petri Net!", "Deception", JOptionPane.WARNING_MESSAGE);
 				else

@@ -3,7 +3,7 @@ package workcraft.gate;
 import java.util.List;
 import java.util.UUID;
 
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.UnsupportedComponentException;
 import workcraft.editor.BasicEditable;
 import workcraft.util.Colorf;

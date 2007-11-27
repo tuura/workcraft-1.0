@@ -1,7 +1,7 @@
 package workcraft.util;
 import java.lang.Cloneable;
 
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 
 import workcraft.XmlSerializable;
@@ -139,7 +139,7 @@ public class Vec2 implements Cloneable, XmlSerializable  {
 	}
 	
 	public Element toXmlDom(Element parent_element) {
-		Document d = parent_element.getOwnerDocument();
+		org.w3c.dom.Document d = parent_element.getOwnerDocument();
 		Element e = d.createElement(_xmlelementtag);
 		e.setAttribute("x", Float.toString(x));
 		e.setAttribute("y", Float.toString(y));

@@ -10,7 +10,7 @@ import workcraft.editor.EditorPane;
 import workcraft.editor.GroupNode;
 import workcraft.editor.PropertyEditable;
 
-public interface Model extends PropertyEditable, XmlSerializable{
+public interface Document extends PropertyEditable, XmlSerializable{
 	
 	public void addComponent(BasicEditable c, boolean auto_name) throws UnsupportedComponentException;
 	public void removeComponent(BasicEditable c) throws UnsupportedComponentException;

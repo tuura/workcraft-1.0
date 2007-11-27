@@ -2,7 +2,7 @@ package workcraft.editor;
 
 import workcraft.DuplicateIdException;
 
-import workcraft.Model;
+import workcraft.Document;
 
 import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 import org.python.core.PyObject;
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -34,7 +34,7 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 	protected String id = "unnamed";
 	private String label = "";
 	public boolean selected = false;
-	protected Model ownerDocument = null;
+	protected Document ownerDocument = null;
 	protected Colorf labelColor = new Colorf (0.0f, 0.0f, 0.0f, 1.0f);
 	public boolean highlight = false;
 	
@@ -181,7 +181,7 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 	}
 
 	public Element toXmlDom (Element parent_element) {
-		Document d = parent_element.getOwnerDocument();
+		org.w3c.dom.Document d = parent_element.getOwnerDocument();
 		Element ee = d.createElement("editable");
 		ee.setAttribute("id", getId());
 		ee.setAttribute("label", label);
@@ -353,7 +353,7 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 			}
 	}
 
-	public void setOwnerDocument(Model ownerDocument) {
+	public void setOwnerDocument(Document ownerDocument) {
 		this.ownerDocument = ownerDocument;
 	}
 
@@ -361,7 +361,7 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 
 	}
 
-	public Model getOwnerDocument() {
+	public Document getOwnerDocument() {
 		return ownerDocument;
 	}
 

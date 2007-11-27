@@ -1,6 +1,6 @@
 package workcraft.util;
 
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -162,7 +162,7 @@ public class ViewState implements XmlSerializable {
 	}
 
 	public Element toXmlDom(Element parent_element) {
-		Document d = parent_element.getOwnerDocument();
+		org.w3c.dom.Document d = parent_element.getOwnerDocument();
 		Element ve = d.createElement("viewstate");
 		ve.setAttribute("s", Float.toString(s));
 		ve.setAttribute("tx", Float.toString(t_x));

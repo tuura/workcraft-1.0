@@ -8,12 +8,11 @@ import java.util.UUID;
 
 import javax.media.opengl.GL;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.UnsupportedComponentException;
 import workcraft.common.DefaultConnection;
 import workcraft.editor.BasicEditable;
@@ -312,7 +311,7 @@ public class EditableACM extends BasicEditable
 	public Element toXmlDom(Element parent_element)
 	{
 		Element ee = super.toXmlDom(parent_element);
-		Document d = ee.getOwnerDocument();
+		org.w3c.dom.Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("ACM");
 		ppe.setAttribute("capacity", Integer.toString(getCapacity()));
 		ppe.setAttribute("blockReading", Boolean.toString(getBlockReading()));

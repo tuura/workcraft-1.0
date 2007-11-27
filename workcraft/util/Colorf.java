@@ -2,7 +2,7 @@ package workcraft.util;
 
 import java.awt.Color;
 
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 import workcraft.XmlSerializable;
 
@@ -82,7 +82,7 @@ public class Colorf implements XmlSerializable {
 	}
 
 	public Element toXmlDom(Element parent_element) {
-		Document d = parent_element.getOwnerDocument();
+		org.w3c.dom.Document d = parent_element.getOwnerDocument();
 		Element e = d.createElement(_xmlelementtag);
 		e.setAttribute("r", Float.toString(r));
 		e.setAttribute("g", Float.toString(g));

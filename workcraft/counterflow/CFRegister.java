@@ -5,12 +5,12 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.UUID;
 
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.editor.BasicEditable;
@@ -174,7 +174,7 @@ public class CFRegister extends SDFSRegisterBase {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
-		Document d = ee.getOwnerDocument();
+		org.w3c.dom.Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("cf-register");
 		ppe.setAttribute("or-token", Boolean.toString(isOrMarked()));
 		ppe.setAttribute("and-token", Boolean.toString(isAndMarked()));

@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.DocumentBase;
 import workcraft.ModelValidationException;
 import workcraft.UnsupportedComponentException;

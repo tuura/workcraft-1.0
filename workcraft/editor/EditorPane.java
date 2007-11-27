@@ -11,13 +11,12 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLJPanel;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import workcraft.Document;
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
-import workcraft.Model;
 import workcraft.DocumentBase;
 import workcraft.ModelManager;
 import workcraft.UnsupportedComponentException;
@@ -54,7 +53,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 	private Painter painter;
 	private JOGLPainter joglpainter;
 
-	private Model document = null;
+	private Document document = null;
 //	private Tester tester = new Tester();
 
 	private boolean pan_drag = false;
@@ -552,7 +551,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 
 
 	public void documentToXml(Element doc) {
-		Document d = doc.getOwnerDocument();
+		org.w3c.dom.Document d = doc.getOwnerDocument();
 		Element de = d.createElement("document");
 		de.setAttribute("model-uuid", ModelManager.getModelUUID(document.getClass()).toString());
 		root.toXmlDom(de);
@@ -574,8 +573,8 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		}
 	}
 
-	public void pasteFromXml(Document doc) {
-		NodeList nl = doc.getElementsByTagName("workcraft-document-fragment");
+	public void pasteFromXml(org.w3c.dom.Document xmlDoc) {
+		NodeList nl = xmlDoc.getElementsByTagName("workcraft-document-fragment");
 
 		deselect();
 
@@ -636,7 +635,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 				ex.printStackTrace();
 			}
 		}		
-		nl = doc.getElementsByTagName("editable-connection");
+		nl = xmlDoc.getElementsByTagName("editable-connection");
 		for (int i=0; i<nl.getLength(); i++ ) {
 			Element e = (Element)nl.item(i);
 
@@ -989,7 +988,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		view.fromXmlDom(ev);
 	}
 
-	public Model getDocument() {
+	public workcraft.Document getDocument() {
 		return document;
 	}
 
@@ -1051,7 +1050,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		}
 	}
 
-	public void setDocument(Model document) {
+	public void setDocument(Document document) {
 		if (document == this.document)
 			return;
 		this.document = document;
@@ -1084,7 +1083,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 	}
 
 	public Element toXmlDom(Element parent_element) {
-		Document d = parent_element.getOwnerDocument();
+		org.w3c.dom.Document d = parent_element.getOwnerDocument();
 		Element ee = d.createElement("editor");
 		Element eo = d.createElement("options");
 		eo.setAttribute("snap", Boolean.toString(snap_to_grid));

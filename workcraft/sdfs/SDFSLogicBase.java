@@ -1,6 +1,6 @@
 package workcraft.sdfs;
 
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.UnsupportedComponentException;
 import workcraft.editor.BasicEditable;
 

@@ -3,11 +3,11 @@ package workcraft.gate;
 import java.util.HashMap;
 import java.util.List;
 
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 
 import workcraft.DuplicateIdException;
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.UnsupportedComponentException;
 import workcraft.editor.BasicEditable;
 import workcraft.editor.TransformNode;
@@ -132,7 +132,7 @@ public class GateContact extends BasicEditable {
 	}
 
 	public Element toXmlDom(Element parent_element) {
-		Document d = parent_element.getOwnerDocument();
+		org.w3c.dom.Document d = parent_element.getOwnerDocument();
 		Element ee = d.createElement("contact");
 		ee.setAttribute("id", getId());
 		parent_element.appendChild(ee);

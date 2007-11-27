@@ -3,12 +3,12 @@ package workcraft.sdfs;
 
 import java.awt.event.MouseEvent;
 import java.util.List;
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.editor.BasicEditable;
@@ -61,7 +61,7 @@ public abstract class SDFSRegisterBase extends SDFSNode  {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
-		Document d = ee.getOwnerDocument();
+		org.w3c.dom.Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("sdfs-register");
 		ee.appendChild(ppe);
 		return ee;

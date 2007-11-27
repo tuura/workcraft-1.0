@@ -11,12 +11,12 @@ import java.util.UUID;
 import javax.media.opengl.GL;
 
 import org.python.core.PyObject;
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
@@ -130,7 +130,7 @@ public abstract class SDFSLogic1Way extends SDFSLogicBase {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
-		Document d = ee.getOwnerDocument();
+		org.w3c.dom.Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("st-logic");
 		ppe.setAttribute("eval-func", evalFunc);
 		ppe.setAttribute("reset-func", resetFunc);

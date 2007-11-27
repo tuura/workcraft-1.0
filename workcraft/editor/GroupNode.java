@@ -8,7 +8,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.UnsupportedComponentException;
 import workcraft.util.Mat4x4;
 import workcraft.util.Vec2;
@@ -20,7 +20,7 @@ public class GroupNode extends BasicEditable {
 	 * @see workcraft.editor.EditableNode#getChildAt(workcraft.util.Vec2)
 	 */
 	
-	public GroupNode (Model owner, String id)  {
+	public GroupNode (Document owner, String id)  {
 		this.zOrder = 0;
 		this.parent = null;
 		this.id = id;

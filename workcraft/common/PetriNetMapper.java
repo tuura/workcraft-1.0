@@ -17,7 +17,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -25,7 +25,7 @@ import org.xml.sax.SAXException;
 
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.DocumentBase;
 import workcraft.Tool;
 import workcraft.ToolType;
@@ -108,7 +108,7 @@ public class PetriNetMapper implements Tool {
 			return v;
 		}
 
-		private EditablePetriTransition addPlusTransition(Model target, String tag) {
+		private EditablePetriTransition addPlusTransition(Document target, String tag) {
 			Vec2 vt = new Vec2();
 			DefaultConnection c;
 			EditablePetriTransition t = null;
@@ -149,7 +149,7 @@ public class PetriNetMapper implements Tool {
 			return null;
 		}
 
-		private EditablePetriTransition addMinusTransition(Model target, String tag) {
+		private EditablePetriTransition addMinusTransition(Document target, String tag) {
 			Vec2 vt = new Vec2();
 			DefaultConnection c;
 			EditablePetriTransition t = null;
@@ -191,7 +191,7 @@ public class PetriNetMapper implements Tool {
 			return null;
 		}		
 
-		public void createPlaces(Model target, WorkCraftServer server) {
+		public void createPlaces(Document target, WorkCraftServer server) {
 			Vec2 vt = new Vec2();
 
 			try {
@@ -250,7 +250,7 @@ public class PetriNetMapper implements Tool {
 				p_false.setTokens(1);
 		}
 
-		public void createTransitions(Model target, HashMap<String, String> predicates, WorkCraftServer server) {
+		public void createTransitions(Document target, HashMap<String, String> predicates, WorkCraftServer server) {
 			Object o = server.getObjectById(baseId);
 			if (o==null) {
 				System.err.println ("Petri Net Mapper: server could not find object with id \""+baseId+"\"");
@@ -508,7 +508,7 @@ public class PetriNetMapper implements Tool {
 
 		for (File f : files) {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			Document doc;
+			org.w3c.dom.Document doc;
 			DocumentBuilder db;
 
 			try {
@@ -605,7 +605,7 @@ public class PetriNetMapper implements Tool {
 		}
 	}
 
-	public PetriModel map(WorkCraftServer server, Model source) {
+	public PetriModel map(WorkCraftServer server, Document source) {
 		UUID uuid = server.mmgr.getModelUUID(source.getClass());
 		Mapping mapping = map_uuid_mapping.get(uuid);
 
@@ -680,7 +680,7 @@ public class PetriNetMapper implements Tool {
 	}
 
 	public void run(Editor editor, WorkCraftServer server) {
-		Model doc = editor.getDocument(); 
+		Document doc = editor.getDocument(); 
 
 		PetriModel petri = map(server, doc);
 

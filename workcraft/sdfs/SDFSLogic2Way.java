@@ -11,12 +11,12 @@ import java.util.UUID;
 import javax.media.opengl.GL;
 
 import org.python.core.PyObject;
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.Model;
+import workcraft.Document;
 import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
@@ -178,7 +178,7 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element); 
-		Document d = ee.getOwnerDocument();
+		org.w3c.dom.Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("sdfs-logic-2way");
 		ppe.setAttribute("fwd-eval-delay", Integer.toString(fwd_eval_delay));
 		ppe.setAttribute("fwd-reset-delay", Integer.toString(fwd_reset_delay));

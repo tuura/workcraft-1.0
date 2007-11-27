@@ -2,7 +2,7 @@ package workcraft.visual.shapes;
 
 import java.util.Properties;
 
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -234,7 +234,7 @@ public class Bezier implements XmlSerializable, PathElement {
 	}
 
 	public Element toXmlDom(Element parent_element) {
-		Document d = parent_element.getOwnerDocument();
+		org.w3c.dom.Document d = parent_element.getOwnerDocument();
 		Element e = d.createElement(_xmlelementtag);
 		p1.toXmlDom(e);
 		cp1.toXmlDom(e);

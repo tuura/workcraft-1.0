@@ -3,7 +3,7 @@ package workcraft.common;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -455,7 +455,7 @@ public class DefaultConnection extends EditableConnection  {
 	}
 
 	private void internalsToXml(Element parent_element) {
-		Document d = parent_element.getOwnerDocument();
+		org.w3c.dom.Document d = parent_element.getOwnerDocument();
 		Element ie = d.createElement("internal-points");
 		if(internal==null) {
 			ie.setAttribute("number", "0");
@@ -483,7 +483,7 @@ public class DefaultConnection extends EditableConnection  {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ce = createEditableConnectionXmlElement(parent_element);
-		Document d = parent_element.getOwnerDocument();
+		org.w3c.dom.Document d = parent_element.getOwnerDocument();
 		Element ppe = d.createElement("connection");
 		switch (connectionType) {
 		case bezierConnection:
