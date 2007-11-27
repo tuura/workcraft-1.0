@@ -7,7 +7,7 @@ import java.util.UUID;
 import javax.swing.JPanel;
 
 import workcraft.DuplicateIdException;
-import workcraft.ModelBase;
+import workcraft.DocumentBase;
 import workcraft.ModelValidationException;
 import workcraft.InvalidConnectionException;
 import workcraft.Model;

@@ -17,7 +17,7 @@ import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
 import workcraft.Model;
-import workcraft.ModelBase;
+import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;
@@ -70,8 +70,8 @@ public abstract class SDFSLogic1Way extends SDFSLogicBase {
 		if (selected)
 			p.setLineColor(selectedColor);
 		else
-			if (highlight && ((ModelBase)ownerDocument).isShowHighlight())
-				p.setLineColor(((ModelBase)ownerDocument).getHighlightColor());
+			if (highlight && ((DocumentBase)ownerDocument).isShowHighlight())
+				p.setLineColor(((DocumentBase)ownerDocument).getHighlightColor());
 			else
 				p.setLineColor(frameColor);
 

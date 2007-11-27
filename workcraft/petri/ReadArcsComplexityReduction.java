@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 import workcraft.InvalidConnectionException;
 import workcraft.Model;
-import workcraft.ModelBase;
+import workcraft.DocumentBase;
 import workcraft.Tool;
 import workcraft.ToolType;
 import workcraft.UnsupportedComponentException;
@@ -177,7 +177,7 @@ public class ReadArcsComplexityReduction implements Tool {
 	public void run(Editor editor, WorkCraftServer server)
 	{
 		PetriModel doc = (PetriModel) (editor.getDocument());
-		ModelBase newdoc = reduce(doc);
+		DocumentBase newdoc = reduce(doc);
 		editor.setDocument(newdoc);
 	}
 

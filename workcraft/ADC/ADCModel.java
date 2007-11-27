@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
 import workcraft.Model;
-import workcraft.ModelBase;
+import workcraft.DocumentBase;
 import workcraft.ModelValidationException;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
@@ -19,7 +19,7 @@ import workcraft.editor.BasicEditable;
 import workcraft.editor.EditableConnection;
 import workcraft.editor.EditorPane;
 
-public class ADCModel extends ModelBase
+public class ADCModel extends DocumentBase
 {
 	public static final UUID _modeluuid = UUID.fromString("3c60dee8-0545-11dc-8314-0800200c9a66");
 	public static final String _displayname = "Asynchronous Data Communication";

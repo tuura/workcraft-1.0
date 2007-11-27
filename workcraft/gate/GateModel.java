@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
-import workcraft.ModelBase;
+import workcraft.DocumentBase;
 import workcraft.ModelValidationException;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
@@ -29,7 +29,7 @@ import workcraft.petri.EditablePetriTransition;
 import workcraft.petri.PetriModel.SimThread;
 import workcraft.util.Colorf;
 
-public class GateModel extends ModelBase {
+public class GateModel extends DocumentBase {
 	public static final UUID _modeluuid = UUID.fromString("6f704a28-e691-11db-8314-0800200c9a66");
 	public static final String _displayname = "Gate-level circuit";
 

@@ -7,7 +7,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import workcraft.ModelBase;
+import workcraft.DocumentBase;
 import workcraft.editor.BasicEditable;
 import workcraft.editor.EditableConnection;
 import workcraft.editor.EditableAnchor;
@@ -334,8 +334,8 @@ public class DefaultConnection extends EditableConnection  {
 		Colorf connectionColor = DefaultConnection.connectionColor;
 		if (colorOverride != null) connectionColor = colorOverride;
 		
-		if (first.highlight && second.highlight && ((ModelBase)first.getOwnerDocument()).isShowHighlight())
-			connectionColor = (((ModelBase)first.getOwnerDocument()).getHighlightColor());
+		if (first.highlight && second.highlight && ((DocumentBase)first.getOwnerDocument()).isShowHighlight())
+			connectionColor = (((DocumentBase)first.getOwnerDocument()).getHighlightColor());
 		
 		p.pushTransform();
 		p.setIdentityTransform();

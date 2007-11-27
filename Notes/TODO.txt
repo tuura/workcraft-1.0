@@ -1,8 +1,10 @@
 Read-only integer IDs
 Decouple documents from script namespace
-Kill Python, put Javascript
-MDI interface
+Kill Python
 GUI independent document manager
+MDI interface
+put Javascript
+
 Toolboxes
   (library)
   (tools)

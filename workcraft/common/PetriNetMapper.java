@@ -26,7 +26,7 @@ import org.xml.sax.SAXException;
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
 import workcraft.Model;
-import workcraft.ModelBase;
+import workcraft.DocumentBase;
 import workcraft.Tool;
 import workcraft.ToolType;
 import workcraft.UnsupportedComponentException;

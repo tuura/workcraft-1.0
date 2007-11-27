@@ -9,7 +9,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.ModelBase;
+import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.XmlSerializable;
 import workcraft.editor.BasicEditable;
@@ -62,8 +62,8 @@ public class EnvironmentBox extends BasicEditable implements XmlSerializable {
 		if (selected)
 			p.setLineColor(selectedColor);
 		else
-			if (highlight && ((ModelBase)ownerDocument).isShowHighlight())
-				p.setLineColor(((ModelBase)ownerDocument).getHighlightColor());
+			if (highlight && ((DocumentBase)ownerDocument).isShowHighlight())
+				p.setLineColor(((DocumentBase)ownerDocument).getHighlightColor());
 			else
 				if (active)
 					p.setLineColor(activeColor);

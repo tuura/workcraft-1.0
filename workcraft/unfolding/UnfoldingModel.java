@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
 import workcraft.Model;
-import workcraft.ModelBase;
+import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;
@@ -18,7 +18,7 @@ import workcraft.editor.BasicEditable;
 import workcraft.editor.EditableConnection;
 import workcraft.editor.EditorPane;
 
-public class UnfoldingModel extends ModelBase {
+public class UnfoldingModel extends DocumentBase {
 	public static final UUID _modeluuid = UUID.fromString("23a72f18-5c90-11dc-8314-0800200c9a66");
 	public static final String _displayname = "Unfolding with time annotation";
 

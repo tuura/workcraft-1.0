@@ -13,7 +13,7 @@ import workcraft.editor.EditorPane;
 import workcraft.editor.GroupNode;
 import workcraft.util.Colorf;
 
-public abstract class ModelBase implements Model {
+public abstract class DocumentBase implements Model {
 
 	public static UUID _modeluuid;
 	public static String _displayname;

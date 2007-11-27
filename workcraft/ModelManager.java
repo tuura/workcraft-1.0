@@ -49,7 +49,7 @@ public class ModelManager {
 	}
 
 	public static boolean isValidModelClass(Class cls) {
-		boolean if_ok = ModelBase.class.isAssignableFrom(cls);
+		boolean if_ok = DocumentBase.class.isAssignableFrom(cls);
 
 		try
 		{

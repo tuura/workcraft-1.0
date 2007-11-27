@@ -7,7 +7,6 @@ import org.python.core.*;
 
 import workcraft.editor.BasicEditable;
 
-
 public class WorkCraftServer {
 	public PythonInterpreter python = null;
 	private boolean init_ok = false;
@@ -57,7 +56,7 @@ public class WorkCraftServer {
 
 		System.out.println("Models:");
 
-		LinkedList<Class> models = pmgr.getClassesBySuperclass(ModelBase.class);
+		LinkedList<Class> models = pmgr.getClassesBySuperclass(DocumentBase.class);
 		for (Class cls : models) {
 			mmgr.addModel(cls);		
 		}

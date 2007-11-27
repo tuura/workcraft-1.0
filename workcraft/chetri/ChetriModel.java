@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
 import workcraft.Model;
-import workcraft.ModelBase;
+import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;
@@ -18,7 +18,7 @@ import workcraft.editor.BasicEditable;
 import workcraft.editor.EditableConnection;
 import workcraft.editor.EditorPane;
 
-public class ChetriModel extends ModelBase{
+public class ChetriModel extends DocumentBase{
 	public static final UUID _modeluuid = UUID.fromString("e9137910-8535-11db-b606-0800200c9a66");
 	public static final String _displayname = "Binary Petri Net (chEEtah's invention)";
 

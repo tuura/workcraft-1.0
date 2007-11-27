@@ -4,7 +4,7 @@ import workcraft.DuplicateIdException;
 
 import workcraft.Model;
 
-import workcraft.ModelBase;
+import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.XmlSerializable;
@@ -56,7 +56,7 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 
 		if (ownerDocument.getComponentById(id) != null)
 			throw new DuplicateIdException(id);
-		((ModelBase)ownerDocument).renameComponent(this, id);
+		((DocumentBase)ownerDocument).renameComponent(this, id);
 		
 		WorkCraftServer server = ownerDocument.getServer();
 		if (server != null)

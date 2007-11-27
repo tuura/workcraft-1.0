@@ -18,7 +18,7 @@ import org.w3c.dom.NodeList;
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
 import workcraft.Model;
-import workcraft.ModelBase;
+import workcraft.DocumentBase;
 import workcraft.ModelManager;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
@@ -735,7 +735,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 	public void draw() {
 		painter.setIdentityTransform();
 		if (document != null)
-			painter.setClearColor( ((ModelBase)document).getBackgroundColor() );
+			painter.setClearColor( ((DocumentBase)document).getBackgroundColor() );
 		else
 			painter.setClearColor(clear_color);
 		painter.clear();

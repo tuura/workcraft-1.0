@@ -14,7 +14,7 @@ import org.python.core.Py;
 import org.python.core.PyObject;
 
 import workcraft.DuplicateIdException;
-import workcraft.ModelBase;
+import workcraft.DocumentBase;
 import workcraft.Tool;
 import workcraft.ToolType;
 import workcraft.UnsupportedComponentException;

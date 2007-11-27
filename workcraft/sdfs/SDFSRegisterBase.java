@@ -9,7 +9,7 @@ import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
 import workcraft.Model;
-import workcraft.ModelBase;
+import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.editor.BasicEditable;
 import workcraft.sdfs.SDFSNode;
@@ -76,8 +76,8 @@ public abstract class SDFSRegisterBase extends SDFSNode  {
 			if (can_work)
 				frame_color = active_frame_color;
 			else
-				if (highlight && ((ModelBase)ownerDocument).isShowHighlight())
-					frame_color = (((ModelBase)ownerDocument).getHighlightColor());
+				if (highlight && ((DocumentBase)ownerDocument).isShowHighlight())
+					frame_color = (((DocumentBase)ownerDocument).getHighlightColor());
 				else
 					frame_color = inactive_frame_color;
 
