@@ -21,8 +21,8 @@ Verilog import
 In-place renderable modules
 Databuses
 
-AA *angry*
-Hairlines
+AA
+--- Hairlines --- DONE
 
 Changeable look and feel
 Smiles
