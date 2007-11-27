@@ -66,7 +66,13 @@ public class JOGLPainter implements Painter {
 	public void clear() {
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 	}
-
+	
+	private LineMode checkedLineMode() {
+		if(view.getWindowScale()*lineWidth<1.5f)
+			return LineMode.HAIRLINE;
+		return lineMode;
+	}
+	
 	public void draw(GLSelfDrawable d) {
 		d.draw(this.gl);
 	}
@@ -77,7 +83,7 @@ public class JOGLPainter implements Painter {
 
 	public void drawBezierCurve (Bezier curve, int segments)  {
 		gl.glColor4f(lineColor.r, lineColor.g, lineColor.b, lineColor.a);
-		if (lineMode == LineMode.HAIRLINE) {
+		if (checkedLineMode() == LineMode.HAIRLINE) {
 			drawPrimitives(GeometryUtil.createHairlineLines(curve.getVertices(segments)), PrimitiveType.LINE_STRIP);
 		} else {
 			drawPrimitives(GeometryUtil.createSolidLines(curve.getVertices(segments), PrimitiveType.LINE_STRIP, lineWidth), PrimitiveType.TRIANGLE_STRIP);
@@ -92,7 +98,7 @@ public class JOGLPainter implements Painter {
 
 			pushTransform();
 
-			if (lineMode == LineMode.HAIRLINE) {
+			if (checkedLineMode() == LineMode.HAIRLINE) {
 				translate(cx, cy);
 				scale (radius, radius);
 				drawShape(unitCircle);
@@ -121,7 +127,7 @@ public class JOGLPainter implements Painter {
 			}
 			if ((shapeMode & ShapeMode.OUTLINE) != 0) {
 				gl.glColor4f (lineColor.r, lineColor.g, lineColor.b, lineColor.a);
-				if (lineMode == LineMode.HAIRLINE) {
+				if (checkedLineMode() == LineMode.HAIRLINE) {
 					pushTransform();
 					translate(cx, cy);
 					drawPrimitives(cache.hairlineOutlineCache, (cache.closed)?PrimitiveType.LINE_LOOP:PrimitiveType.LINE_STRIP);
@@ -148,7 +154,7 @@ public class JOGLPainter implements Painter {
 	
 	private void drawLine() {
 		gl.glColor4f(lineColor.r, lineColor.g, lineColor.b, lineColor.a);
-		if (lineMode == LineMode.HAIRLINE) {
+		if (checkedLineMode() == LineMode.HAIRLINE) {
 			drawPrimitives(GeometryUtil.createHairlineLines(_dlv), PrimitiveType.LINE_LIST);
 		} else {
 			drawPrimitives(GeometryUtil.createSolidLines(_dlv, PrimitiveType.LINE_LIST, lineWidth), PrimitiveType.TRIANGLE_LIST);
@@ -171,7 +177,7 @@ public class JOGLPainter implements Painter {
 		if (vertices.length<2)
 			return;
 		gl.glColor4f(lineColor.r, lineColor.g, lineColor.b, lineColor.a);
-		if (lineMode == LineMode.HAIRLINE) {
+		if (checkedLineMode() == LineMode.HAIRLINE) {
 			drawPrimitives(GeometryUtil.createHairlineLines(vertices), PrimitiveType.LINE_LIST);
 		} else {
 			drawPrimitives(GeometryUtil.createSolidLines(vertices, PrimitiveType.LINE_LIST, lineWidth), PrimitiveType.TRIANGLE_LIST);
@@ -186,7 +192,7 @@ public class JOGLPainter implements Painter {
 
 	public void drawPolyLine(Vec2[] points) {
 		gl.glColor4f(lineColor.r, lineColor.g, lineColor.b, lineColor.a);
-		if (lineMode == LineMode.HAIRLINE) {
+		if (checkedLineMode() == LineMode.HAIRLINE) {
 			drawPrimitives(GeometryUtil.createHairlineLines(points), PrimitiveType.LINE_STRIP);
 		} else {
 			drawPrimitives(GeometryUtil.createSolidLines(points, PrimitiveType.LINE_STRIP, lineWidth), PrimitiveType.TRIANGLE_STRIP);
@@ -274,7 +280,7 @@ public class JOGLPainter implements Painter {
 		ShapeCacheEntry cache = getShapeCache(unitRect);
 
 		if ((shapeMode & ShapeMode.FILL_AND_OUTLINE) == ShapeMode.FILL_AND_OUTLINE) {
-			if (lineMode == LineMode.HAIRLINE) {
+			if (checkedLineMode() == LineMode.HAIRLINE) {
 				pushTransform();
 				translate (left + w*0.5f,bottom + h*0.5f);
 				scale (w, h);
@@ -311,7 +317,7 @@ public class JOGLPainter implements Painter {
 			}
 			if ((shapeMode & ShapeMode.OUTLINE) != 0) {
 				gl.glColor4f (lineColor.r, lineColor.g, lineColor.b, lineColor.a);
-				if (lineMode == LineMode.HAIRLINE) {
+				if (checkedLineMode() == LineMode.HAIRLINE) {
 					pushTransform();
 					translate (left + w*0.5f,bottom + h*0.5f);
 					scale (w, h);
@@ -343,7 +349,7 @@ public class JOGLPainter implements Painter {
 		} 
 		if ((shapeMode&ShapeMode.OUTLINE) != 0) {
 			gl.glColor4f (lineColor.r, lineColor.g, lineColor.b, lineColor.a);
-			if (lineMode == LineMode.HAIRLINE)
+			if (checkedLineMode() == LineMode.HAIRLINE)
 				drawPrimitives(cache.hairlineOutlineCache,  (cache.closed)?PrimitiveType.LINE_LOOP:PrimitiveType.LINE_STRIP);
 			else
 				drawPrimitives(cache.solidOutlineCache, PrimitiveType.TRIANGLE_STRIP);

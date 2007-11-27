@@ -55,6 +55,10 @@ public class ViewState implements XmlSerializable {
 		return matFinalInv;
 	}
 	
+	public float getWindowScale() {
+		return w_2*s;
+	}
+
 	public void scale(int steps) {
 		s /= Math.pow(scale_factor, steps);
 		if (s < 0.01f)
