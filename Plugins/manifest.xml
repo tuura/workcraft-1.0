@@ -20,7 +20,10 @@
 		<class name="workcraft.petri.ExternalInterfaceApplicator"/>
 
   <class name="workcraft.graph.GraphModel"/>
-	<class name="workcraft.graph.EditableGraphVertex"/>
+    <class name="workcraft.graph.EditableGraphVertex"/>
+  
+  <class name="workcraft.cpog.CPOGModel"/>
+    <class name="workcraft.cpog.EditableCPOGVertex"/>
 
   <class name="workcraft.ADC.ADCModel"/>
 	<class name="workcraft.ADC.EditableProcess"/>

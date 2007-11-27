@@ -43,12 +43,12 @@ public class CPOGModel extends ModelBase {
 	
 	private boolean loading;
 
-	LinkedList<EditableGPOGVertex> vertices;
+	LinkedList<EditableCPOGVertex> vertices;
 	LinkedList<LabelledConnection> connections;
 
 	public CPOGModel()
 	{
-		vertices = new LinkedList<EditableGPOGVertex>();
+		vertices = new LinkedList<EditableCPOGVertex>();
 		connections = new LinkedList<LabelledConnection>();
 	}
 
@@ -59,8 +59,8 @@ public class CPOGModel extends ModelBase {
 
 	public void addComponent(BasicEditable c, boolean auto_name) throws UnsupportedComponentException
 	{
-		if (c instanceof EditableGPOGVertex) {
-			EditableGPOGVertex p = (EditableGPOGVertex)c;
+		if (c instanceof EditableCPOGVertex) {
+			EditableCPOGVertex p = (EditableCPOGVertex)c;
 			vertices.add(p);
 			p.setOwnerDocument(this);
 			if (auto_name)
@@ -80,11 +80,11 @@ public class CPOGModel extends ModelBase {
 	public void removeComponent(BasicEditable c) throws UnsupportedComponentException
 	{
 		super.removeComponent(c);
-		if (c instanceof EditableGPOGVertex)
+		if (c instanceof EditableCPOGVertex)
 		{
-			EditableGPOGVertex v = (EditableGPOGVertex)c;
-			for (EditableGPOGVertex t : v.getIn()) t.removeOut(v);				
-			for (EditableGPOGVertex t : v.getOut())	t.removeIn(v);
+			EditableCPOGVertex v = (EditableCPOGVertex)c;
+			for (EditableCPOGVertex t : v.getIn()) t.removeOut(v);				
+			for (EditableCPOGVertex t : v.getOut())	t.removeIn(v);
 
 			vertices.remove(c);
 		} else throw new UnsupportedComponentException();
@@ -94,13 +94,13 @@ public class CPOGModel extends ModelBase {
 
 	public EditableConnection createConnection(BasicEditable first, BasicEditable second) throws InvalidConnectionException
 	{
-		if (!(first instanceof EditableGPOGVertex) || !(second instanceof EditableGPOGVertex))
+		if (!(first instanceof EditableCPOGVertex) || !(second instanceof EditableCPOGVertex))
 			throw new InvalidConnectionException ("Invalid connection.");
 		
-		EditableGPOGVertex p, q;
+		EditableCPOGVertex p, q;
 
-		p = (EditableGPOGVertex)first;
-		q = (EditableGPOGVertex)second;
+		p = (EditableCPOGVertex)first;
+		q = (EditableCPOGVertex)second;
 		LabelledConnection con = new LabelledConnection(p, q);
 		if (p.addOut(con) && q.addIn(con))
 		{
@@ -112,10 +112,10 @@ public class CPOGModel extends ModelBase {
 
 	public void removeConnection(EditableConnection con) throws UnsupportedComponentException
 	{
-		EditableGPOGVertex p,q;
+		EditableCPOGVertex p,q;
 	
-		p = (EditableGPOGVertex)con.getFirst();
-		q = (EditableGPOGVertex)con.getSecond();
+		p = (EditableCPOGVertex)con.getFirst();
+		q = (EditableCPOGVertex)con.getSecond();
 		
 		p.removeOut(q);
 		q.removeIn(p);

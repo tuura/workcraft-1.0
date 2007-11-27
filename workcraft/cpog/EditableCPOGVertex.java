@@ -16,6 +16,7 @@ import workcraft.DuplicateIdException;
 import workcraft.Model;
 import workcraft.UnsupportedComponentException;
 import workcraft.common.DefaultConnection;
+import workcraft.common.LabelledConnection;
 import workcraft.editor.BasicEditable;
 import workcraft.editor.EditableConnection;
 import workcraft.util.Colorf;
@@ -31,7 +32,7 @@ import workcraft.visual.VertexFormat;
 import workcraft.visual.PrimitiveType;
 import workcraft.visual.VertexFormatException;
 
-public class EditableGPOGVertex extends BasicEditable {
+public class EditableCPOGVertex extends BasicEditable {
 	public static final UUID _modeluuid = UUID.fromString("25787b48-9c3d-11dc-8314-0800200c9a66");
 	public static final String _displayname = "Vertex";
 
@@ -48,27 +49,31 @@ public class EditableGPOGVertex extends BasicEditable {
 	public boolean canFire = false;
 	public boolean canWork = false;
 
-	private LinkedList<EditableGPOGVertex> out;
-	private LinkedList<EditableGPOGVertex> in;
+	private LinkedList<EditableCPOGVertex> out;
+	private LinkedList<EditableCPOGVertex> in;
 
-	public LinkedList<EditableGPOGVertex> getOut() {
-		return (LinkedList<EditableGPOGVertex>)out.clone();
+	public LinkedList<EditableCPOGVertex> getOut()
+	{
+		return (LinkedList<EditableCPOGVertex>)out.clone();
 	}
 
-	public LinkedList<EditableGPOGVertex> getIn() {
-		return (LinkedList<EditableGPOGVertex>)in.clone();
+	public LinkedList<EditableCPOGVertex> getIn()
+	{
+		return (LinkedList<EditableCPOGVertex>)in.clone();
 	}
 
-	public void removeIn(EditableGPOGVertex t) {
+	public void removeIn(EditableCPOGVertex t)
+	{
 		in.remove(t);
 	}
 
-	public void removeOut(EditableGPOGVertex t) {
+	public void removeOut(EditableCPOGVertex t)
+	{
 		out.remove(t);
 	}
 
-	public boolean addIn(DefaultConnection con) {
-		EditableGPOGVertex t = (EditableGPOGVertex)con.getFirst();
+	public boolean addIn(LabelledConnection con) {
+		EditableCPOGVertex t = (EditableCPOGVertex)con.getFirst();
 		if (in.contains(t))
 			return false;
 		in.add(t);
@@ -76,8 +81,8 @@ public class EditableGPOGVertex extends BasicEditable {
 		return true;
 	}
 
-	public boolean addOut(DefaultConnection con) {
-		EditableGPOGVertex t = (EditableGPOGVertex)con.getSecond();
+	public boolean addOut(LabelledConnection con) {
+		EditableCPOGVertex t = (EditableCPOGVertex)con.getSecond();
 		if (out.contains(t))
 			return false;
 		out.add(t);
@@ -86,26 +91,30 @@ public class EditableGPOGVertex extends BasicEditable {
 	}
 	
 	@Override
-	public boolean hits(Vec2 pointInViewSpace) {
+	public boolean hits(Vec2 pointInViewSpace)
+	{
 		Vec2 v = new Vec2(pointInViewSpace);
 		transform.getViewToLocalMatrix().transform(v);
 		return v.length() < 0.05f;
 	}
 
-	public void setColor(Integer t) {
+	public void setColor(Integer t)
+	{
 		color = t;
 	}
 
-	public int getColor() {
+	public int getColor()
+	{
 		return color;
 	}
 
-	public EditableGPOGVertex(BasicEditable parent) throws UnsupportedComponentException {
+	public EditableCPOGVertex(BasicEditable parent) throws UnsupportedComponentException
+	{
 		super(parent);
 		boundingBox.setExtents(new Vec2(-0.05f, -0.05f), new Vec2(0.05f, 0.05f));
 		color = 0;
-		out = new LinkedList<EditableGPOGVertex>();
-		in = new LinkedList<EditableGPOGVertex>();
+		out = new LinkedList<EditableCPOGVertex>();
+		in = new LinkedList<EditableCPOGVertex>();
 	}
 
 	public void draw(Painter p) {

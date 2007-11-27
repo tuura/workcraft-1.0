@@ -1,13 +1,11 @@
 package workcraft.common;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import workcraft.common.DefaultConnection.Type;
 import workcraft.editor.BasicEditable;
 import workcraft.util.Colorf;
 import workcraft.util.Vec2;
@@ -28,7 +26,7 @@ public class LabelledConnection extends DefaultConnection
 	public LabelledConnection(BasicEditable first, BasicEditable second)
 	{
 		super(first, second);
-		label = "";
+		label = "no label";
 	}
 
 	public String getLabel()
