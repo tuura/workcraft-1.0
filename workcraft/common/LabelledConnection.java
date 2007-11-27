@@ -51,11 +51,19 @@ public class LabelledConnection extends DefaultConnection
 	public void draw(Painter p)
 	{
 		super.draw(p);
+		
+		p.pushTransform();
+		p.setIdentityTransform();
+
 		Vec2 v = getPointOnConnection(0.5f);
-		v.setY(v.getY() - 0.01f);
+		v.setY(v.getY() - 0.01f);		
+		
+		//first.transform.getLocalToViewMatrix().transform(v);
 		
 		p.setTextColor(labelColor);
-		p.drawString(label, v, 0.04f, TextAlign.CENTER);		
+		p.drawString(label, v, 0.04f, TextAlign.CENTER);
+		
+		p.popTransform();
 	}
 	
 	public Element toXmlDom(Element parent_element)

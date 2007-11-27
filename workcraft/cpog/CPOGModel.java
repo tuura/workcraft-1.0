@@ -20,7 +20,8 @@ import workcraft.editor.EditableConnection;
 import workcraft.editor.EditorPane;
 import workcraft.graph.GraphModel.SimThread;
 
-public class CPOGModel extends ModelBase {
+public class CPOGModel extends ModelBase
+{
 	public static final UUID _modeluuid = UUID.fromString("25787b48-9c3d-11dc-8314-0800200c9a66");
 	public static final String _displayname = "Conditional Partial Order Graph";
 
