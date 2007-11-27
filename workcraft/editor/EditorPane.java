@@ -583,11 +583,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 
 		Element re = (Element)nl.item(0);
 
-
 		HashMap<String, String> renamed = new HashMap<String, String>();
-
-		server.python.set("_pasting", true);
-		server.python.set("_renamed", renamed);
 
 		nl = re.getElementsByTagName("editable");
 		for (int i=0; i<nl.getLength(); i++ ) {

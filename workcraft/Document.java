@@ -31,10 +31,13 @@ public interface Document extends PropertyEditable, XmlSerializable{
 	public void simReset();
 	public boolean simIsRunning();
 	
+	public boolean drawLabels();
+	public boolean drawIds();
+	
+	public Integer getNextId();
+	
 	public void validate() throws ModelValidationException;
 	public JPanel getSimulationControls();
-	public void bind(WorkCraftServer server);
-	public WorkCraftServer getServer();
 	
 	public void setRoot(GroupNode root);
 	public GroupNode getRoot();
@@ -42,7 +45,7 @@ public interface Document extends PropertyEditable, XmlSerializable{
 	public void loadStart();
 	public void loadEnd();
 	
-	public BasicEditable getComponentById(String id);
+	public BasicEditable getComponentById(Integer id);
 	
 	public EditorPane getEditor();
 	public void setEditor(EditorPane editor);

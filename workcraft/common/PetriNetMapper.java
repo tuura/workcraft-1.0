@@ -115,7 +115,12 @@ public class PetriNetMapper implements Tool {
 			try {
 				t = new EditablePetriTransition(target.getRoot());
 				if (def.suffix.length()>0)
-					t.setId(baseId + "_" + def.suffix+"_plus"+plusCount);
+					
+					t.setId(
+							 //baseId + "_" + 
+							// def.suffix+
+							// "_plus"+
+							// plusCount);
 				else
 					t.setId(baseId + "_plus"+plusCount);
 				

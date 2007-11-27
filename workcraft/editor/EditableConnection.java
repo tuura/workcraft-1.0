@@ -46,8 +46,8 @@ public abstract class EditableConnection implements XmlSerializable, Drawable, P
 		org.w3c.dom.Document d = parent_element.getOwnerDocument();
 		Element ee = d.createElement("editable-connection");
 		ee.setAttribute("selected", Boolean.toString(selected));
-		ee.setAttribute("first", first.getId());
-		ee.setAttribute("second", second.getId());
+		ee.setAttribute("first", first.getId().toString());
+		ee.setAttribute("second", second.getId().toString());
 		parent_element.appendChild(ee);
 		return ee;
 	}

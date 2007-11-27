@@ -18,7 +18,7 @@ public abstract class DocumentBase implements Document {
 	public static UUID _modeluuid;
 	public static String _displayname;
 	
-	Hashtable<String, BasicEditable> idMap = new Hashtable<String, BasicEditable>();
+	Hashtable<Integer, BasicEditable> idMap = new Hashtable<Integer, BasicEditable>();
 	
 	protected GroupNode root = new GroupNode(this, "_root");
 	protected WorkCraftServer server = null;
@@ -36,57 +36,27 @@ public abstract class DocumentBase implements Document {
 	protected boolean showHighlight = false;
 	protected Colorf highlightColor = new Colorf(1.0f, 0.0f, 0.0f, 1.0f);
 	
-	public void recBind(BasicEditable n, WorkCraftServer server) {
-		try {
-			server.registerObject(n, n.getId());
-		} catch (DuplicateIdException e) {
-			e.printStackTrace();
-		}
-		for (BasicEditable nn : n.getChildren()) {
-			recBind(nn, server);
-		}
-	}
-	
 	public void loadEnd() {
 		loading = false;
-		
 	}
 
 	public void loadStart() {
 		loading = true;
 	}
 	
-	
-	public void bind(WorkCraftServer server) {
-		this.server = server;
-		server.python.set("_document", this);
-		if (root!=null)
-			recBind(root, server);
-	}
-	
 	public void removeComponent(BasicEditable c) throws UnsupportedComponentException {
-		if (server!=null)
-			server.unregisterObject(c.getId());
 		idMap.remove(c.getId());
 		root.removeChild(c);
 	}
 	
-	public void addComponent(BasicEditable c, boolean auto_name) throws UnsupportedComponentException {
-		//System.err.println ("Adding component " + c.getId());
-		if (auto_name && loading)
-			try {
-				c.setId(c.getId()+"_ld");
-			} catch (DuplicateIdException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	public void addComponent(BasicEditable c) throws UnsupportedComponentException, DuplicateIdException {
 		idMap.put(c.getId(), c);
 		// root.addChild(c);
 		c.setOwnerDocument(this);
 		
 	}
 	
-	public void renameComponent (BasicEditable e, String newId) {
+	public void renameComponent (BasicEditable e, Integer newId) {
 		//System.err.println ("Renaming "+e.getId()+" to "+newId);
 		idMap.remove(e.getId());
 		idMap.put(newId, e);

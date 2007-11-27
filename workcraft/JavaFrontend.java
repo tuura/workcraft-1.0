@@ -707,10 +707,6 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			btnExecute.setPreferredSize(new Dimension(80, 20));
 			btnExecute.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					if (textCommandLine.getText() != ""){
-						server.execPython(textCommandLine.getText());
-						getEditorView().repaint();
-					}
 					textCommandLine.setText("");
 				}
 			});
@@ -828,8 +824,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			btnToggleIds.setSelected(true);
 			btnToggleIds.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					getEditorView().show_ids = !getEditorView().show_ids;
-					server.python.set("_draw_ids", getEditorView().show_ids);
+					
 					getEditorView().repaint();
 				}
 			});
@@ -849,8 +844,6 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			btnToggleLabels.setSelected(true);
 			btnToggleLabels.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					getEditorView().show_labels = !getEditorView().show_labels;
-					server.python.set("_draw_labels", getEditorView().show_labels);
 					getEditorView().repaint();
 
 				}
@@ -1477,10 +1470,6 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 				public void keyPressed(java.awt.event.KeyEvent e) {
 					if (e.getKeyCode() == KeyEvent.VK_ENTER)
 					{
-						if (textCommandLine.getText() != ""){
-							server.execPython(textCommandLine.getText());
-							getEditorView().repaint();
-						}
 						textCommandLine.setText("");
 					}
 				}
@@ -1751,12 +1740,6 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		this.setExtendedState(MAXIMIZED_VERT);
 		this.setExtendedState(MAXIMIZED_HORIZ);
 		this.setExtendedState(MAXIMIZED_BOTH);
-
-		server.python.set("_draw_labels", true);
-		server.python.set("_draw_ids", true);
-		server.python.set("_loading", false);
-		server.python.set("_pasting", false);
-		server.python.set("_main_frame", this);
 
 
 		loadPreferences();
@@ -2100,7 +2083,6 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 			doc = (Document)model_class.newInstance();
 			
-			server.python.set("_loading", true);
 			doc.loadStart();
 
 
@@ -2124,8 +2106,8 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			for (int i=0; i<nl.getLength(); i++ ) {
 				Element e = (Element)nl.item(i);
 
-				BasicEditable first = doc.getComponentById(e.getAttribute("first"));
-				BasicEditable second = doc.getComponentById(e.getAttribute("second"));
+				BasicEditable first = doc.getComponentById(Integer.parseInt(e.getAttribute("first")));
+				BasicEditable second = doc.getComponentById(Integer.parseInt(e.getAttribute("second")));
 
 				if (first == null) {
 					System.err.println ("Component \""+e.getAttribute("first")+"\" not found while creating connections!");
@@ -2143,7 +2125,6 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			}
 
 			doc.loadEnd();
-			server.python.set("_loading", false);
 
 			return doc;
 		} 	 catch (InstantiationException e2) {
