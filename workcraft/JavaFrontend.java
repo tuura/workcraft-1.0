@@ -1,6 +1,5 @@
 package workcraft;
 
-import javax.media.opengl.GLCapabilities;
 import javax.swing.SwingUtilities;
 
 import javax.swing.JPanel;
@@ -17,7 +16,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
@@ -40,7 +38,6 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import javax.swing.JToolBar;
 import javax.swing.JToggleButton;
 
 
@@ -77,7 +74,6 @@ import workcraft.editor.Editor;
 import workcraft.editor.EditorPane;
 import workcraft.editor.GroupNode;
 import workcraft.editor.ModelWrapper;
-import workcraft.editor.EditableNode;
 import workcraft.editor.PropertyEditable;
 import workcraft.editor.PropertyEditor;
 import workcraft.editor.PropertyEditorTable;
@@ -89,16 +85,12 @@ import workcraft.propertyeditor.EnumWrapper;
 import workcraft.util.Colorf;
 import workcraft.util.Mat4x4;
 import workcraft.util.Vec2;
-import workcraft.visual.Drawable;
 import workcraft.visual.SVGPainter;
 
-import javax.swing.JCheckBox;
 import javax.swing.BorderFactory;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.JSlider;
-import javax.swing.JLabel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -112,10 +104,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import javax.swing.WindowConstants;
-import javax.swing.JTable;
-import java.awt.Rectangle;
 import java.awt.BorderLayout;
 
 public class JavaFrontend extends JFrame implements Editor, PropertyEditor, TableModelListener, ClipboardOwner {
@@ -1402,13 +1390,19 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 	 * @return javax.swing.JSplitPane	
 	 */
 	private JSplitPane getSplitLeft() {
+		JDialog megaDialog = new JDialog(this, false);
+		megaDialog.setBounds(100, 100, 300, 350);
+		megaDialog.setTitle("Pikachu");
+		megaDialog.add(getScrollComponentTree());
+		megaDialog.setVisible(true);
+		
 		if (splitLeft == null) {
 			splitLeft = new JSplitPane();
 			splitLeft.setOrientation(JSplitPane.VERTICAL_SPLIT);
 			splitLeft.setPreferredSize(new Dimension(150, 0));
 			splitLeft.setResizeWeight(1.0D);
 			splitLeft.setDividerLocation(150);
-			splitLeft.setBottomComponent(getScrollComponentTree());
+//			splitLeft.setBottomComponent(getScrollComponentTree());
 			splitLeft.setTopComponent(getPanelEditorCommands());
 			splitLeft.setDividerSize(2);
 		}
