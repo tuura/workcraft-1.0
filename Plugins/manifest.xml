@@ -12,7 +12,7 @@
 	<class name="workcraft.petri.ReadArcsComplexityReduction"/>
 	<class name="workcraft.petri.PetriSemimodularityChecker"/>
 	<class name="workcraft.petri.PetriTransitionMultiplier"/>	
-		<class name="workcraft.petri.ExternalInterfaceApplicator"/>
+	<class name="workcraft.petri.ExternalInterfaceApplicator"/>
 <!--
   <class name="workcraft.unfolding.UnfoldingModel"/>
 	<class name="workcraft.unfolding.EditableCondition"/>

@@ -20,7 +20,7 @@ public abstract class DocumentBase implements Document {
 	
 	Hashtable<Integer, BasicEditable> idMap = new Hashtable<Integer, BasicEditable>();
 	
-	protected GroupNode root = new GroupNode(this, "_root");
+	protected GroupNode root = new GroupNode(this, getNextId());
 	protected WorkCraftServer server = null;
 	protected EditorPane editor = null;
 	

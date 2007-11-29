@@ -2089,7 +2089,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			nl = xmldoc.getElementsByTagName("editable");
 			Element re = (Element)nl.item(0);
 
-			GroupNode root = new GroupNode(doc, "_root");
+			GroupNode root = new GroupNode(doc, doc.getNextId());
 			doc.setRoot(root);
 
 			

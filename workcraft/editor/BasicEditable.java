@@ -20,7 +20,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
 
-import org.python.core.PyObject;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

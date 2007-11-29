@@ -18,8 +18,8 @@ public class DNFUtil {
 			for (DNFLiteral literal : clause.pos) {
 				if (resolved.containsKey(literal.id))
 					continue;
-				if (server.testObject(literal.id))
-					markedLiterals.add(literal);
+				//if (server.testObject(literal.id))
+					//markedLiterals.add(literal);
 				else {
 					markedClauses.add(clause);
 					clauseMarked = true;
@@ -37,11 +37,11 @@ public class DNFUtil {
 					if (resolved.containsKey(literal.id))
 						continue;
 
-					if (server.testObject(literal.id)) {
+				/*	if (server.testObject(literal.id)) {
 						markedClauses.add(clause);
 						clauseMarked = true;
 						break;
-					}
+					}*/
 					else 
 						markedLiterals.add(literal);
 				}

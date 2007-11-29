@@ -20,7 +20,7 @@ public class GroupNode extends BasicEditable {
 	 * @see workcraft.editor.EditableNode#getChildAt(workcraft.util.Vec2)
 	 */
 	
-	public GroupNode (Document owner, String id)  {
+	public GroupNode (Document owner, Integer id)  {
 		this.zOrder = 0;
 		this.parent = null;
 		this.id = id;

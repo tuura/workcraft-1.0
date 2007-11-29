@@ -583,7 +583,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 
 		Element re = (Element)nl.item(0);
 
-		HashMap<String, String> renamed = new HashMap<String, String>();
+		HashMap<Integer, Integer> renamed = new HashMap<Integer, Integer>();
 
 		nl = re.getElementsByTagName("editable");
 		for (int i=0; i<nl.getLength(); i++ ) {
@@ -597,12 +597,11 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 				try {
 					n.fromXmlDom(e);
 				} catch (DuplicateIdException e1) {
-					String old_id = e.getAttribute("id");
-					String new_id = new String(old_id);
+					Integer old_id = Integer.parseInt(e.getAttribute("id"));
+					Integer new_id = new Integer(old_id);
 					for (;;)
 						try {
-							new_id += "_copy";							
-							n.setId(new_id);
+							n.setId(document.getNextId());
 							break;
 						} catch (DuplicateIdException e2) 
 						{
@@ -635,16 +634,16 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		for (int i=0; i<nl.getLength(); i++ ) {
 			Element e = (Element)nl.item(i);
 
-			String first_id = e.getAttribute("first");
+			Integer first_id = Integer.parseInt(e.getAttribute("first"));
 			if (renamed.containsKey(first_id))
 				first_id = renamed.get(first_id);
 
-			String second_id = e.getAttribute("second");
+			Integer second_id = Integer.parseInt(e.getAttribute("second"));
 			if (renamed.containsKey(second_id))
 				second_id = renamed.get(second_id);
 
-			BasicEditable first = (BasicEditable)server.getObjectById(first_id);
-			BasicEditable second = (BasicEditable)server.getObjectById(second_id);
+			BasicEditable first = (BasicEditable)document.getComponentById(first_id);
+			BasicEditable second = (BasicEditable)document.getComponentById(second_id);
 
 			// System.out.println("Connecting "+first_id+" and "+second_id+" "+first+";"+second);
 
@@ -657,9 +656,6 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 				ex.printStackTrace();
 			}
 		}
-
-		server.python.set("_pasting", false);
-		server.python.getLocals().__delitem__("_renamed".intern());
 
 		updateGuidelines();
 		repaint();
@@ -1052,10 +1048,6 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		this.document = document;
 		document.setEditor(this);
 
-		server.unbind();
-		document.bind(server);
-
-
 		root = (GroupNode)document.getRoot();
 
 		LinkedList<BasicEditable> components = new LinkedList<BasicEditable>();
@@ -1070,8 +1062,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 
 	public void setServer(WorkCraftServer server) {
 		this.server = server;
-		server.python.set("_editor", this);
-		server.execPython("def _redraw():\n\t_editor.repaint()");
+
 	}
 
 	public void setPropertyEditor(PropertyEditor editor) {
