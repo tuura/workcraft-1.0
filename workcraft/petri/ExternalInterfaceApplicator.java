@@ -9,14 +9,11 @@ import java.util.UUID;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.python.core.Py;
-import org.python.core.PyObject;
-
 import workcraft.DocumentOpenException;
 import workcraft.Document;
 import workcraft.Tool;
 import workcraft.ToolType;
-import workcraft.WorkCraftServer;
+import workcraft.Framework;
 import workcraft.XwdFileFilter;
 import workcraft.editor.Editor;
 import workcraft.editor.EditorPane;
@@ -26,7 +23,7 @@ public class ExternalInterfaceApplicator implements Tool {
 	public static final String _modeluuid = "65f89260-641d-11db-bd13-0800200c9a66";
 	public static final String _displayname = "Apply environment interface";
 
-	public void run(Editor editor, WorkCraftServer server) {
+	public void run(Editor editor, Framework server) {
 		PetriModel doc = (PetriModel) (editor.getDocument());
 		String last_directory = editor.getLastDirectory();
 		
@@ -51,14 +48,14 @@ public class ExternalInterfaceApplicator implements Tool {
 		editor.refresh();
 	}
 
-	public void init(WorkCraftServer server) {
+	public void init(Framework server) {
 	}
 
 	public boolean isModelSupported(UUID modelUuid) {
 		return false;
 	}
 
-	public void deinit(WorkCraftServer server) {
+	public void deinit(Framework server) {
 		// TODO Auto-generated method stub
 		
 	}

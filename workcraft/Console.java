@@ -13,8 +13,9 @@ public class Console {
 	/**
 	 * @param args
 	 */
+	
 	public static void main(String[] args) {
-		WorkCraftServer server  = new WorkCraftServer();
+		Framework server  = new Framework();
 		server.loadPlugins("Plugins");
 		
 		BufferedReader in = new BufferedReader (new InputStreamReader (System.in));
@@ -27,15 +28,11 @@ public class Console {
 		Object wrappedServer = Context.javaToJS(server, scope);
 		ScriptableObject.putProperty(scope, "framework", wrappedServer);
 		scope.setAttributes("framework", ScriptableObject.READONLY);
-		scope.sealObject();
 		
 		Scriptable newScope = cx.newObject(scope);
 	    newScope.setPrototype(scope);
 	    newScope.setParentScope(null);
 		System.out.println("Workcraft revision 2 (Metastability strikes back)\n");
-		
-	
-		
 		
 		while (true) {
 			System.out.print ("js>");
@@ -44,7 +41,11 @@ public class Console {
 				Object result = cx.evaluateString(newScope, line, "stdin", 1, null);
 				System.out.println(result.toString());
 			}
-			catch (org.mozilla.javascript.EcmaError e) {
+			catch (org.mozilla.javascript.WrappedException e) {
+				
+				System.err.println(e.getWrappedException().getClass().getName()+" "+e.getWrappedException().getMessage());
+			}
+			catch (org.mozilla.javascript.RhinoException e) {
 				System.err.println(e.getMessage());
 			}
 			catch (IOException e) {

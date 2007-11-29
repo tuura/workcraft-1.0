@@ -16,7 +16,7 @@ import workcraft.InvalidConnectionException;
 import workcraft.Document;
 import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
-import workcraft.WorkCraftServer;
+import workcraft.Framework;
 import workcraft.common.DefaultConnection;
 import workcraft.common.DefaultSimControls;
 import workcraft.editor.BasicEditable;
@@ -40,7 +40,7 @@ public class PetriModel extends DocumentBase {
 
 	@Override
 	public Object saveState() {
-		Hashtable<String, Integer> marking = new Hashtable<String, Integer>();
+		Hashtable<Integer, Integer> marking = new Hashtable<Integer, Integer>();
 		for (EditablePetriPlace p : places)
 			marking.put(p.getId(), p.getTokens());
 		return marking;
@@ -97,7 +97,7 @@ public class PetriModel extends DocumentBase {
 				check(at);
 
 			if (panelSimControls.isTraceWriteEnabled())
-				panelSimControls.addTraceEvent(t.getId());
+				panelSimControls.addTraceEvent(t.getId().toString());
 
 			t.canWork = false;
 		}
@@ -164,7 +164,6 @@ public class PetriModel extends DocumentBase {
 						if (chosen!=null) {
 							fire(chosen);
 							allowNextStep = false;
-							server.execPython("_redraw()");
 						}
 					} else {
 						if (panelSimControls.isTraceReplayEnabled())
@@ -199,8 +198,6 @@ public class PetriModel extends DocumentBase {
 	LinkedList<EditablePetriTransition> transitions;
 	LinkedList<DefaultConnection> connections;
 
-
-
 	public PetriModel() {
 		places = new LinkedList<EditablePetriPlace>();
 		transitions = new LinkedList<EditablePetriTransition>();
@@ -220,33 +217,17 @@ public class PetriModel extends DocumentBase {
 			EditablePetriPlace p = (EditablePetriPlace)c;
 			places.add(p);
 			p.setOwnerDocument(this);
-			if (auto_name)
-				for (;;) {
-					try {
-						p.setId(getNextPlaceID());
-						break;
-					} catch (DuplicateIdException e) {
-					}
-				}
 		}
 		else if (c instanceof EditablePetriTransition) {
 			EditablePetriTransition t = (EditablePetriTransition)c;
 			transitions.add(t);
 			t.setOwnerDocument(this);
-			if (auto_name)
-				for (;;) {
-					try {
-						t.setId(getNextTransitionID());
-						break;
-					} catch (DuplicateIdException e) {
-					}
-				}			
 		} else throw new UnsupportedComponentException();
 
 		super.addComponent(c, auto_name);
 	}
 
-	public void removeComponent(BasicEditable c) throws UnsupportedComponentException {
+	public void removeComponent(BasicEditable c) {
 		super.removeComponent(c);
 		if (c instanceof EditablePetriPlace) {
 			EditablePetriPlace p = (EditablePetriPlace)c;
@@ -271,7 +252,7 @@ public class PetriModel extends DocumentBase {
 
 			transitions.remove(c);
 
-		} else throw new UnsupportedComponentException();
+		}
 
 		super.removeComponent(c);
 	}
@@ -283,13 +264,15 @@ public class PetriModel extends DocumentBase {
 
 		if (first instanceof EditablePetriTransition && second instanceof EditablePetriTransition) {
 			try {
-				EditablePetriPlace p = new EditablePetriPlace(getRoot());
+				EditablePetriPlace p = new EditablePetriPlace();
 
 				Vec2 v1 = first.transform.getTranslation2d();
 				v1.add(second.transform.getTranslation2d());
 				v1.mul(0.5f);
 				p.transform.translateAbs(v1);
 				p.setTiny(true);
+				
+				root.addChild(p);
 
 				DefaultConnection con = new DefaultConnection(first, p);
 				if (p.addIn(con) && ((EditablePetriTransition)first).addOut(con)) {
@@ -308,11 +291,12 @@ public class PetriModel extends DocumentBase {
 		} else if (first instanceof EditablePetriPlace && second instanceof EditablePetriPlace) {
 
 			try {
-				EditablePetriTransition t = new EditablePetriTransition(getRoot());
+				EditablePetriTransition t = new EditablePetriTransition();
 				Vec2 v1 = first.transform.getTranslation2d();
 				v1.add(second.transform.getTranslation2d());
 				v1.mul(0.5f);
-				t.transform.translateAbs(v1);				
+
+				root.addChild(t);
 
 				DefaultConnection con = new DefaultConnection(first, t);
 				if (t.addIn(con) && ((EditablePetriPlace)first).addOut(con)) {
@@ -426,7 +410,7 @@ public class PetriModel extends DocumentBase {
 		this.editor = editor;
 	}
 
-	public WorkCraftServer getServer() {
+	public Framework getServer() {
 		return server;
 	}
 
@@ -506,7 +490,7 @@ public class PetriModel extends DocumentBase {
 					if(T1.getOut().contains(P) && T2.getOut().contains(P))
 						continue;
 					
-					String name1 = T1.getId();
+					String name1 = T1.getId().toString();
 					
 					int k;
 					
@@ -516,7 +500,7 @@ public class PetriModel extends DocumentBase {
 						name1 = name1.substring(0,k+1);
 					}
 					
-					String name2 = T2.getId();
+					String name2 = T2.getId().toString();
 					
 					
 
@@ -568,7 +552,7 @@ public class PetriModel extends DocumentBase {
 
 	public void applyInterface(PetriModel iface)
 	{
-		Hashtable<EditablePetriPlace, EditablePetriPlace> p2p = new Hashtable<EditablePetriPlace, EditablePetriPlace>();
+	/*	Hashtable<EditablePetriPlace, EditablePetriPlace> p2p = new Hashtable<EditablePetriPlace, EditablePetriPlace>();
 		Hashtable<EditablePetriTransition, EditablePetriTransition> t2t = new Hashtable<EditablePetriTransition, EditablePetriTransition>();
 
 		// BoundingBox bb1 = root.getBoundingBoxInViewSpace();
@@ -576,7 +560,7 @@ public class PetriModel extends DocumentBase {
 
 		for(EditablePetriPlace p: iface.places)
 		{
-			String id = p.getId();
+			String id = p.getId().toString();
 
 			EditablePetriPlace new_p = null;
 			if (id.startsWith("iface_"))
@@ -713,6 +697,14 @@ public class PetriModel extends DocumentBase {
 				{
 				}
 			}
-		} 
+		}*/ 
+	}
+
+	public LinkedList<EditablePetriPlace> getPlaces() {
+		return places;
+	}
+
+	public LinkedList<EditablePetriTransition> getTransitions() {
+		return transitions;
 	} 
 } 	

@@ -9,12 +9,9 @@ import java.util.UUID;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.python.core.Py;
-import org.python.core.PyObject;
-
 import workcraft.Tool;
 import workcraft.ToolType;
-import workcraft.WorkCraftServer;
+import workcraft.Framework;
 import workcraft.editor.Editor;
 import workcraft.editor.EditorPane;
 import workcraft.petri.PetriModel;
@@ -31,7 +28,7 @@ public class PetriLabelSaver implements Tool {
 		out.close();
 	}
 
-	public void run(Editor editor, WorkCraftServer server) {
+	public void run(Editor editor, Framework server) {
 		PetriModel doc = (PetriModel) (editor.getDocument());
 		String last_directory = editor.getLastDirectory();
 
@@ -57,14 +54,14 @@ public class PetriLabelSaver implements Tool {
 		}
 	}
 
-	public void init(WorkCraftServer server) {
+	public void init(Framework server) {
 	}
 
 	public boolean isModelSupported(UUID modelUuid) {
 		return false;
 	}
 
-	public void deinit(WorkCraftServer server) {
+	public void deinit(Framework server) {
 		// TODO Auto-generated method stub
 		
 	}

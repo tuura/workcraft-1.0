@@ -13,7 +13,7 @@ import workcraft.editor.PropertyEditable;
 public interface Document extends PropertyEditable, XmlSerializable{
 	
 	public void addComponent(BasicEditable c, boolean auto_name) throws UnsupportedComponentException;
-	public void removeComponent(BasicEditable c) throws UnsupportedComponentException;
+	public void removeComponent(BasicEditable c);
 		
 	public EditableConnection createConnection(BasicEditable first, BasicEditable second) throws InvalidConnectionException;
 	public List<EditableConnection> getConnections();
@@ -31,19 +31,18 @@ public interface Document extends PropertyEditable, XmlSerializable{
 	public void simReset();
 	public boolean simIsRunning();
 	
-	public boolean drawLabels();
-	public boolean drawIds();
+	public Boolean getDrawLabels();
+	public Boolean getDrawIds();
+	public void setDrawLabels(Boolean drawLabels);
+	public void setDrawIds(Boolean drawIds);
 	
-	public Integer getNextId();
+	public int getNextId();
 	
 	public void validate() throws ModelValidationException;
 	public JPanel getSimulationControls();
 	
 	public void setRoot(GroupNode root);
 	public GroupNode getRoot();
-	
-	public void loadStart();
-	public void loadEnd();
 	
 	public BasicEditable getComponentById(Integer id);
 	

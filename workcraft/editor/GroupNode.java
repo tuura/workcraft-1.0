@@ -20,10 +20,10 @@ public class GroupNode extends BasicEditable {
 	 * @see workcraft.editor.EditableNode#getChildAt(workcraft.util.Vec2)
 	 */
 	
-	public GroupNode (Document owner, Integer id)  {
+	public GroupNode (Document owner)  {
 		this.zOrder = 0;
 		this.parent = null;
-		this.id = id;
+		this.id = owner.getNextId();
 		this.children = new TreeSet<BasicEditable>();
 		transform = new TransformNode(this);
 		boundingBox = new BoundingBox();
@@ -83,9 +83,10 @@ public class GroupNode extends BasicEditable {
 			String class_name = e.getAttribute("class");
 			try {
 				Class cls = ClassLoader.getSystemClassLoader().loadClass(class_name);
-				Constructor ctor = cls.getDeclaredConstructor(BasicEditable.class);
-				BasicEditable n = (BasicEditable)ctor.newInstance(this);
+				Constructor ctor = cls.getConstructor();
+				BasicEditable n = (BasicEditable)ctor.newInstance();
 				n.fromXmlDom(e);
+				
 				addChild(n);
 			} catch (ClassNotFoundException ex) {
 				System.err.println("Failed to load class: "+ex.getMessage());
@@ -102,6 +103,8 @@ public class GroupNode extends BasicEditable {
 			} catch (SecurityException ex) {
 				ex.printStackTrace();
 			} catch (NoSuchMethodException ex) {
+				ex.printStackTrace();
+			} catch (UnsupportedComponentException ex) {
 				ex.printStackTrace();
 			}
 		}

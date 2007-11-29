@@ -15,15 +15,12 @@ import java.util.UUID;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.python.core.Py;
-import org.python.core.PyObject;
-
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
 import workcraft.Tool;
 import workcraft.ToolType;
 import workcraft.UnsupportedComponentException;
-import workcraft.WorkCraftServer;
+import workcraft.Framework;
 import workcraft.editor.Editor;
 import workcraft.editor.EditorPane;
 
@@ -64,7 +61,7 @@ public class MCIImport implements Tool {
 	void putEvent (UnfoldingModel doc, Event e, float x, float y) throws UnsupportedComponentException, DuplicateIdException, InvalidConnectionException {
 		if (e.e == null) {
 			e.e = new EditableEvent(doc.getRoot());
-			e.e.setId("e"+Integer.toString(e.number));
+			e.e.setId(e.number);
 			
 			if (e.origTransId.startsWith("d."))
 				e.e.setLabel(e.origTransId.substring(2));
@@ -177,7 +174,7 @@ public class MCIImport implements Tool {
 		return null;
 	}
 
-	public void run(Editor editor, WorkCraftServer server) {
+	public void run(Editor editor, Framework server) {
 		String last_directory = editor.getLastDirectory();
 		JFileChooser fc = new JFileChooser();
 		fc.setFileFilter(new MCIFileFilter());
@@ -204,14 +201,14 @@ public class MCIImport implements Tool {
 		}
 	}
 
-	public void init(WorkCraftServer server) {
+	public void init(Framework server) {
 	}
 
 	public boolean isModelSupported(UUID modelUuid) {
 		return false;
 	}
 
-	public void deinit(WorkCraftServer server) {
+	public void deinit(Framework server) {
 		// TODO Auto-generated method stub
 
 	}

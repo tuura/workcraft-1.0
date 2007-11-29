@@ -2,11 +2,11 @@ package workcraft.logic;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import workcraft.WorkCraftServer;
+import workcraft.Framework;
 
 public class DNFUtil {
 
-	public static void resolveLiterals (DNF dnf, WorkCraftServer server, HashMap<String,Object> resolved) {
+	public static void resolveLiterals (DNF dnf, Framework server, HashMap<String,Object> resolved) {
 
 		LinkedList markedClauses = new LinkedList();
 		LinkedList markedLiterals = new LinkedList();

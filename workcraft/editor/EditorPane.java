@@ -20,7 +20,7 @@ import workcraft.InvalidConnectionException;
 import workcraft.DocumentBase;
 import workcraft.ModelManager;
 import workcraft.UnsupportedComponentException;
-import workcraft.WorkCraftServer;
+import workcraft.Framework;
 import workcraft.XmlSerializable;
 import workcraft.util.Colorf;
 import workcraft.util.Vec2;
@@ -95,7 +95,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 
 	private GroupNode root = null;
 	private BasicEditable new_node;
-	private WorkCraftServer server;
+	private Framework server;
 	private PropertyEditor property_editor = null;
 	private ComponentHotkey hotkey = new ComponentHotkey();
 
@@ -553,7 +553,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 	public void documentToXml(Element doc) {
 		org.w3c.dom.Document d = doc.getOwnerDocument();
 		Element de = d.createElement("document");
-		de.setAttribute("model-uuid", ModelManager.getModelUUID(document.getClass()).toString());
+		de.setAttribute("model-uuid", server.getModelUUID(document.getClass()).toString());
 		root.toXmlDom(de);
 		doc.appendChild(de);
 		for (EditableConnection con : document.getConnections()) {
@@ -898,12 +898,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		grid.highlightEnable(false);
 
 		if (new_node != null) {
-			try {
-				document.removeComponent(new_node);
-
-			} catch (UnsupportedComponentException ex) {
-				ex.printStackTrace();
-			}
+			document.removeComponent(new_node);
 			new_node = null;
 		}
 		repaint();		
@@ -984,7 +979,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		return document;
 	}
 
-	public WorkCraftServer getServer() {
+	public Framework getServer() {
 		return server;
 	}
 
@@ -1060,7 +1055,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		repaint();
 	}
 
-	public void setServer(WorkCraftServer server) {
+	public void setServer(Framework server) {
 		this.server = server;
 
 	}

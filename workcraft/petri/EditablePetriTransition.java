@@ -80,8 +80,8 @@ public class EditablePetriTransition extends BasicEditable {
 		return true;
 	}
 
-	public EditablePetriTransition(BasicEditable parent) throws UnsupportedComponentException {
-		super(parent);
+	public EditablePetriTransition() throws UnsupportedComponentException {
+		super();
 		boundingBox.setExtents(new Vec2(-0.05f, -0.05f), new Vec2(0.05f, 0.05f));
 		in = new LinkedList<EditablePetriPlace>();
 		out = new LinkedList<EditablePetriPlace>();
@@ -129,6 +129,7 @@ public class EditablePetriTransition extends BasicEditable {
 	public void fromXmlDom(Element element) throws DuplicateIdException {
 		NodeList nl = element.getElementsByTagName("transition");
 		Element te = (Element) nl.item(0);
+		// System.out.println ("Completed loading " + getClass().getName());
 		super.fromXmlDom(element);		
 	}
 

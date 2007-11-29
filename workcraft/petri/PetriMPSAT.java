@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 import workcraft.Tool;
 import workcraft.ToolType;
-import workcraft.WorkCraftServer;
+import workcraft.Framework;
 import workcraft.common.DefaultSimControls;
 import workcraft.common.ExternalProcess;
 import workcraft.common.MPSATOutputParser;
@@ -26,11 +26,11 @@ public class PetriMPSAT implements Tool {
 		return true;
 	}
 
-	public void init(WorkCraftServer server) {
+	public void init(Framework server) {
 		// TODO Auto-generated method stub
 	}
 	
-	public void run(Editor editor, WorkCraftServer server) {
+	public void run(Editor editor, Framework server) {
 		PetriDotGSaver saver = (PetriDotGSaver)server.getToolInstance(PetriDotGSaver.class);
 		if (saver == null) {
 			JOptionPane.showMessageDialog(null, "This tool requires Petri Net .g export tool, which was not loaded", "Error", JOptionPane.ERROR_MESSAGE);
@@ -42,8 +42,7 @@ public class PetriMPSAT implements Tool {
 			return;
 		}
 		
-		JFrame frame = (JFrame)server.python.get("_main_frame", JFrame.class);
-		ExternalProcess p = new ExternalProcess(frame);
+		ExternalProcess p = new ExternalProcess(null);
 		
 		try {
 			saver.writeFile("tmp/_net_.g", rd.reduce((PetriModel)editor.getDocument()));
@@ -66,7 +65,7 @@ public class PetriMPSAT implements Tool {
 		}		
 	}
 
-	public void deinit(WorkCraftServer server) {
+	public void deinit(Framework server) {
 		// TODO Auto-generated method stub
 		
 	}

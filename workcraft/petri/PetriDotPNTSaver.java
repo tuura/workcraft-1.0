@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 import workcraft.Tool;
 import workcraft.ToolType;
-import workcraft.WorkCraftServer;
+import workcraft.Framework;
 import workcraft.editor.Editor;
 import workcraft.editor.EditorPane;
 import workcraft.petri.PetriModel;
@@ -21,7 +21,7 @@ public class PetriDotPNTSaver implements Tool {
 	public static final String _modeluuid = "65f89260-641d-11db-bd13-0800200c9a66";
 	public static final String _displayname = "Net as .pnt";
 
-	public void run(Editor editor, WorkCraftServer server) {
+	public void run(Editor editor, Framework server) {
 		PetriModel doc = (PetriModel) (editor.getDocument());
 		
 		String last_directory = editor.getLastDirectory();
@@ -106,12 +106,12 @@ public class PetriDotPNTSaver implements Tool {
 		return false;
 	}
 
-	public void init(WorkCraftServer server) {
+	public void init(Framework server) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void deinit(WorkCraftServer server) {
+	public void deinit(Framework server) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -6,7 +6,7 @@ import workcraft.Document;
 
 import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
-import workcraft.WorkCraftServer;
+import workcraft.Framework;
 import workcraft.XmlSerializable;
 import workcraft.util.Colorf;
 import workcraft.util.Mat4x4;
@@ -70,7 +70,7 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		connections.remove(con);
 	}
 
-	protected BasicEditable() {
+	public BasicEditable() {
 		this.zOrder = 0;
 		this.parent = null;
 		this.children = new TreeSet<BasicEditable>();
@@ -119,13 +119,20 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		return (TreeSet<BasicEditable>) children.clone();
 	}
 
-	public void addChild (BasicEditable child) {
+	public void addChild (BasicEditable child) throws UnsupportedComponentException {
 		children.add(child);
 		child.setParent(this);
+
+		if (ownerDocument != null)
+			ownerDocument.addComponent(child, false);
 	}
 
 	public boolean removeChild(BasicEditable child) {
-		return children.remove(child);		
+		boolean isChild = children.remove(child);
+		if (isChild)
+			if (ownerDocument != null)
+				ownerDocument.removeComponent(child);
+		return isChild;
 	}
 
 	public BoundingBox getBoundingBox() {
@@ -213,6 +220,7 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 			}
 		}
 
+//		System.out.println ("Finished loading BasicEditable...");
 		setId (Integer.parseInt(id));
 		// selected = Boolean.parseBoolean(e.getAttribute("selected"));
 	}
@@ -305,7 +313,7 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		p.setTextColor(labelColor);
 
 
-		if (ownerDocument.drawLabels() && !label.equals("")) {
+		if (ownerDocument.getDrawLabels() && !label.equals("")) {
 			if (labelOrder == 0)
 				center = new Vec2(0.5f*(v1.getX()+v2.getX()), v1.getY()-0.05f );
 			else
@@ -313,7 +321,7 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 			p.drawString(label, center, 0.05f, TextAlign.CENTER);
 		}
 
-		if (ownerDocument.drawIds())
+		if (ownerDocument.getDrawIds())
 		{
 			if (labelOrder == 0)
 				center = new Vec2( (v1.getX()+v2.getX())*0.5f , v2.getY()+0.025f );

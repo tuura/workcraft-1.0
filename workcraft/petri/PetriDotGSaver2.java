@@ -12,12 +12,9 @@ import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.python.core.Py;
-import org.python.core.PyObject;
-
 import workcraft.Tool;
 import workcraft.ToolType;
-import workcraft.WorkCraftServer;
+import workcraft.Framework;
 import workcraft.editor.Editor;
 import workcraft.editor.EditorPane;
 import workcraft.petri.PetriModel;
@@ -41,7 +38,7 @@ public class PetriDotGSaver2 implements Tool {
 
 		for(EditablePetriTransition t: doc.transitions) {
 			Pattern p2 = Pattern.compile("(.+)_.+");
-			Matcher m2 = p2.matcher(t.getId());
+			Matcher m2 = p2.matcher(t.getId().toString());
 			if (m2.find())
 				set.add(m2.group(1));
 		}
@@ -56,10 +53,10 @@ public class PetriDotGSaver2 implements Tool {
 		for(EditablePetriTransition t: doc.transitions)
 		{
 			for(EditablePetriPlace prev: t.getIn()) {
-				out.println(prev.getId()+" "+replace(t.getId()));
+				out.println(prev.getId()+" "+replace(t.getId().toString()));
 			}
 			for(EditablePetriPlace next: t.getOut()) {
-				out.println(replace(t.getId())+" "+next.getId());
+				out.println(replace(t.getId().toString())+" "+next.getId().toString());
 			}
 		}					
 
@@ -71,12 +68,12 @@ public class PetriDotGSaver2 implements Tool {
 		out.close();
 	}
 
-	public void run(Editor editor, WorkCraftServer server) {
+	public void run(Editor editor, Framework server) {
 		PetriModel doc = (PetriModel) (editor.getDocument());
 		String last_directory = editor.getLastDirectory();
 
 		JFileChooser fc = new JFileChooser();
-		fc.setFileFilter(new GFileFilter());
+		fc.setFileFilter(new workcraft.common.GFileFilter());
 		if (last_directory != null)
 			fc.setCurrentDirectory(new File(last_directory));
 		if (fc.showSaveDialog(null)==JFileChooser.APPROVE_OPTION)
@@ -98,14 +95,14 @@ public class PetriDotGSaver2 implements Tool {
 		}
 	}
 
-	public void init(WorkCraftServer server) {
+	public void init(Framework server) {
 	}
 
 	public boolean isModelSupported(UUID modelUuid) {
 		return false;
 	}
 
-	public void deinit(WorkCraftServer server) {
+	public void deinit(Framework server) {
 		// TODO Auto-generated method stub
 
 	}

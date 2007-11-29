@@ -91,10 +91,35 @@ public class ModelManager {
 		return if_ok;
 	}
 
-	public static UUID getModelUUID(Class model_class) {
+	public  UUID getModelUUID(Class model_class) {
 		UUID uuid = null;
 		if (!isValidModelClass(model_class))
 			return null;
+		try
+		{
+			uuid = (UUID)model_class.getField("_modeluuid").get(null);
+		}
+		catch (NoSuchFieldException e) {
+			System.err.println("Model implementation class is improperly declared: static final String "+e.getMessage()+" is required");
+		}
+		catch (IllegalAccessException e) {
+			System.err.println("Model implementation class is improperly declared: static final String "+e.getMessage()+" is required");
+		}
+		return uuid;
+	}
+	
+	public  UUID getModelUUID(String modelClassName) {
+		UUID uuid = null;
+		Class model_class;
+		try {
+			model_class = ClassLoader.getSystemClassLoader().loadClass(modelClassName);
+		} catch (ClassNotFoundException e1) {
+			return null;
+		}
+		
+		if (!isValidModelClass(model_class))
+			return null;
+		
 		try
 		{
 			uuid = (UUID)model_class.getField("_modeluuid").get(null);
@@ -192,7 +217,7 @@ public class ModelManager {
 		}		
 	}
 
-	public void addTool (Class cls, WorkCraftServer server) {
+	public void addTool (Class cls, Framework server) {
 		try
 		{
 			String model_uuid = (String)cls.getField("_modeluuid").get(null);

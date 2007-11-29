@@ -1,4 +1,5 @@
 <manifest>
+
   <class name="workcraft.petri.PetriModel"/>
 	<class name="workcraft.petri.EditablePetriTransition"/>
 	<class name="workcraft.petri.EditablePetriPlace"/>
@@ -13,12 +14,12 @@
 	<class name="workcraft.petri.PetriSemimodularityChecker"/>
 	<class name="workcraft.petri.PetriTransitionMultiplier"/>	
 	<class name="workcraft.petri.ExternalInterfaceApplicator"/>
-<!--
+
   <class name="workcraft.unfolding.UnfoldingModel"/>
 	<class name="workcraft.unfolding.EditableCondition"/>
 	<class name="workcraft.unfolding.EditableEvent"/>
 	<class name="workcraft.unfolding.MCIImport"/>
-	
+	<!--
   <class name="workcraft.graph.GraphModel"/>
 	<class name="workcraft.graph.EditableGraphVertex"/>
 

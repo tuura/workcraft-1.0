@@ -94,9 +94,9 @@ public class EditablePetriPlace extends BasicEditable {
 	public int getTokens() {
 		return token_count;
 	}
-
-	public EditablePetriPlace(BasicEditable parent) throws UnsupportedComponentException {
-		super(parent);
+	
+	public EditablePetriPlace() throws UnsupportedComponentException {
+		super();
 		boundingBox.setExtents(new Vec2(-0.05f, -0.05f), new Vec2(0.05f, 0.05f));
 		token_count = 0;
 		out = new LinkedList<EditablePetriTransition>();

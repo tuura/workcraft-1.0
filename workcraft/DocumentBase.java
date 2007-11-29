@@ -14,16 +14,61 @@ import workcraft.editor.GroupNode;
 import workcraft.util.Colorf;
 
 public abstract class DocumentBase implements Document {
+	
+	public void addComponent(BasicEditable c, boolean auto_name) throws UnsupportedComponentException {
+		c.setOwnerDocument(this);
+		if (auto_name)
+			for (;;) {
+				try {
+					c.setId(getNextId());
+					break;
+				} catch (DuplicateIdException e) {
+				}
+			}
+		else
+			idMap.put(c.getId(), c);
+		
+		for (BasicEditable n : c.getChildren())
+			addComponent (n, auto_name);
+	}
+
+
+	public Boolean getDrawIds() {
+		return drawIds;
+	}
+
+	public void setDrawIds(Boolean drawIds) {
+		this.drawIds =drawIds; 
+	}
+
+	public void setDrawLabels(Boolean drawLabels) {
+		this.drawLabels = drawLabels;
+	}
+
+	
+	public Boolean getDrawLabels() {
+		return drawLabels;
+	}
+
+	public int getNextId() {
+		while (idMap.get(idCounter) != null)
+			idCounter++;
+		return idCounter;
+	}
 
 	public static UUID _modeluuid;
 	public static String _displayname;
 	
 	Hashtable<Integer, BasicEditable> idMap = new Hashtable<Integer, BasicEditable>();
+	protected int idCounter = 0;
 	
-	protected GroupNode root = new GroupNode(this, getNextId());
-	protected WorkCraftServer server = null;
+	protected GroupNode root = null; //new GroupNode(this);
+	protected Framework server = null;
 	protected EditorPane editor = null;
 	
+	
+	protected Boolean drawLabels = true;
+	protected Boolean drawIds = true;
 	protected Boolean loading = false;
 	protected Boolean showGrid = true;
 	protected Boolean showLabels = true;
@@ -44,9 +89,11 @@ public abstract class DocumentBase implements Document {
 		loading = true;
 	}
 	
-	public void removeComponent(BasicEditable c) throws UnsupportedComponentException {
+	public void removeComponent(BasicEditable c) {
 		idMap.remove(c.getId());
-		root.removeChild(c);
+		
+		for (BasicEditable n : c.getChildren())
+			removeComponent (n);
 	}
 	
 	public void addComponent(BasicEditable c) throws UnsupportedComponentException, DuplicateIdException {
@@ -57,7 +104,7 @@ public abstract class DocumentBase implements Document {
 	}
 	
 	public void renameComponent (BasicEditable e, Integer newId) {
-		//System.err.println ("Renaming "+e.getId()+" to "+newId);
+		System.err.println ("Renaming "+e.getId()+" to "+newId);
 		idMap.remove(e.getId());
 		idMap.put(newId, e);
 	}
@@ -238,7 +285,7 @@ public abstract class DocumentBase implements Document {
 		this.root = root;
 	}
 	
-	public BasicEditable getComponentById(String id) {
+	public BasicEditable getComponentById(Integer id) {
 		return idMap.get(id);
 	}
 

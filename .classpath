@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="workcraft/ADC/|workcraft/abstractsdfs/|workcraft/antitoken/|workcraft/chetri/|workcraft/common/PetriNetMapper.java|workcraft/common/SchematicNetDeadlockCheck.java|workcraft/common/SchematicNetSemimodularityCheck.java|workcraft/counterflow/|workcraft/gate/|workcraft/graph/|workcraft/mg/|workcraft/petri/|workcraft/sdfs/|workcraft/spreadtoken/|workcraft/unfolding/|workcraft/JavaFrontend.java" kind="src" path="">
+	<classpathentry excluding="workcraft/ADC/|workcraft/abstractsdfs/|workcraft/antitoken/|workcraft/chetri/|workcraft/common/PetriNetMapper.java|workcraft/common/SchematicNetDeadlockCheck.java|workcraft/common/SchematicNetSemimodularityCheck.java|workcraft/counterflow/|workcraft/gate/|workcraft/graph/|workcraft/mg/|workcraft/sdfs/|workcraft/spreadtoken/|workcraft/JavaFrontend.java" kind="src" path="">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Workcraft/dll"/>
 		</attributes>

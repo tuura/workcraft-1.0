@@ -11,7 +11,7 @@ import workcraft.InvalidConnectionException;
 import workcraft.Document;
 import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
-import workcraft.WorkCraftServer;
+import workcraft.Framework;
 import workcraft.common.DefaultConnection;
 import workcraft.common.DefaultSimControls;
 import workcraft.editor.BasicEditable;
@@ -28,7 +28,6 @@ public class UnfoldingModel extends DocumentBase {
 				try {
 					sleep( (long)(100 / panelSimControls.getSpeedFactor()));
 					simStep();
-					server.execPython("_redraw()");
 				} catch (InterruptedException e) { break; }
 			}
 		}
@@ -71,27 +70,11 @@ public class UnfoldingModel extends DocumentBase {
 			EditableCondition p = (EditableCondition)c;
 			conditions.add(p);
 			p.setOwnerDocument(this);
-			if (auto_name)
-				for (;;) {
-					try {
-						p.setId(getNextPlaceID());
-						break;
-					} catch (DuplicateIdException e) {
-					}
-				}
 		}
 		else if (c instanceof EditableEvent) {
 			EditableEvent t = (EditableEvent)c;
 			events.add(t);
 			t.setOwnerDocument(this);
-			if (auto_name)
-				for (;;) {
-					try {
-						t.setId(getNextTransitionID());
-						break;
-					} catch (DuplicateIdException e) {
-					}
-				}			
 		} else throw new UnsupportedComponentException();
 		
 		super.addComponent(c, auto_name);
@@ -307,7 +290,7 @@ public class UnfoldingModel extends DocumentBase {
 		this.editor = editor;
 	}
 
-	public WorkCraftServer getServer() {
+	public Framework getServer() {
 		return server;
 	}
 
