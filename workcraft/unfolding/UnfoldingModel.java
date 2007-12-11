@@ -80,7 +80,7 @@ public class UnfoldingModel extends DocumentBase {
 		super.addComponent(c, auto_name);
 	}
 
-	public void removeComponent(BasicEditable c) throws UnsupportedComponentException {
+	public void removeComponent(BasicEditable c) {
 		super.removeComponent(c);
 		if (c instanceof EditableCondition) {
 			EditableCondition p = (EditableCondition)c;
@@ -105,7 +105,7 @@ public class UnfoldingModel extends DocumentBase {
 
 			events.remove(c);
 
-		} else throw new UnsupportedComponentException();	
+		};	
 		
 		super.removeComponent(c);
 	}

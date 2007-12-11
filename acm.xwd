@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workcraft>
+<options tab="2"/>
+<editor>
+<options grid="true" ids="true" labels="true" snap="true"/>
+<viewstate s="0.75131476" tx="-0.6828376" ty="-0.37136304"/>
+</editor>
+<document model-uuid="65f89260-641d-11db-bd13-0800200c9a66">
+<editable class="workcraft.editor.GroupNode" id="0" label="" selected="false">
+<transform>
+<vec3 x="0.0" y="0.0" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<editable class="workcraft.petri.EditablePetriTransition" id="1" label="" selected="false">
+<transform>
+<vec3 x="-0.39999998" y="0.100000024" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="2" label="" selected="false">
+<transform>
+<vec3 x="-1.6" y="-0.7" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="0"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="3" label="" selected="false">
+<transform>
+<vec3 x="-0.2" y="-0.1" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="4" label="" selected="false">
+<transform>
+<vec3 x="1.7" y="0.1" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="1"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="5" label="" selected="false">
+<transform>
+<vec3 x="1.3000001" y="-0.5" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="0"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="6" label="move to s2" selected="false">
+<transform>
+<vec3 x="-2.1000001" y="-1.0" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="7" label="read s1" selected="false">
+<transform>
+<vec3 x="-2.1" y="-0.7" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="8" label="" selected="false">
+<transform>
+<vec3 x="1.1" y="0.3" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="9" label="" selected="false">
+<transform>
+<vec3 x="-1.8000001" y="0.3" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="10" label="" selected="false">
+<transform>
+<vec3 x="-2.5" y="-0.5" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="11" label="" selected="false">
+<transform>
+<vec3 x="1.0" y="-0.3" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="1"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="12" label="" selected="false">
+<transform>
+<vec3 x="0.100000024" y="-0.7" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="0"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="13" label="" selected="false">
+<transform>
+<vec3 x="1.1920929E-7" y="-0.3" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="1"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="14" label="" selected="false">
+<transform>
+<vec3 x="-1.9999999" y="-0.100000024" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="15" label="" selected="false">
+<transform>
+<vec3 x="-1.9" y="-0.5" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="0"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="16" label="move to s2" selected="false">
+<transform>
+<vec3 x="1.1" y="-1.0" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="17" label="move to s2" selected="false">
+<transform>
+<vec3 x="-0.39999998" y="-1.0" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="18" label="" selected="false">
+<transform>
+<vec3 x="1.5" y="-0.3" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="1"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="19" label="read s1" selected="false">
+<transform>
+<vec3 x="1.1" y="-0.7" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="20" label="" selected="false">
+<transform>
+<vec3 x="-0.49999988" y="-0.3" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="1"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="21" label="" selected="false">
+<transform>
+<vec3 x="-1.6999999" y="-0.3" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="1"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="22" label="" selected="false">
+<transform>
+<vec3 x="0.3" y="0.1" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="0"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="23" label="" selected="false">
+<transform>
+<vec3 x="-1.8000001" y="0.5" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="24" label="" selected="false">
+<transform>
+<vec3 x="-0.19999987" y="-0.5" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="0"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="25" label="" selected="false">
+<transform>
+<vec3 x="-2.1999998" y="-0.3" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="1"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="26" label="" selected="false">
+<transform>
+<vec3 x="1.6" y="-0.7" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="1"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="27" label="" selected="false">
+<transform>
+<vec3 x="-2.2999997" y="-0.6" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="0"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="28" label="" selected="false">
+<transform>
+<vec3 x="-0.39999998" y="0.3" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="29" label="" selected="false">
+<transform>
+<vec3 x="1.1" y="0.1" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="30" label="" selected="false">
+<transform>
+<vec3 x="0.90000004" y="-0.6" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="0"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="31" label="" selected="false">
+<transform>
+<vec3 x="1.2" y="-0.1" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="32" label="" selected="false">
+<transform>
+<vec3 x="-0.79999983" y="-0.5" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="33" label="" selected="false">
+<transform>
+<vec3 x="0.7" y="-0.5" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="34" label="" selected="false">
+<transform>
+<vec3 x="-1.4000001" y="0.100000024" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="0"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriPlace" id="35" label="" selected="false">
+<transform>
+<vec3 x="-0.5999998" y="-0.6" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<place tokens="0"/>
+</editable>
+<editable class="workcraft.petri.EditablePetriTransition" id="36" label="read s1" selected="false">
+<transform>
+<vec3 x="-0.39999998" y="-0.7" z="0.0"/>
+<vec3 x="1.0" y="1.0" z="1.0"/>
+</transform>
+<transition/>
+</editable>
+</editable>
+<editable-connection first="5" second="19" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="26" second="19" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="11" second="19" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="19" second="30" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="33" second="11" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="33" second="18" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="30" second="33" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="4" second="31" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="18" second="31" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="11" second="31" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="31" second="5" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="18" second="16" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="26" second="16" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="33" second="26" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="31" second="11" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="16" second="18" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="5" second="29" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="29" second="5" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="30" second="8" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="8" second="30" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="4" second="29" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="4" second="8" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="31" second="4" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="24" second="36" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="12" second="36" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="20" second="36" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="36" second="35" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="32" second="20" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="32" second="13" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="35" second="32" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="22" second="3" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="13" second="3" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="20" second="3" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="3" second="24" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="13" second="17" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="12" second="17" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="32" second="12" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="3" second="20" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="17" second="13" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="24" second="1" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="1" second="24" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="35" second="28" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="28" second="35" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="22" second="1" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="22" second="28" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="3" second="22" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="16" second="12" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="29" second="22" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="8" second="22" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="15" second="7" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="2" second="7" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="25" second="7" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="7" second="27" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="10" second="25" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="10" second="21" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="27" second="10" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="34" second="14" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="21" second="14" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="25" second="14" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="14" second="15" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="21" second="6" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="2" second="6" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="10" second="2" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="14" second="25" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="6" second="21" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="15" second="9" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="9" second="15" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="27" second="23" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="23" second="27" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="34" second="9" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="34" second="23" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="14" second="34" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="17" second="2" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="1" second="34" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="28" second="34" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="6" second="26" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="9" second="4" selected="false">
+<connection/>
+</editable-connection>
+<editable-connection first="23" second="4" selected="false">
+<connection/>
+</editable-connection>
+</document>
+</workcraft>

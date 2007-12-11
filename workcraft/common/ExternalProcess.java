@@ -1,17 +1,5 @@
 package workcraft.common;
 
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.JProgressBar;
-import javax.swing.JTextArea;
-import javax.swing.JButton;
-
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -20,31 +8,27 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
-import javax.swing.JTabbedPane;
-import javax.swing.WindowConstants;
-import javax.swing.JDialog;
-import javax.swing.JScrollPane;
-
 import workcraft.util.Point;
 
-public class ExternalProcess extends JDialog{
+public class ExternalProcess {
+	protected ExternalProcessState state;
 
 	public class WaitThread extends Thread {
 		public void run() {
 			try {
 				process.waitFor();
 			} catch (InterruptedException e) {
-				canceled = true;
 				process.destroy();
+				state = ExternalProcessState.INTERRUPTED; 
 			}
 			finish();
 		}
 	}
-
+/*
 	public class StreamReadThread extends Thread {
 		private InputStream input;
-		private JTextArea output;
-		public StreamReadThread(InputStream input, JTextArea output) {
+		private String output;
+		public StreamReadThread(InputStream input, String output) {
 			super();
 			this.input = input;
 			this.output = output;
@@ -55,6 +39,7 @@ public class ExternalProcess extends JDialog{
 			boolean eof = false;
 			try {
 				while(! (canceled || eof)) {
+					input.available()
 					
 					int i = input.read(buf, 0, 1024);
 					if (i<0) {
@@ -71,38 +56,27 @@ public class ExternalProcess extends JDialog{
 			} catch (InterruptedException e) {
 			}
 		}
-	}
+	}*/
 
 
-	private static final long serialVersionUID = 1L;
-	private JPanel jContentPane = null;
-	private JTabbedPane jTabbedPane = null;
-	private JButton btnCancel = null;
-
-	private boolean canceled = false;
-	private boolean keepWindow;
+	
 	private int returnCode = -1;
 	private Process process = null;
 	private WaitThread waitThread = null;
-	private StreamReadThread stdoutThread = null;
-	private StreamReadThread stderrThread = null;
-	private JScrollPane jScrollPane = null;
-	private JTextArea txtStdout = null;
-	private JScrollPane jScrollPane1 = null;
-	private JTextArea txtStderr = null;
+	
 
 
-	public boolean wasCanceled() {
-		return canceled;		
+	public ExternalProcessState getState() {
+		return state;
 	}
-
+	
 	public int getReturnCode() {
 		return returnCode;
 	}
 
-	public String getOutput() {
+	/*public String getOutput() {
 		return txtStdout.getText();
-	}
+	}*/
 
 	public synchronized void finish() {
 		if (!canceled)
