@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import workcraft.Document;
 import workcraft.UnsupportedComponentException;
+import workcraft.common.DefaultConnection;
+import workcraft.common.DefaultConnection.Type;
 import workcraft.editor.BasicEditable;
 import workcraft.util.Colorf;
 import workcraft.util.Vec2;
@@ -45,9 +47,43 @@ public class Output extends BasicGate {
 		max_outputs = 0;
 		initContacts();
 	}
+
+	public void acceptTransform() {
+		super.acceptTransform();
+		doAutoRotate();
+	}
+
+	private void doAutoRotate() {
+		// set rotation depending on incoming connection
+		DefaultConnection con = null;
+		if (in.size()>0&&in.getFirst().connections.size()>0)
+			con = (DefaultConnection)(in.getFirst().connections.getFirst());
+		
+		// determine the connection end
+		if (con!=null) {
+			
+			Vec2 iv = con.getIncomingVector();
+			
+			float xx = iv.getX();
+			float yy = iv.getY();
+			
+			if (xx>yy) {
+				if (xx>-yy)
+					setRotate(0);
+				else
+					setRotate(3);
+			} else {
+				if (xx>-yy)
+					setRotate(1);
+				else
+					setRotate(2);
+			}
+		}
+	}
 	
 	public void doDraw(Painter p) {
 		super.doDraw(p);
+		
 		p.setTransform(transform.getLocalToViewMatrix());
 		p.setShapeMode(ShapeMode.FILL_AND_OUTLINE);
 		p.setLineMode(LineMode.SOLID);

@@ -265,8 +265,10 @@ public abstract class BasicGate extends BasicEditable {
 	}
 
 	public void setRotate(Integer rotate) {
-		this.rotate = rotate;
-		this.transform.rotateZ(rotate*90);
+		if (this.rotate != rotate) {
+			this.rotate = rotate;
+			this.transform.rotateZ(rotate*90);
+		}
 	}
 
 	public Integer getRadius() {
