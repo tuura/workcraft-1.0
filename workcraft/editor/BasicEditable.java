@@ -14,7 +14,6 @@ import workcraft.util.Vec2;
 import workcraft.visual.Painter;
 import workcraft.visual.TextAlign;
 
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,12 +37,17 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 	protected Colorf labelColor = new Colorf (0.0f, 0.0f, 0.0f, 1.0f);
 	public boolean highlight = false;
 	
+	
 	Hashtable<String, String> customProperties = new Hashtable<String, String>();
 	
 	private static int labelOrder = 0;
 
 	public LinkedList<EditableConnection> connections = new LinkedList<EditableConnection>();
 	protected int rotate = 0;
+	
+	protected float getLabelYOffset() {
+		return -0.05f;
+	}
 
 	public void setId(String id) throws DuplicateIdException {
 		if (this.id.equals(id))
@@ -314,11 +318,11 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		superbb.addPoint(ur);
 		superbb.addPoint(lr);
 		
-				
+		
 		Vec2 v1 = superbb.getLowerLeft();
 		Vec2 v2 = superbb.getUpperRight();
 		Vec2 center;
-
+		
 		p.setTextColor(labelColor);
 		
 		PyObject po;
@@ -330,9 +334,10 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		if ((server == null) || (po != null && po.__nonzero__()))
 			if (!label.equals("")) {
 				if (labelOrder == 0)
-					center = new Vec2(0.5f*(v1.getX()+v2.getX()), v1.getY()-0.05f );
+					center = new Vec2(0.5f*(v1.getX()+v2.getX()), v1.getY() + getLabelYOffset() );
 				else
 					center = new Vec2( (v1.getX()+v2.getX())*0.5f , v2.getY()+0.025f );
+				
 		//		transform.getLocalToViewMatrix().transform(center);
 				p.drawString(label, center, 0.05f, TextAlign.CENTER);
 			}

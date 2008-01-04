@@ -8,12 +8,14 @@ import java.util.UUID;
 import javax.media.opengl.GL;
 
 
+import org.python.core.PyObject;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
 import workcraft.Document;
 import workcraft.UnsupportedComponentException;
+import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;
 import workcraft.editor.BasicEditable;
 import workcraft.editor.EditableConnection;
@@ -31,7 +33,7 @@ import workcraft.visual.VertexFormatException;
 public class EditablePetriTransition extends BasicEditable {
 	public static final UUID _modeluuid = UUID.fromString("65f89260-641d-11db-bd13-0800200c9a66");
 	public static final String _displayname = "Transition";
-	private static VertexBuffer geometry = null;
+	//private static VertexBuffer geometry = null;
 
 	private LinkedList<EditablePetriPlace> out;
 	private LinkedList<EditablePetriPlace> in;
@@ -46,6 +48,9 @@ public class EditablePetriTransition extends BasicEditable {
 	private static Colorf selectedTransitionOutlineColor = new Colorf(0.5f, 0.0f, 0.0f, 1.0f);
 	private static Colorf userTransitionOutlineColor = new Colorf(0.0f, 0.6f, 0.0f, 1.0f);
 	
+	protected float getLabelYOffset() {
+		return +0.03f;
+	}
 
 	public LinkedList<EditablePetriPlace> getOut() {
 		return (LinkedList<EditablePetriPlace>)out.clone();
@@ -99,7 +104,17 @@ public class EditablePetriTransition extends BasicEditable {
 			else
 				p.setFillColor(transitionOutlineColor);
 		
-		p.drawRect(-0.05f, 0.05f, 0.05f, -0.05f);		
+
+		WorkCraftServer server = ownerDocument.getServer();
+		PyObject po;
+		if (server != null) 
+			po = server.python.get("_draw_labels");
+		else
+			po = null;
+		
+		if (getLabelOrder()!=0||getLabel().equals("")||po==null||!po.__nonzero__())
+		// draw the rectangle only if there is no text in it
+			p.drawRect(-0.05f, 0.05f, 0.05f, -0.05f);
 		
 		if (selected)
 			p.setFillColor(selectedTransitionColor);
