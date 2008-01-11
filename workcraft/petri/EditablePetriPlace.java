@@ -1,34 +1,23 @@
 package workcraft.petri;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
-
-import javax.media.opengl.GL;
 
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.Document;
 import workcraft.UnsupportedComponentException;
 import workcraft.common.DefaultConnection;
 import workcraft.editor.BasicEditable;
-import workcraft.editor.EditableConnection;
 import workcraft.util.Colorf;
 import workcraft.util.Mat4x4;
 import workcraft.util.Vec2;
-import workcraft.visual.JOGLPainter;
 import workcraft.visual.Painter;
 import workcraft.visual.ShapeMode;
 import workcraft.visual.TextAlign;
-import workcraft.visual.VertexBuffer;
-import workcraft.visual.GeometryUtil;
-import workcraft.visual.VertexFormat;
-import workcraft.visual.PrimitiveType;
-import workcraft.visual.VertexFormatException;
 
 public class EditablePetriPlace extends BasicEditable {
 	public static final UUID _modeluuid = UUID.fromString("65f89260-641d-11db-bd13-0800200c9a66");
@@ -40,6 +29,7 @@ public class EditablePetriPlace extends BasicEditable {
 	private static Colorf selectedPlaceOutlineColor = new Colorf(0.5f, 0.0f, 0.0f, 1.0f);
 	private static Colorf tokenColor = new Colorf(0.0f, 0.0f, 0.0f, 1.0f);
 
+	
 	private int token_count;
 	private Boolean tiny = false;
 
@@ -64,9 +54,15 @@ public class EditablePetriPlace extends BasicEditable {
 	
 	@Override
 	public boolean hits(Vec2 pointInViewSpace) {
+		// don't draw incoming arrow when it is
+		// the shorthand notation and exactly one input and one output 
+		if (getIsDrawPlaceCircle())
+			return true;
+		/////////
+		
 		Vec2 v = new Vec2(pointInViewSpace);
 		transform.getViewToLocalMatrix().transform(v);
-		return v.length() < 0.05f;
+		return v.length() < 0.05f*(tiny?0.4:1);
 	}
 
 	public boolean addIn(DefaultConnection con) {
@@ -103,28 +99,44 @@ public class EditablePetriPlace extends BasicEditable {
 		in = new LinkedList<EditablePetriTransition>();
 	}
 	
+	private boolean getIsDrawPlaceCircle() {
+		return getIsShorthandNotation() && 
+			in!=null && in.size()==1 && 
+			out!=null && out.size()==1; 
+	}
+	
 	public void doDraw(Painter p) {
+
 		p.setTransform(transform.getLocalToViewMatrix());
 		p.setShapeMode(ShapeMode.FILL);
-
-		if (tiny)
+		
+		if (tiny ) {
 			p.scale(0.4f, 0.4f);
+		}
 		
 		if (selected)
 			p.setFillColor(selectedPlaceOutlineColor);
 		else
 			p.setFillColor(placeOutlineColor);
-
-		p.drawCircle(0.05f, null);
-
-		if (selected)
-			p.setFillColor(selectedPlaceColor);
-		else
-			p.setFillColor(placeColor);
 		
-
 		
-		p.drawCircle(0.04f, null);
+		if ( getIsDrawPlaceCircle() ) {
+			// shorthand notation does not draw places with exactly one input and one output
+			
+			if (selected) {
+				p.setFillColor(selectedPlaceColor);
+				p.drawCircle(0.04f, null);
+			}
+		} else {
+			
+			p.drawCircle(0.05f, null);
+			
+			if (selected)
+				p.setFillColor(selectedPlaceColor);
+			else
+				p.setFillColor(placeColor);
+			p.drawCircle(0.04f, null);
+		}
 		
 		p.setFillColor(tokenColor);
 
@@ -167,7 +179,6 @@ public class EditablePetriPlace extends BasicEditable {
 		// TODO Auto-generated method stub
 
 	}
-
 	
 	public List<String> getEditableProperties() {
 		List<String> list = super.getEditableProperties();
@@ -176,6 +187,7 @@ public class EditablePetriPlace extends BasicEditable {
 		list.add("color,^ Color,getPlaceColor,setPlaceColor");
 		list.add("color,^ Token color,getTokenColor,setTokenColor");
 		list.add("color,^ Outline color,getPlaceOutlineColor,setPlaceOutlineColor");
+		
 		return list;
 	}
 
@@ -230,5 +242,6 @@ public class EditablePetriPlace extends BasicEditable {
 	public void setTiny(Boolean tiny) {
 		this.tiny = tiny;
 	}
+
 
 }

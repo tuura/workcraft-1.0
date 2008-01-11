@@ -11,16 +11,14 @@ import java.util.UUID;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import workcraft.DocumentBase;
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
-import workcraft.Document;
-import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;
 import workcraft.common.DefaultSimControls;
 import workcraft.editor.BasicEditable;
-import workcraft.editor.BoundingBox;
 import workcraft.editor.EditableConnection;
 import workcraft.editor.EditorPane;
 import workcraft.util.Vec2;
@@ -198,8 +196,7 @@ public class PetriModel extends DocumentBase {
 	LinkedList<EditablePetriPlace> places;
 	LinkedList<EditablePetriTransition> transitions;
 	LinkedList<DefaultConnection> connections;
-
-
+	private Boolean shorthandNotation = false;
 
 	public PetriModel() {
 		places = new LinkedList<EditablePetriPlace>();
@@ -411,6 +408,14 @@ public class PetriModel extends DocumentBase {
 	public void validate() {
 	}
 
+	public List<String>getEditableProperties()  {
+		
+		List<String> list = super.getEditableProperties(); 
+		list.add("bool,Shorthand notation,getShorthandNotation,setShorthandNotation");
+		
+		return list;
+	}
+	
 	public JPanel getSimulationControls() {
 		if (panelSimControls == null) {
 			panelSimControls = new DefaultSimControls(_modeluuid.toString());
@@ -714,5 +719,13 @@ public class PetriModel extends DocumentBase {
 				}
 			}
 		} 
-	} 
-} 	
+	}
+	
+	public Boolean getShorthandNotation() {
+		return shorthandNotation;
+	}
+	
+	public void setShorthandNotation(Boolean shorth) {
+		this.shorthandNotation = shorth;
+	}
+	} 	
