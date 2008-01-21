@@ -25,10 +25,14 @@ public class CPOGModel extends ModelBase
 	public static final UUID _modeluuid = UUID.fromString("25787b48-9c3d-11dc-8314-0800200c9a66");
 	public static final String _displayname = "Conditional Partial Order Graph";
 
-	public class SimThread extends Thread {
-		public void run() {
-			while (true) {
-				try {
+	public class SimThread extends Thread
+	{
+		public void run()
+		{
+			while (true)
+			{
+				try
+				{
 					sleep( (long)(100 / panelSimControls.getSpeedFactor()));
 					simStep();
 					server.execPython("_redraw()");

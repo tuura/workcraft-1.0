@@ -16,11 +16,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.jem.beaninfo.BeanInfoNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>benchmarks/gate/david cell.xwd</name>
-			<type>1</type>
-			<location>D:/cheetah/.src/.projects/Workcraft/benchmarks/gate/david cell.xwd</location>
-		</link>
-	</linkedResources>
 </projectDescription>

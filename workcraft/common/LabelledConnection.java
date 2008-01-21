@@ -52,14 +52,14 @@ public class LabelledConnection extends DefaultConnection
 	{
 		super.draw(p);
 		
+		updateStretch();
 		p.pushTransform();
 		p.setIdentityTransform();
 
 		Vec2 v = getPointOnConnection(0.5f);
-		v.setY(v.getY() - 0.01f);		
 		
-		//first.transform.getLocalToViewMatrix().transform(v);
-		
+		v.setY(v.getY() + 0.03f);		
+
 		p.setTextColor(labelColor);
 		p.drawString(label, v, 0.04f, TextAlign.CENTER);
 		
