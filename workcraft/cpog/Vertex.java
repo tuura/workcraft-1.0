@@ -1,5 +1,6 @@
 package workcraft.cpog;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -32,9 +33,11 @@ import workcraft.visual.VertexFormat;
 import workcraft.visual.PrimitiveType;
 import workcraft.visual.VertexFormatException;
 
-public class EditableCPOGVertex extends BasicEditable {
+public class Vertex extends BasicEditable {
 	public static final UUID _modeluuid = UUID.fromString("25787b48-9c3d-11dc-8314-0800200c9a66");
 	public static final String _displayname = "Vertex";
+	public static final String _hotkey = " v ";
+	public static final int _hotkeyvk = KeyEvent.VK_V;		
 
 	private static Colorf vertexColor = new Colorf(1.0f, 1.0f, 1.0f, 1.0f);
 	private static Colorf coloredVertexColor = new Colorf(0.3f, 0.3f, 1.0f, 1.0f);
@@ -46,34 +49,36 @@ public class EditableCPOGVertex extends BasicEditable {
 
 	private int color = 0;
 	
+	private String condition = null;
+	
 	public boolean canFire = false;
 	public boolean canWork = false;
 
-	private LinkedList<EditableCPOGVertex> out;
-	private LinkedList<EditableCPOGVertex> in;
-
-	public LinkedList<EditableCPOGVertex> getOut()
+	private LinkedList<Vertex> out;
+	private LinkedList<Vertex> in;
+	
+	public LinkedList<Vertex> getOut()
 	{
-		return (LinkedList<EditableCPOGVertex>)out.clone();
+		return (LinkedList<Vertex>)out.clone();
 	}
 
-	public LinkedList<EditableCPOGVertex> getIn()
+	public LinkedList<Vertex> getIn()
 	{
-		return (LinkedList<EditableCPOGVertex>)in.clone();
+		return (LinkedList<Vertex>)in.clone();
 	}
 
-	public void removeIn(EditableCPOGVertex t)
+	public void removeIn(Vertex t)
 	{
 		in.remove(t);
 	}
 
-	public void removeOut(EditableCPOGVertex t)
+	public void removeOut(Vertex t)
 	{
 		out.remove(t);
 	}
 
-	public boolean addIn(LabelledConnection con) {
-		EditableCPOGVertex t = (EditableCPOGVertex)con.getFirst();
+	public boolean addIn(Arc con) {
+		Vertex t = (Vertex)con.getFirst();
 		if (in.contains(t))
 			return false;
 		in.add(t);
@@ -81,8 +86,8 @@ public class EditableCPOGVertex extends BasicEditable {
 		return true;
 	}
 
-	public boolean addOut(LabelledConnection con) {
-		EditableCPOGVertex t = (EditableCPOGVertex)con.getSecond();
+	public boolean addOut(Arc con) {
+		Vertex t = (Vertex)con.getSecond();
 		if (out.contains(t))
 			return false;
 		out.add(t);
@@ -108,17 +113,35 @@ public class EditableCPOGVertex extends BasicEditable {
 		return color;
 	}
 
-	public EditableCPOGVertex(BasicEditable parent) throws UnsupportedComponentException
+	public String getCondition()
+	{
+		return condition;
+	}	
+
+	public void setCondition(String condition)
+	{
+		this.condition = condition;
+		String label = getLabel();
+		if (label.lastIndexOf(": ") != -1)
+		{
+			label = label.substring(0, label.lastIndexOf(": "));
+		}
+		if (!condition.equals("1")) label = label + ": " + condition;
+		setLabel(label);
+	}
+
+	public Vertex(BasicEditable parent) throws UnsupportedComponentException
 	{
 		super(parent);
 		boundingBox.setExtents(new Vec2(-0.05f, -0.05f), new Vec2(0.05f, 0.05f));
-		color = 0;
-		out = new LinkedList<EditableCPOGVertex>();
-		in = new LinkedList<EditableCPOGVertex>();
+		setColor(0);
+		setCondition("1");
+		out = new LinkedList<Vertex>();
+		in = new LinkedList<Vertex>();
 	}
 
-	public void draw(Painter p) {
-		
+	public void draw(Painter p)
+	{		
 		p.setTransform(transform.getLocalToViewMatrix());
 		p.setShapeMode(ShapeMode.FILL);
 
@@ -165,6 +188,7 @@ public class EditableCPOGVertex extends BasicEditable {
 	public List<String> getEditableProperties() {
 		List<String> list = super.getEditableProperties();
 		list.add("int,Color,getColor,setColor");
+		list.add("str,Condition,getCondition,setCondition");
 		return list;
 	}
 
@@ -173,6 +197,7 @@ public class EditableCPOGVertex extends BasicEditable {
 		NodeList nl = element.getElementsByTagName("vertex");
 		Element ne = (Element) nl.item(0);
 		setColor(Integer.parseInt(ne.getAttribute("color")));
+		setCondition(ne.getAttribute("condition"));
 		super.fromXmlDom(element);
 	}
 	
@@ -181,6 +206,7 @@ public class EditableCPOGVertex extends BasicEditable {
 		Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("vertex");
 		ppe.setAttribute("color", Integer.toString(getColor()));
+		ppe.setAttribute("condition", getCondition());
 		ee.appendChild(ppe);
 		return ee;
 	}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="workcraft/petri/FlyingToken.java|workcraft/counterflow/CFPetriConverter.java|workcraft/spreadtoken/STPetriConverter.java|workcraft/cpog/ControlVariable.java" kind="src" path="">
+	<classpathentry excluding="workcraft/petri/FlyingToken.java|workcraft/counterflow/CFPetriConverter.java|workcraft/spreadtoken/STPetriConverter.java" kind="src" path="">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Workcraft/dll"/>
 		</attributes>

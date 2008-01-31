@@ -25,17 +25,14 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 {
 	public static final UUID _modeluuid = UUID.fromString("25787b48-9c3d-11dc-8314-0800200c9a66");
 	public static final String _displayname = "Control Variable";
-	public static final String _hotkey = "x";
+	public static final String _hotkey = " x ";
 	public static final int _hotkeyvk = KeyEvent.VK_X;		
 
 	private static final Colorf frameColor = new Colorf (0.0f, 0.0f, 0.0f, 1.0f);
-	private static final Colorf fillColor = new Colorf (0.9f, 0.9f, 1.0f, 1.0f);
-	private static final Colorf activeFillColor = new Colorf (0.9f, 1.0f, 1.0f, 1.0f);
+	private static final Colorf extFillColor = new Colorf (0.9f, 0.9f, 1.0f, 1.0f);
+	private static final Colorf intFillColor = new Colorf (0.9f, 1.0f, 1.0f, 1.0f);
 	private static final Colorf selectedColor = new Colorf (0.5f, 0.0f, 0.0f, 1.0f);
-	private static final Colorf activeColor = new Colorf (0.0f, 0.0f, 0.5f, 1.0f);
-	private boolean active = false;
-
-	private String environmentStg="";
+	private static final Colorf intColor = new Colorf (0.0f, 0.0f, 0.5f, 1.0f);
 
 	public ControlVariable(BasicEditable parent) throws UnsupportedComponentException
 	{
@@ -49,28 +46,29 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 
 		p.setShapeMode(ShapeMode.FILL_AND_OUTLINE);
 		
+		boolean internal = true;
+		
 		p.setLineMode(LineMode.SOLID);
-		if (active) {
-			p.setLineWidth(0.01f);
-			p.setFillColor(activeFillColor);
-			p.setTextColor(activeColor);
+		p.setLineWidth(0.01f);
+		
+		if (internal)
+		{
+			p.setFillColor(intFillColor);
+			p.setTextColor(intColor);
 		}
-		else {
-			p.setLineWidth(0.005f);
-			p.setFillColor(fillColor);
+		else
+		{
+			p.setFillColor(extFillColor);
 			p.setTextColor(frameColor);
 		}
 
 		if (selected)
 			p.setLineColor(selectedColor);
 		else
-			if (highlight && ((ModelBase)ownerDocument).isShowHighlight())
-				p.setLineColor(((ModelBase)ownerDocument).getHighlightColor());
+			if (internal)
+				p.setLineColor(intColor);
 			else
-				if (active)
-					p.setLineColor(activeColor);
-				else
-					p.setLineColor(frameColor);
+				p.setLineColor(frameColor);
 
 		p.drawRect(-0.0975f, 0.0475f, 0.0975f, -0.0475f);
 		Vec2 v0 = new Vec2(0.0f, -0.025f);
@@ -83,8 +81,6 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 
 	public List<String> getEditableProperties() {
 		List<String> list = super.getEditableProperties();
-		list.add("bool,Active,isActive,setActive");
-		list.add("xwdfile,STG source,getEnvironmentStg,setEnvironmentStg");
 		return list;
 	}
 
@@ -100,40 +96,12 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 
 	}
 	public void fromXmlDom(Element element) throws DuplicateIdException {
-		NodeList nl = element.getElementsByTagName("environment");
-		Element te = (Element) nl.item(0);
-		environmentStg = te.getAttribute("environment-stg-path");
-		active = Boolean.parseBoolean(te.getAttribute("active"));
 		super.fromXmlDom(element);
 	}
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
-		Document d = ee.getOwnerDocument();
-		Element ppe = d.createElement("environment");
-		ppe.setAttribute("environment-stg-path", environmentStg);
-		ppe.setAttribute("active", Boolean.toString(active));
-		ee.appendChild(ppe);
 		return ee;
-	}
-
-	public String getEnvironmentStg() {
-		return environmentStg;
-	}
-
-	public void setEnvironmentStg(String environmentStg) {
-		this.environmentStg = environmentStg;
-	}
-
-	public Boolean isActive() {
-		
-		return active;
-	}
-
-	public void setActive(Boolean active) {
-		if (active)
-			((GateModel)ownerDocument).setActiveInterface(this);
-		this.active = active;
 	}
 
 }

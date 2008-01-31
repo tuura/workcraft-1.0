@@ -45,16 +45,18 @@ public class CPOGModel extends ModelBase
 	public static DefaultSimControls panelSimControls = null;
 
 	int v_name_cnt = 0;
+	int x_name_cnt = 0;
 	
 	private boolean loading;
 
-	LinkedList<EditableCPOGVertex> vertices;
-	LinkedList<LabelledConnection> connections;
+	LinkedList<Vertex> vertices;
+	LinkedList<ControlVariable> variables;
+	LinkedList<Arc> connections;
 
 	public CPOGModel()
 	{
-		vertices = new LinkedList<EditableCPOGVertex>();
-		connections = new LinkedList<LabelledConnection>();
+		vertices = new LinkedList<Vertex>();
+		connections = new LinkedList<Arc>();
 	}
 
 	public String getNextVertexID()
@@ -62,10 +64,15 @@ public class CPOGModel extends ModelBase
 		return "v"+v_name_cnt++;
 	}
 
+	public String getNextCVID()
+	{
+		return "x"+x_name_cnt++;
+	}
+
 	public void addComponent(BasicEditable c, boolean auto_name) throws UnsupportedComponentException
 	{
-		if (c instanceof EditableCPOGVertex) {
-			EditableCPOGVertex p = (EditableCPOGVertex)c;
+		if (c instanceof Vertex) {
+			Vertex p = (Vertex)c;
 			vertices.add(p);
 			p.setOwnerDocument(this);
 			if (auto_name)
@@ -77,6 +84,21 @@ public class CPOGModel extends ModelBase
 						break;
 					} catch (DuplicateIdException e) {}
 				}
+		}
+		else 
+		if (c instanceof ControlVariable) {
+			ControlVariable p = (ControlVariable)c;
+			variables.add(p);
+			p.setOwnerDocument(this);
+			if (auto_name)
+				for (;;)
+				{
+					try
+					{
+						p.setId(getNextCVID());
+						break;
+					} catch (DuplicateIdException e) {}
+				}
 		} else throw new UnsupportedComponentException();
 		
 		super.addComponent(c, auto_name);
@@ -85,13 +107,20 @@ public class CPOGModel extends ModelBase
 	public void removeComponent(BasicEditable c) throws UnsupportedComponentException
 	{
 		super.removeComponent(c);
-		if (c instanceof EditableCPOGVertex)
+		if (c instanceof Vertex)
 		{
-			EditableCPOGVertex v = (EditableCPOGVertex)c;
-			for (EditableCPOGVertex t : v.getIn()) t.removeOut(v);				
-			for (EditableCPOGVertex t : v.getOut())	t.removeIn(v);
+			Vertex v = (Vertex)c;
+			for (Vertex t : v.getIn()) t.removeOut(v);				
+			for (Vertex t : v.getOut())	t.removeIn(v);
 
 			vertices.remove(c);
+		}
+		else
+		if (c instanceof ControlVariable)
+		{
+			ControlVariable v = (ControlVariable)c;
+
+			variables.remove(c);
 		} else throw new UnsupportedComponentException();
 		
 		super.removeComponent(c);
@@ -99,14 +128,14 @@ public class CPOGModel extends ModelBase
 
 	public EditableConnection createConnection(BasicEditable first, BasicEditable second) throws InvalidConnectionException
 	{
-		if (!(first instanceof EditableCPOGVertex) || !(second instanceof EditableCPOGVertex))
+		if (!(first instanceof Vertex) || !(second instanceof Vertex))
 			throw new InvalidConnectionException ("Invalid connection.");
 		
-		EditableCPOGVertex p, q;
+		Vertex p, q;
 
-		p = (EditableCPOGVertex)first;
-		q = (EditableCPOGVertex)second;
-		LabelledConnection con = new LabelledConnection(p, q);
+		p = (Vertex)first;
+		q = (Vertex)second;
+		Arc con = new Arc(p, q);
 		if (p.addOut(con) && q.addIn(con))
 		{
 			connections.add(con);
@@ -117,10 +146,10 @@ public class CPOGModel extends ModelBase
 
 	public void removeConnection(EditableConnection con) throws UnsupportedComponentException
 	{
-		EditableCPOGVertex p,q;
+		Vertex p,q;
 	
-		p = (EditableCPOGVertex)con.getFirst();
-		q = (EditableCPOGVertex)con.getSecond();
+		p = (Vertex)con.getFirst();
+		q = (Vertex)con.getSecond();
 		
 		p.removeOut(q);
 		q.removeIn(p);

@@ -23,7 +23,8 @@
     <class name="workcraft.graph.EditableGraphVertex"/>
   
   <class name="workcraft.cpog.CPOGModel"/>
-    <class name="workcraft.cpog.EditableCPOGVertex"/>
+    <class name="workcraft.cpog.Vertex"/>
+    <class name="workcraft.cpog.ControlVariable"/>
 
   <class name="workcraft.ADC.ADCModel"/>
 	<class name="workcraft.ADC.EditableProcess"/>
