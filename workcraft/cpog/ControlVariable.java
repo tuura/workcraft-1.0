@@ -12,6 +12,7 @@ import workcraft.DuplicateIdException;
 import workcraft.ModelBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.XmlSerializable;
+import workcraft.common.DefaultConnection;
 import workcraft.editor.BasicEditable;
 import workcraft.util.Colorf;
 import workcraft.util.Mat4x4;
@@ -37,7 +38,32 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 	public ControlVariable(BasicEditable parent) throws UnsupportedComponentException
 	{
 		super(parent);
-		boundingBox.setExtents(new Vec2(-0.1f, -0.05f), new Vec2(0.1f, 0.05f));
+		boundingBox.setExtents(new Vec2(-0.035f, -0.035f), new Vec2(0.035f, 0.035f));
+	}
+
+	private Vertex controlVertex = null;
+	
+	private Boolean initialValue = false;
+	private Boolean currentValue = false;
+	private Boolean finalValue = false;
+
+	public Vertex getControlVertex()
+	{
+		return controlVertex;
+	}
+	
+	public boolean addVertex(DefaultConnection con)
+	{
+		Vertex t = (Vertex)con.getFirst();
+		if (controlVertex != null && controlVertex != t)
+			return false;
+		connections.add(con);
+		return true;
+	}	
+
+	public void setControlVertex(Vertex controlVertex)
+	{
+		this.controlVertex = controlVertex;		
 	}
 
 	@Override
@@ -46,12 +72,11 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 
 		p.setShapeMode(ShapeMode.FILL_AND_OUTLINE);
 		
-		boolean internal = true;
-		
+	
 		p.setLineMode(LineMode.SOLID);
-		p.setLineWidth(0.01f);
+		p.setLineWidth(0.005f);
 		
-		if (internal)
+		if (controlVertex != null)
 		{
 			p.setFillColor(intFillColor);
 			p.setTextColor(intColor);
@@ -65,25 +90,40 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 		if (selected)
 			p.setLineColor(selectedColor);
 		else
-			if (internal)
+			if (controlVertex != null)
 				p.setLineColor(intColor);
 			else
 				p.setLineColor(frameColor);
 
-		p.drawRect(-0.0975f, 0.0475f, 0.0975f, -0.0475f);
-		Vec2 v0 = new Vec2(0.0f, -0.025f);
-		transform.getLocalToViewMatrix().transform(v0);		
+		p.drawRect(-0.035f, 0.035f, 0.035f, -0.035f);
 		
-		p.drawString("X", v0, 0.08f, TextAlign.CENTER);
+		Vec2 v0 = new Vec2(0.0f, -0.02f);
+		transform.getLocalToViewMatrix().transform(v0);
+
+		String s = "0";
+		if (currentValue) s = "1";
+		
+		p.drawString(s, v0, 0.07f, TextAlign.CENTER);		
 
 		super.doDraw(p);
 	}
 
+	public String getMasterVertexID()
+	{
+		if (controlVertex == null) return "";
+		return controlVertex.getId(); 
+	}
+	
 	public List<String> getEditableProperties() {
 		List<String> list = super.getEditableProperties();
+		
+		list.add("bool,Inital value,getInitialValue,setInitialValue");
+		list.add("bool,Final value,getFinalValue,setFinalValue");
+		
+		list.add("str,Master vertex,getMasterVertexID,-");
 		return list;
 	}
-
+	
 	@Override
 	public BasicEditable getChildAt(Vec2 point) {
 		return null;
@@ -96,12 +136,53 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 
 	}
 	public void fromXmlDom(Element element) throws DuplicateIdException {
+		NodeList nl = element.getElementsByTagName("signal");
+		Element ne = (Element) nl.item(0);
+		setInitialValue(Boolean.parseBoolean(ne.getAttribute("initial")));
+		setFinalValue(Boolean.parseBoolean(ne.getAttribute("final")));
 		super.fromXmlDom(element);
 	}
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
+		Document d = ee.getOwnerDocument();
+		Element ppe = d.createElement("signal");
+		ppe.setAttribute("initial", getInitialValue().toString());
+		ppe.setAttribute("final", getFinalValue().toString());
+		ee.appendChild(ppe);
 		return ee;
+	}
+
+	
+	public Boolean getInitialValue()
+	{
+		return initialValue;
+	}
+
+	public void setInitialValue(Boolean initialValue)
+	{
+		this.initialValue = initialValue;
+		this.currentValue = initialValue;
+	}
+	
+	public Boolean getCurrentValue() 
+	{
+		return currentValue;
+	}
+
+	public void setCurrentValue(Boolean currentValue) 
+	{
+		this.currentValue = currentValue;
+	}
+
+	public Boolean getFinalValue()
+	{
+		return finalValue;
+	}
+
+	public void setFinalValue(Boolean finalValue)
+	{
+		this.finalValue = finalValue;
 	}
 
 }

@@ -51,12 +51,13 @@ public class CPOGModel extends ModelBase
 
 	LinkedList<Vertex> vertices;
 	LinkedList<ControlVariable> variables;
-	LinkedList<Arc> connections;
+	LinkedList<DefaultConnection> connections;
 
 	public CPOGModel()
 	{
 		vertices = new LinkedList<Vertex>();
-		connections = new LinkedList<Arc>();
+		connections = new LinkedList<DefaultConnection>();
+		variables = new LinkedList<ControlVariable>();
 	}
 
 	public String getNextVertexID()
@@ -112,6 +113,7 @@ public class CPOGModel extends ModelBase
 			Vertex v = (Vertex)c;
 			for (Vertex t : v.getIn()) t.removeOut(v);				
 			for (Vertex t : v.getOut())	t.removeIn(v);
+			for (ControlVariable t : v.getVars()) t.setControlVertex(null);
 
 			vertices.remove(c);
 		}
@@ -120,32 +122,91 @@ public class CPOGModel extends ModelBase
 		{
 			ControlVariable v = (ControlVariable)c;
 
+			if (v.getControlVertex() != null) v.getControlVertex().removeVar(v);
+			
 			variables.remove(c);
 		} else throw new UnsupportedComponentException();
-		
-		super.removeComponent(c);
+				
 	}
 
 	public EditableConnection createConnection(BasicEditable first, BasicEditable second) throws InvalidConnectionException
 	{
-		if (!(first instanceof Vertex) || !(second instanceof Vertex))
-			throw new InvalidConnectionException ("Invalid connection.");
-		
-		Vertex p, q;
-
-		p = (Vertex)first;
-		q = (Vertex)second;
-		Arc con = new Arc(p, q);
-		if (p.addOut(con) && q.addIn(con))
+		if (first instanceof Vertex && second instanceof Vertex)
 		{
-			connections.add(con);
-			return con;
+			Vertex p, q;
+	
+			p = (Vertex)first;
+			q = (Vertex)second;
+			
+			Arc con = new Arc(p, q);
+			if (p.addOut(con) && q.addIn(con))
+			{
+				connections.add(con);
+				return con;
+			}
+			return null;
 		}
-		return null;
+		else
+		if (first instanceof Vertex && second instanceof ControlVariable)
+		{
+			Vertex p;
+			ControlVariable q;
+	
+			p = (Vertex)first;
+			q = (ControlVariable)second;
+			
+			if (q.getControlVertex() != null) throw new InvalidConnectionException ("Variable can have at most one control vertex.");
+			
+			DefaultConnection con = new DefaultConnection(p, q);			
+			con.drawArrow = false;
+			
+			if (p.addVar(con) && q.addVertex(con))
+			{
+				connections.add(con);
+				q.setControlVertex(p);
+				return con;
+			}
+			return null;
+		}
+		else
+		if (second instanceof Vertex && first instanceof ControlVariable)
+		{
+			Vertex p;
+			ControlVariable q;
+	
+			p = (Vertex)second;
+			q = (ControlVariable)first;
+			
+			if (q.getControlVertex() != null) throw new InvalidConnectionException ("Variable can have at most one control vertex.");
+			
+			DefaultConnection con = new DefaultConnection(p, q);			
+			con.drawArrow = false;
+			
+			if (p.addVar(con) && q.addVertex(con))
+			{
+				connections.add(con);
+				q.setControlVertex(p);
+				return con;
+			}
+			return null;
+		}
+		else
+		throw new InvalidConnectionException ("Invalid connection.");
+
 	}
 
 	public void removeConnection(EditableConnection con) throws UnsupportedComponentException
 	{
+		if (con.getSecond() instanceof ControlVariable)
+		{
+			Vertex p = (Vertex)con.getFirst();
+			ControlVariable q = (ControlVariable)con.getSecond();
+			p.removeVar(q);
+			q.setControlVertex(null);
+			connections.remove(con);
+			return;
+		}
+		
 		Vertex p,q;
 	
 		p = (Vertex)con.getFirst();

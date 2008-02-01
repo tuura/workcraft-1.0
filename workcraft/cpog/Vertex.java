@@ -56,7 +56,18 @@ public class Vertex extends BasicEditable {
 
 	private LinkedList<Vertex> out;
 	private LinkedList<Vertex> in;
+	private LinkedList<ControlVariable> vars;
 	
+	private String rho = null;
+	
+	public String getRho() {
+		return rho;
+	}
+
+	public void setRho(String rho) {
+		this.rho = rho;
+	}
+
 	public LinkedList<Vertex> getOut()
 	{
 		return (LinkedList<Vertex>)out.clone();
@@ -65,6 +76,11 @@ public class Vertex extends BasicEditable {
 	public LinkedList<Vertex> getIn()
 	{
 		return (LinkedList<Vertex>)in.clone();
+	}
+
+	public LinkedList<ControlVariable> getVars()
+	{
+		return (LinkedList<ControlVariable>)vars.clone();
 	}
 
 	public void removeIn(Vertex t)
@@ -76,8 +92,13 @@ public class Vertex extends BasicEditable {
 	{
 		out.remove(t);
 	}
+	
+	public void removeVar(ControlVariable t)
+	{
+		vars.remove(t);
+	}
 
-	public boolean addIn(Arc con) {
+	public boolean addIn(DefaultConnection con) {
 		Vertex t = (Vertex)con.getFirst();
 		if (in.contains(t))
 			return false;
@@ -86,11 +107,21 @@ public class Vertex extends BasicEditable {
 		return true;
 	}
 
-	public boolean addOut(Arc con) {
+	public boolean addOut(DefaultConnection con) {
 		Vertex t = (Vertex)con.getSecond();
 		if (out.contains(t))
 			return false;
 		out.add(t);
+		connections.add(con);
+		return true;
+	}
+	
+	public boolean addVar(DefaultConnection con)
+	{
+		ControlVariable t = (ControlVariable)con.getSecond();
+		if (vars.contains(t))
+			return false;
+		vars.add(t);
 		connections.add(con);
 		return true;
 	}
@@ -136,8 +167,10 @@ public class Vertex extends BasicEditable {
 		boundingBox.setExtents(new Vec2(-0.05f, -0.05f), new Vec2(0.05f, 0.05f));
 		setColor(0);
 		setCondition("1");
+		setRho("1");
 		out = new LinkedList<Vertex>();
 		in = new LinkedList<Vertex>();
+		vars = new LinkedList<ControlVariable>();
 	}
 
 	public void draw(Painter p)
@@ -185,10 +218,20 @@ public class Vertex extends BasicEditable {
 
 	}
 
+	public String getControlledSet()
+	{
+		String res = "";
+		for(ControlVariable v : vars)
+		if (res.length() > 0) res = res + ", " + v.getId(); else res = v.getId();
+		return res;
+	}
+	
 	public List<String> getEditableProperties() {
 		List<String> list = super.getEditableProperties();
 		list.add("int,Color,getColor,setColor");
 		list.add("str,Condition,getCondition,setCondition");
+		list.add("str,Restriction function,getRho,setRho");
+		list.add("str,Controlled set,getControlledSet,-");
 		return list;
 	}
 
@@ -198,6 +241,7 @@ public class Vertex extends BasicEditable {
 		Element ne = (Element) nl.item(0);
 		setColor(Integer.parseInt(ne.getAttribute("color")));
 		setCondition(ne.getAttribute("condition"));
+		setRho(ne.getAttribute("rho"));
 		super.fromXmlDom(element);
 	}
 	
@@ -207,6 +251,7 @@ public class Vertex extends BasicEditable {
 		Element ppe = d.createElement("vertex");
 		ppe.setAttribute("color", Integer.toString(getColor()));
 		ppe.setAttribute("condition", getCondition());
+		ppe.setAttribute("rho", getRho());
 		ee.appendChild(ppe);
 		return ee;
 	}

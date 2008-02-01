@@ -64,7 +64,7 @@ public class Arc extends DefaultConnection
 			v.setY(v.getY() + 0.03f);		
 	
 			p.setTextColor(conditionColor);
-			p.drawString(condition, v, 0.04f, TextAlign.CENTER);
+			p.drawString(condition, v, 0.05f, TextAlign.CENTER);
 			
 			p.popTransform();
 		}
