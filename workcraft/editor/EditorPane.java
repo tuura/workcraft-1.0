@@ -45,7 +45,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 
-public class EditorPane extends GLJPanel implements GLEventListener, DropTargetListener, XmlSerializable {
+public class EditorPane extends GLCanvas implements GLEventListener, DropTargetListener, XmlSerializable {
 	private DropTarget dropTarget;
 	public Grid grid;
 	private ViewState view;
@@ -762,28 +762,28 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 			root.draw(painter);
 
 		if (new_node!=null) {
-			painter.blendEnable();
-			painter.setBlendConstantAlpha(0.3f);
-			painter.setBlendMode(BlendMode.CONSTANT_ALPHA);
+			//painter.blendEnable();
+			//painter.setBlendConstantAlpha(0.3f);
+			//painter.setBlendMode(BlendMode.CONSTANT_ALPHA);
 			new_node.draw(painter);
-			painter.blendDisable();
+			//painter.blendDisable();
 		}
 
 		// TODO
 
 		painter.setIdentityTransform();
 
-		painter.setBlendConstantAlpha(0.3f);
-		painter.setBlendMode(BlendMode.CONSTANT_ALPHA);
+		//painter.setBlendConstantAlpha(0.3f);
+		///painter.setBlendMode(BlendMode.CONSTANT_ALPHA);
 		painter.setLineMode(LineMode.HAIRLINE);
 
 		if (selection_drag) {
-			painter.blendEnable();
+//			painter.blendEnable();
 			painter.setFillColor(selectionBoxFillColor);
 			painter.setLineColor(selectionBoxOutlineColor);
-			painter.setShapeMode(ShapeMode.FILL);
+			painter.setShapeMode(ShapeMode.OUTLINE);
 			painter.drawRect(sel_ll, sel_ur);
-			painter.blendDisable();
+//			painter.blendDisable();
 			painter.setShapeMode(ShapeMode.OUTLINE);
 			painter.setLineMode(LineMode.HAIRLINE);
 			painter.setLineWidth(0.1f);
@@ -809,10 +809,10 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 				}
 				painter.setLineColor((selection_anchors)?selectionAnchorBoxOutlineColor:selectionOutlineColor);
 				painter.setFillColor((selection_anchors)?selectionAnchorBoxFillColor:selectionFillColor);
-				painter.blendEnable();
-				painter.setShapeMode(ShapeMode.FILL);
-				painter.drawRect(q.getLowerLeft(), q.getUpperRight());
-				painter.blendDisable();
+				//painter.blendEnable();
+				//painter.setShapeMode(ShapeMode.O);
+				//painter.drawRect(q.getLowerLeft(), q.getUpperRight());
+				//painter.blendDisable();
 				painter.setShapeMode(ShapeMode.OUTLINE);
 				painter.drawRect(q.getLowerLeft(), q.getUpperRight());
 			}
@@ -1005,9 +1005,9 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		System.out.println("GL_RENDERER: " + gl.glGetString(GL.GL_RENDERER));
 		System.out.println("GL_VERSION: " + gl.glGetString(GL.GL_VERSION));		
 
-		gl.glEnable(GL.GL_MULTISAMPLE);
+		// gl.glEnable(GL.GL_MULTISAMPLE);
 
-		gl.setSwapInterval(1);
+		// gl.setSwapInterval(1);
 		joglpainter = new JOGLPainter(gl, view);
 		painter = joglpainter;
 		loadFonts("Fonts");

@@ -53,12 +53,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -90,6 +92,7 @@ import workcraft.util.Colorf;
 import workcraft.util.Mat4x4;
 import workcraft.util.Vec2;
 import workcraft.visual.Drawable;
+import workcraft.visual.PSPainter;
 import workcraft.visual.SVGPainter;
 
 import javax.swing.JCheckBox;
@@ -235,6 +238,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			mnuExport = new JMenu();
 			mnuExport.setText("Export");
 			mnuExport.add(getMnuExportGraphics());
+			mnuExport.add(getMenuitemExportPS());
 		}
 		return mnuExport;
 	}
@@ -265,6 +269,24 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			mnuTransform.setEnabled(false);
 		}
 		return mnuTransform;
+	}
+
+	/**
+	 * This method initializes menuitemExportPS	
+	 * 	
+	 * @return javax.swing.JMenuItem	
+	 */
+	private JMenuItem getMenuitemExportPS() {
+		if (menuitemExportPS == null) {
+			menuitemExportPS = new JMenuItem();
+			menuitemExportPS.setText("PS...");
+			menuitemExportPS.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					exportPSGraphics();
+				}
+			});
+		}
+		return menuitemExportPS;
 	}
 
 	/**
@@ -364,6 +386,8 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 	private JMenu mnuTransform = null;
 
+	private JMenuItem menuitemExportPS = null;
+
 	/**
 	 * This is the default constructor
 	 */
@@ -438,15 +462,15 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		DefaultListModel list = (DefaultListModel)l.getModel(); 
 
 		l.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
+
 		LinkedList<String> modelNames = new LinkedList<String>();
 		Hashtable<String, Class> modelClasses = new Hashtable<String, Class>();
-		
+
 		for (Class cls : models) {
 			modelNames.add(server.mmgr.getModelDisplayName(cls));
 			modelClasses.put(server.mmgr.getModelDisplayName(cls), cls);
 		}
-		
+
 		Collections.sort(modelNames);
 
 		for (String m: modelNames) {
@@ -470,8 +494,8 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		dialog.dispose();
 		updateTitle();
 	}
-	
-	
+
+
 	public void open() 
 	{
 		if (!checkChanges())
@@ -488,15 +512,15 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		try {
 			doc = load(fc.getSelectedFile().getAbsolutePath());
 			setDocumentUI(doc);
-			
+
 			file_name = fc.getSelectedFile().getPath();
 			updateTitle();
-		
-			
+
+
 		} catch (DocumentOpenException e) {
 			e.printStackTrace();
 		}
-		
+
 		editorView.resetChanged();
 		editorView.repaint();
 		editorView.requestFocus();
@@ -505,12 +529,12 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		btnToggleGrid.setSelected(editorView.draw_grid);
 		btnToggleIds.setSelected(editorView.show_ids);
 		btnToggleLabels.setSelected(editorView.show_labels);
-		
+
 		//TODO: PACHINIT' load editor properties nah
 
 		last_directory = fc.getSelectedFile().getParent();
 	}
-	
+
 	public void save() {
 		if (file_name == null) {
 			saveAs();			
@@ -588,7 +612,58 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		savePreferences();
 		System.exit(0);
 	}
-	protected void exportGraphics() {
+
+	protected void exportPSGraphics() {
+		JFileChooser fc = new JFileChooser();
+		fc.setFileFilter(new PsFileFilter());
+		if (last_directory != null)
+			fc.setCurrentDirectory(new File(last_directory));
+		if (fc.showSaveDialog(this)==JFileChooser.APPROVE_OPTION) {
+			String path = fc.getSelectedFile().getPath();
+			if (!path.endsWith(".eps"))
+				path += ".eps";
+
+			BoundingBox bb = editorView.getBoundingBox();
+			Vec2 ll = bb.getLowerLeft();
+			Vec2 ur = bb.getUpperRight();
+
+			PSPainter psp;
+			PrintWriter out;
+			try {
+				out = new PrintWriter(new File(path));
+				
+				out.println ("%!PS-Adobe-3.0 EPSF-3.0");
+				out.println ("%%Creator: Workcraft rev.1");
+				out.println ("%%DocumentMedia: Plain "+ String.format("%d %d", (int)( (ur.getX() - ll.getX() )*283), (int)((ur.getY() - ll.getY())*283)) + " 0 ( ) ( )");
+				out.println ("%%BoundingBox: " + String.format("%d %d %d %d", 0, 0, (int)((ur.getX() - ll.getX())*283), (int)( (ur.getY() - ll.getY())*283)));
+				out.println ("%%HiResBoundingBox: " + String.format("%f %f %f %f", 0.0f, 0.0f, ((ur.getX() - ll.getX())*283.0f), ((ur.getY() - ll.getY())*283.0f)));
+				out.println ("%%LanguageLevel: 2\n");
+				
+				
+				psp = new PSPainter(out, 283.0f, -ll.getX(), -ll.getY());
+				
+				editorView.overridePainter(psp);
+
+				// psp.scale(1.0f, -1.0f);
+				//svgp.setRootTransform();
+
+				boolean grid_restore = 	editorView.draw_grid;
+				editorView.draw_grid = false;
+				// editorView.setGridRange(ll, ur);
+				editorView.draw();
+				editorView.draw_grid = grid_restore;
+				editorView.restorePainter();
+				
+				out.close();
+				
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				return;
+			}
+		}
+	}
+
+	protected void exportSVGGraphics() {
 		JFileChooser fc = new JFileChooser();
 		fc.setFileFilter(new SvgFileFilter());
 		if (last_directory != null)
@@ -628,8 +703,12 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			svgp.scale(1.0f, -1.0f);
 			svgp.setRootTransform();
 
-			editorView.setGridRange(ll, ur);
+			
+			boolean grid_restore = 	editorView.draw_grid;
+			editorView.draw_grid = false;
+			// editorView.setGridRange(ll, ur);
 			editorView.draw();
+			editorView.draw_grid = grid_restore;
 			editorView.restorePainter();
 
 			try
@@ -1074,7 +1153,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			mnuExportGraphics.setText("Scalable Vector Graphics (.svg)...");
 			mnuExportGraphics.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					exportGraphics();
+					exportSVGGraphics();
 				}
 			});
 		}
@@ -1555,7 +1634,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 	private void setDocumentUI(Document document) {
 		stopSimulation();
-				
+
 		Class model_class = document.getClass();
 		UUID model_uuid = ModelManager.getModelUUID(model_class);
 
@@ -1583,7 +1662,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 			LinkedList<String> generalNames = new LinkedList<String>();
 			Hashtable<String, JMenuItem> generalItems = new Hashtable<String, JMenuItem>();
-			
+
 			LinkedList<String> exportNames = new LinkedList<String>();
 			Hashtable<String, JMenuItem> exportItems = new Hashtable<String, JMenuItem>();
 
@@ -1593,11 +1672,11 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			LinkedList<String> conversionNames = new LinkedList<String>();
 			Hashtable<String, JMenuItem> conversionItems = new Hashtable<String, JMenuItem>();
 
-			
+
 			if (tools!=null) {
 				for (Class cls : tools) {
 					String displayName = ModelManager.getToolDisplayName(cls); 
-					
+
 					JMenuItem toolItem = new JMenuItem();
 					toolItem.setText(displayName+"...");
 
@@ -1613,7 +1692,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 							mnu_tool_map.get((JMenuItem)e.getSource()).run(JavaFrontend.this, server);
 						}
 					});
-					
+
 					switch (tool.getToolType()) {
 					case GENERAL:
 						generalNames.add(displayName);
@@ -1668,34 +1747,35 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 					}
 				}
 			}
-			
+
 			Collections.sort(generalNames);
 			Collections.sort(importNames);
 			Collections.sort(exportNames);
 			Collections.sort(conversionNames);
-			
+
 			mnuTools.removeAll();
 			mnuTools.setEnabled(!generalNames.isEmpty());
 			for (String n : generalNames)
 				mnuTools.add(generalItems.get(n));
-			
+
 			mnuTransform.removeAll();
 			mnuTransform.setEnabled(!conversionNames.isEmpty());
 			for (String n : conversionNames)
 				mnuTransform.add(conversionItems.get(n));
-			
+
 			mnuImport.removeAll();
 			mnuImport.setEnabled(!importNames.isEmpty());
 			for (String n : importNames)
 				mnuImport.add(importItems.get(n));
-			
+
 			mnuExport.removeAll();
 			mnuExport.add(getMnuExportGraphics());
+			mnuExport.add(getMenuitemExportPS());
 			if (!exportNames.isEmpty())
 				mnuExport.addSeparator();
 			for (String n : exportNames)
 				mnuExport.add(exportItems.get(n));
-			
+
 
 			panelModelSpecificControls.removeAll();
 			JPanel simctl = document.getSimulationControls(); 
@@ -1992,7 +2072,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 	public void stepSimulation() {
 		Document document = editorView.getDocument();
-		
+
 		if (document == null)
 			return;
 		document.simStep();
@@ -2001,7 +2081,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 	public void stopSimulation() {
 		Document document = editorView.getDocument();
-		
+
 		if (document==null)
 			return;
 
@@ -2020,7 +2100,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 	public void updateTitle() {
 		Document document = editorView.getDocument();
-		
+
 		String title = "";
 		if (file_name!=null)
 			title += file_name + " ";
@@ -2099,7 +2179,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 
 			doc = (Document)model_class.newInstance();
-			
+
 			server.python.set("_loading", true);
 			doc.loadStart();
 
@@ -2110,7 +2190,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			GroupNode root = new GroupNode(doc, "_root");
 			doc.setRoot(root);
 
-			
+
 			if (re.getAttribute("class").equals(GroupNode.class.getName()))
 				try {
 					root.fromXmlDom(re);
