@@ -110,7 +110,7 @@ public class ExternalProcess extends JDialog{
 		stdoutThread.interrupt();
 		stderrThread.interrupt();
 
-		if (keepWindow)
+		if (keepWindow || (returnCode != 0))
 			btnCancel.setText("OK");
 		else
 			setVisible(false);

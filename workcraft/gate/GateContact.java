@@ -38,7 +38,7 @@ public class GateContact extends BasicEditable {
 	private static Colorf fillHighColor = new Colorf(0.0f, 1.0f, 0.0f, 1.0f);
 
 	private static Colorf outlineInvertColor = new Colorf(0.0f, 0.0f, 0.0f, 1.0f);
-	private static Colorf fillInvertColor = new Colorf(1.0f, 0.0f, 1.0f, 1.0f);
+	private static Colorf fillInvertColor = new Colorf(1.0f, 1.0f, 1.0f, 1.0f);
 
 	private static boolean showContactRects = true;
 

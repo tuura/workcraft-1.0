@@ -222,7 +222,7 @@ public class PSPainter implements Painter {
 		PathElement p = shape.getPath();
 		
 		out.println ("newpath");
-		out.println (buildPathDef(p, true));
+		out.print (buildPathDef(p, true));
 		if (p.isClosed())
 			out.println("closepath");
 			
@@ -234,39 +234,34 @@ public class PSPainter implements Painter {
 	}
 
 	public void drawString(String s, Vec2 location, float height, TextAlign align, String fontFace) {
-		/*
-		Element t = doc.createElement("text");
 		pushTransform();
 		setIdentityTransform();
-		scale (1.0f, -1.0f);
-		t.appendChild(doc.createTextNode(s));
-		t.setAttribute("x", Float.toString(location.getX()));
-		t.setAttribute("y", Float.toString(-location.getY()));
-		t.setAttribute("font-size", Float.toString(height));
+		out.println("/Helvetica findfont");
+		out.println(String.format("%f scalefont", height));
+		out.println("setfont");
+		writeColor(textColor);
 		
-		String style = "";
-		int r = (int)(255.0f*textColor.r);
-		int g = (int)(255.0f*textColor.g);
-		int b = (int)(255.0f*textColor.b);
-		t.setAttribute("fill",  String.format("rgb(%d, %d, %d)", r,g,b));
-		if (blendEnabled) {
-			style += String.format("opacity:%f;", (blendMode == BlendMode.CONSTANT_ALPHA)?constantAlpha:textColor.a);
-		}
+		s.replace("(", "\\(");
+		s.replace(")", "\\)");
+		
+		out.print("("+s+") ");
+		
+		
 		switch (align) {
 		case LEFT:
-			 t.setAttribute("text-anchor", "start");
-			break;
-		case CENTER:
-			t.setAttribute("text-anchor", "middle");
+			out.print(String.format("%f %f moveto ", location.getX(), location.getY()));
 			break;
 		case RIGHT:
-			t.setAttribute("text-anchor", "end");
+			out.print("dup stringwidth pop -1 mul "+location.getX()+" add "+location.getY()+" moveto ");
+			break;
+		case CENTER:
+			out.print("dup stringwidth pop -0.5 mul "+location.getX()+" add "+location.getY()+" moveto ");
+			break;
 		}
 		
-		t.setAttribute("style", style);
+		out.println(" show");
 		
-		this.g.appendChild(t);
-		popTransform();*/
+		popTransform();
 	}
 
 	public void popTransform() {
@@ -347,7 +342,7 @@ public class PSPainter implements Painter {
 			out.println ("setmatrix");
 		}
 		float[] a = transform.getArray();
-		out.println (String.format("[%f %f %f %f %f %f] concat",a[0]*scale,a[1],a[4],a[5]*scale, (a[3]+llx)*scale , (a[7]+lly)*scale));
+		out.println (String.format("[%f %f %f %f %f %f] concat",a[0]*scale,-a[1]*scale,-a[4]*scale,a[5]*scale, (a[3]+llx)*scale , (a[7]+lly)*scale));
 	}
 
 	public void translate(float x, float y) {

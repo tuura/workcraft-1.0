@@ -70,6 +70,7 @@ import java.util.WeakHashMap;
 
 import javax.swing.SwingConstants;
 
+import workcraft.common.ExternalProcess;
 import workcraft.editor.BasicEditable;
 import workcraft.editor.BoundingBox;
 import workcraft.editor.ComponentHotkey;
@@ -237,8 +238,9 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		if (mnuExport == null) {
 			mnuExport = new JMenu();
 			mnuExport.setText("Export");
-			mnuExport.add(getMnuExportGraphics());
-			mnuExport.add(getMenuitemExportPS());
+			mnuExport.add(getMnuExportSVGGraphics());
+			mnuExport.add(getMnuExportPSGraphics());
+			mnuExport.add(getMnuExportPDFGraphics());
 		}
 		return mnuExport;
 	}
@@ -272,21 +274,41 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 	}
 
 	/**
-	 * This method initializes menuitemExportPS	
+	 * This method initializes mnuExportPSGraphics	
 	 * 	
 	 * @return javax.swing.JMenuItem	
 	 */
-	private JMenuItem getMenuitemExportPS() {
-		if (menuitemExportPS == null) {
-			menuitemExportPS = new JMenuItem();
-			menuitemExportPS.setText("PS...");
-			menuitemExportPS.addActionListener(new java.awt.event.ActionListener() {
+	private JMenuItem getMnuExportPSGraphics() {
+		if (mnuExportPSGraphics == null) {
+			mnuExportPSGraphics = new JMenuItem();
+			mnuExportPSGraphics.setText("Encapsulated PostScript...");
+			mnuExportPSGraphics.setActionCommand("Encapsulated PostScript...");
+			mnuExportPSGraphics.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					exportPSGraphics();
 				}
 			});
 		}
-		return menuitemExportPS;
+		return mnuExportPSGraphics;
+	}
+
+	/**
+	 * This method initializes mnuExportPDFGraphics	
+	 * 	
+	 * @return javax.swing.JMenuItem	
+	 */
+	private JMenuItem getMnuExportPDFGraphics() {
+		if (mnuExportPDFGraphics == null) {
+			mnuExportPDFGraphics = new JMenuItem();
+			mnuExportPDFGraphics.setActionCommand("PDF (using ps2pdf)...");
+			mnuExportPDFGraphics.setText("PDF (using ps2pdf)...");
+			mnuExportPDFGraphics.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					exportPDFGraphics();
+				}
+			});
+		}
+		return mnuExportPDFGraphics;
 	}
 
 	/**
@@ -370,7 +392,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 	private JToggleButton btnToggleLabels = null;
 	private JMenuItem jMenuItem = null;
 
-	private JMenuItem mnuExportGraphics = null;
+	private JMenuItem mnuExportSVGGraphics = null;
 
 	private JMenu mnuTools = null;
 
@@ -386,7 +408,9 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 	private JMenu mnuTransform = null;
 
-	private JMenuItem menuitemExportPS = null;
+	private JMenuItem mnuExportPSGraphics = null;
+
+	private JMenuItem mnuExportPDFGraphics = null;
 
 	/**
 	 * This is the default constructor
@@ -626,6 +650,9 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			BoundingBox bb = editorView.getBoundingBox();
 			Vec2 ll = bb.getLowerLeft();
 			Vec2 ur = bb.getUpperRight();
+			
+			ll.setXY(ll.getX()-0.3f, ll.getY()-0.3f);
+			ur.setXY(ur.getX()+0.3f, ur.getY()+0.3f);
 
 			PSPainter psp;
 			PrintWriter out;
@@ -663,6 +690,69 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		}
 	}
 
+	
+	protected void exportPDFGraphics() {
+		JFileChooser fc = new JFileChooser();
+		fc.setFileFilter(new PdfFileFilter());
+		if (last_directory != null)
+			fc.setCurrentDirectory(new File(last_directory));
+		if (fc.showSaveDialog(this)==JFileChooser.APPROVE_OPTION) {
+			String path = fc.getSelectedFile().getPath();
+			if (!path.endsWith(".pdf"))
+				path += ".pdf";
+			
+			String tmppspath = path+".eps";
+
+			BoundingBox bb = editorView.getBoundingBox();
+			Vec2 ll = bb.getLowerLeft();
+			Vec2 ur = bb.getUpperRight();
+			
+			ll.setXY(ll.getX()-0.3f, ll.getY()-0.3f);
+			ur.setXY(ur.getX()+0.3f, ur.getY()+0.3f);
+
+			PSPainter psp;
+			PrintWriter out;
+			try {
+				out = new PrintWriter(new File(tmppspath));
+				
+				out.println ("%!PS-Adobe-3.0 EPSF-3.0");
+				out.println ("%%Creator: Workcraft rev.1");
+				out.println ("%%DocumentMedia: Plain "+ String.format("%d %d", (int)( (ur.getX() - ll.getX() )*283), (int)((ur.getY() - ll.getY())*283)) + " 0 ( ) ( )");
+				out.println ("%%BoundingBox: " + String.format("%d %d %d %d", 0, 0, (int)((ur.getX() - ll.getX())*283), (int)( (ur.getY() - ll.getY())*283)));
+				out.println ("%%HiResBoundingBox: " + String.format("%f %f %f %f", 0.0f, 0.0f, ((ur.getX() - ll.getX())*283.0f), ((ur.getY() - ll.getY())*283.0f)));
+				out.println ("%%LanguageLevel: 2\n");
+				
+				
+				psp = new PSPainter(out, 283.0f, -ll.getX(), -ll.getY());
+				
+				editorView.overridePainter(psp);
+
+				// psp.scale(1.0f, -1.0f);
+				//svgp.setRootTransform();
+
+				boolean grid_restore = 	editorView.draw_grid;
+				editorView.draw_grid = false;
+				// editorView.setGridRange(ll, ur);
+				editorView.draw();
+				editorView.draw_grid = grid_restore;
+				editorView.restorePainter();
+				
+				out.close();
+				
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				return;
+			}
+			
+			ExternalProcess ps2pdf = new ExternalProcess(this);
+			try {
+				ps2pdf.run(new String[] { "ps2pdf", "-dEPSCrop", "-dEmbedAllFonts", tmppspath, path}, "./tmp", "ps2pdf", false);
+				new File(tmppspath).delete();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	protected void exportSVGGraphics() {
 		JFileChooser fc = new JFileChooser();
 		fc.setFileFilter(new SvgFileFilter());
@@ -1143,21 +1233,21 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 	}
 
 	/**
-	 * This method initializes mnuExportGraphics	
+	 * This method initializes mnuExportSVGGraphics	
 	 * 	
 	 * @return javax.swing.JMenuItem	
 	 */
-	private JMenuItem getMnuExportGraphics() {
-		if (mnuExportGraphics == null) {
-			mnuExportGraphics = new JMenuItem();
-			mnuExportGraphics.setText("Scalable Vector Graphics (.svg)...");
-			mnuExportGraphics.addActionListener(new java.awt.event.ActionListener() {
+	private JMenuItem getMnuExportSVGGraphics() {
+		if (mnuExportSVGGraphics == null) {
+			mnuExportSVGGraphics = new JMenuItem();
+			mnuExportSVGGraphics.setText("Scalable Vector Graphics (.svg)...");
+			mnuExportSVGGraphics.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					exportSVGGraphics();
 				}
 			});
 		}
-		return mnuExportGraphics;
+		return mnuExportSVGGraphics;
 	}
 
 	/**
@@ -1769,8 +1859,9 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 				mnuImport.add(importItems.get(n));
 
 			mnuExport.removeAll();
-			mnuExport.add(getMnuExportGraphics());
-			mnuExport.add(getMenuitemExportPS());
+			mnuExport.add(getMnuExportSVGGraphics());
+			mnuExport.add(getMnuExportPSGraphics());
+			mnuExport.add(getMnuExportPDFGraphics());
 			if (!exportNames.isEmpty())
 				mnuExport.addSeparator();
 			for (String n : exportNames)
