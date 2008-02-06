@@ -40,16 +40,16 @@ public class Vertex extends BasicEditable {
 	public static final int _hotkeyvk = KeyEvent.VK_V;		
 
 	private static Colorf vertexColor = new Colorf(1.0f, 1.0f, 1.0f, 1.0f);
-	private static Colorf coloredVertexColor = new Colorf(0.3f, 0.3f, 1.0f, 1.0f);
 	private static Colorf selectedVertexColor = new Colorf(1.0f, 0.9f, 0.9f, 1.0f);
 	private static Colorf enabledVertexColor = new Colorf(0.8f, 0.8f, 1.0f, 1.0f);
 	private static Colorf vertexOutlineColor = new Colorf(0.0f, 0.0f, 0.0f, 1.0f);
+	private static Colorf passiveVertexOutlineColor = new Colorf(0.6f, 0.6f, 0.6f, 1.0f);
 	private static Colorf selectedVertexOutlineColor = new Colorf(0.5f, 0.0f, 0.0f, 1.0f);
 	private static Colorf userVertexOutlineColor = new Colorf(0.0f, 0.6f, 0.0f, 1.0f);
 
-	private int color = 0;
-	
 	private String condition = null;
+	
+	private Boolean active = true;
 	
 	public boolean canFire = false;
 	public boolean canWork = false;
@@ -97,6 +97,17 @@ public class Vertex extends BasicEditable {
 	{
 		vars.remove(t);
 	}
+	
+
+	public Boolean isActive()
+	{
+		return active;
+	}
+
+	public void setActive(Boolean active)
+	{
+		this.active = active;
+	}
 
 	public boolean addIn(DefaultConnection con) {
 		Vertex t = (Vertex)con.getFirst();
@@ -134,16 +145,6 @@ public class Vertex extends BasicEditable {
 		return v.length() < 0.05f;
 	}
 
-	public void setColor(Integer t)
-	{
-		color = t;
-	}
-
-	public int getColor()
-	{
-		return color;
-	}
-
 	public String getCondition()
 	{
 		return condition;
@@ -165,9 +166,9 @@ public class Vertex extends BasicEditable {
 	{
 		super(parent);
 		boundingBox.setExtents(new Vec2(-0.05f, -0.05f), new Vec2(0.05f, 0.05f));
-		setColor(0);
 		setCondition("1");
 		setRho("1");
+		setActive(true);
 		out = new LinkedList<Vertex>();
 		in = new LinkedList<Vertex>();
 		vars = new LinkedList<ControlVariable>();
@@ -184,22 +185,20 @@ public class Vertex extends BasicEditable {
 			if (canWork)
 				p.setFillColor(userVertexOutlineColor);
 			else
-				p.setFillColor(vertexOutlineColor);
+				if (active)
+					p.setFillColor(vertexOutlineColor);
+				else
+					p.setFillColor(passiveVertexOutlineColor);
 
 		p.drawCircle(0.05f, null);
 
-		if (selected && color == 0)
+		if (selected)
 			p.setFillColor(selectedVertexColor);
 		else
-		if (color == 0)
-		{
 			if (canFire)
 				p.setFillColor(enabledVertexColor);
 			else
 				p.setFillColor(vertexColor);
-		}
-		else
-			p.setFillColor(coloredVertexColor);
 
 		p.drawCircle(0.04f, null);
 		
@@ -228,8 +227,8 @@ public class Vertex extends BasicEditable {
 	
 	public List<String> getEditableProperties() {
 		List<String> list = super.getEditableProperties();
-		list.add("int,Color,getColor,setColor");
 		list.add("str,Condition,getCondition,setCondition");
+		list.add("bool,Active,isActive,setActive");
 		list.add("str,Restriction function,getRho,setRho");
 		list.add("str,Controlled set,getControlledSet,-");
 		return list;
@@ -239,7 +238,6 @@ public class Vertex extends BasicEditable {
 	public void fromXmlDom(Element element) throws DuplicateIdException {
 		NodeList nl = element.getElementsByTagName("vertex");
 		Element ne = (Element) nl.item(0);
-		setColor(Integer.parseInt(ne.getAttribute("color")));
 		setCondition(ne.getAttribute("condition"));
 		setRho(ne.getAttribute("rho"));
 		super.fromXmlDom(element);
@@ -249,7 +247,6 @@ public class Vertex extends BasicEditable {
 		Element ee = super.toXmlDom(parent_element);
 		Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("vertex");
-		ppe.setAttribute("color", Integer.toString(getColor()));
 		ppe.setAttribute("condition", getCondition());
 		ppe.setAttribute("rho", getRho());
 		ee.appendChild(ppe);

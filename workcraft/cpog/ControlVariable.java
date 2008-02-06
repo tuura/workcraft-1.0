@@ -38,7 +38,7 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 	public ControlVariable(BasicEditable parent) throws UnsupportedComponentException
 	{
 		super(parent);
-		boundingBox.setExtents(new Vec2(-0.035f, -0.035f), new Vec2(0.035f, 0.035f));
+		boundingBox.setExtents(new Vec2(-0.03f, -0.03f), new Vec2(0.03f, 0.03f));
 	}
 
 	private Vertex controlVertex = null;
@@ -73,8 +73,8 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 		p.setShapeMode(ShapeMode.FILL_AND_OUTLINE);
 		
 	
-		p.setLineMode(LineMode.SOLID);
-		p.setLineWidth(0.005f);
+		p.setLineMode(LineMode.HAIRLINE);
+		//p.setLineWidth(0.005f);
 		
 		if (controlVertex != null)
 		{
@@ -95,7 +95,7 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 			else
 				p.setLineColor(frameColor);
 
-		p.drawRect(-0.035f, 0.035f, 0.035f, -0.035f);
+		p.drawRect(-0.03f, 0.03f, 0.03f, -0.03f);
 		
 		Vec2 v0 = new Vec2(0.0f, -0.02f);
 		transform.getLocalToViewMatrix().transform(v0);

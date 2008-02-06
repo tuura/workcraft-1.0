@@ -6,13 +6,13 @@ import workcraft.WorkCraftServer;
 
 public class DNFUtil {
 
-	public static void resolveLiterals (DNF dnf, WorkCraftServer server, HashMap<String,Object> resolved) {
-
+	public static void resolveLiterals (DNF dnf, WorkCraftServer server, HashMap<String,Object> resolved)
+	{
 		LinkedList markedClauses = new LinkedList();
 		LinkedList markedLiterals = new LinkedList();
 
-		for (DNFClause clause : dnf.clauses) {
-
+		for (DNFClause clause : dnf.clauses)
+		{
 			boolean clauseMarked = false;
 
 			for (DNFLiteral literal : clause.pos) {
@@ -58,10 +58,5 @@ public class DNFUtil {
 
 		for (Object o : markedClauses)
 			dnf.clauses.remove(o);
-	}
-	
-	
-	public static void minimize (DNF dnf) {
-						
 	}
 }

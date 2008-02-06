@@ -107,6 +107,12 @@ public class DNF
 		return res;
 	}
 	
+	// no predicates dummy
+	public void parseExpression(String expression) throws InvalidExpressionException
+	{
+		parseExpression(expression, new HashMap<String, String>());
+	}
+		
 	public void parseExpression(String expression, HashMap<String, String> predicates) throws InvalidExpressionException
 	{
 		Stack<Token> ops = new Stack<Token>();
@@ -235,7 +241,8 @@ public class DNF
 		clauses.addAll(stack.peek().clauses);		
 	}
 	
-	public String toString() {
+	public String toString()
+	{
 		String res = "";
 		for (DNFClause c : clauses) {
 			if (res.length() > 0)

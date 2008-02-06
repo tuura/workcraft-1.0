@@ -15,10 +15,34 @@ import workcraft.visual.TextAlign;
 
 public class Arc extends DefaultConnection
 {
+	private static Colorf connectionColor = new Colorf (0.0f, 0.0f, 0.0f, 1.0f);
+	private static Colorf passiveConnectionColor = new Colorf(0.6f, 0.6f, 0.6f, 1.0f);
+	
 	private static Colorf conditionColor = new Colorf (0.7f, 0.1f, 0.0f, 1.0f);
 	
 	private String condition;
 	
+	private Boolean active = true;
+	
+	
+	public Boolean isActive()
+	{
+		return active;
+	}
+
+	public void setActive(Boolean active)
+	{
+		this.active = active;
+		if (active)
+		{
+			colorOverride = connectionColor;
+		}
+		else
+		{
+			colorOverride = passiveConnectionColor;
+		}
+	}
+
 	public Arc()
 	{
 		this(null, null);
@@ -27,7 +51,9 @@ public class Arc extends DefaultConnection
 	public Arc(BasicEditable first, BasicEditable second)
 	{
 		super(first, second);
-		condition = "1";
+		colorOverride = connectionColor;
+		setCondition("1");
+		setActive(true);
 	}
 
 	public String getCondition()
@@ -45,6 +71,7 @@ public class Arc extends DefaultConnection
 		List<String> list = super.getEditableProperties();
 
 		list.add("str,Condition,getCondition,setCondition");
+		list.add("bool,Active,isActive,setActive");
 
 		return list;
 	}
