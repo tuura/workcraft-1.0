@@ -51,6 +51,8 @@ public class Vertex extends BasicEditable {
 
 	private Condition condition;
 	
+	boolean fired = false;
+	
 	public boolean canFire = false;
 	public boolean canWork = false;
 
@@ -164,6 +166,7 @@ public class Vertex extends BasicEditable {
 		boundingBox.setExtents(new Vec2(-0.05f, -0.05f), new Vec2(0.05f, 0.05f));
 		condition = new Condition("1", (CPOGModel) ownerDocument);
 		setRho("1");
+		
 		out = new LinkedList<Vertex>();
 		in = new LinkedList<Vertex>();
 		vars = new LinkedList<ControlVariable>();
@@ -171,7 +174,7 @@ public class Vertex extends BasicEditable {
 
 	public void refresh()
 	{
-		condition.refresh();
+		if (condition != null) condition.refresh();
 	}
 	
 	public void draw(Painter p)
@@ -253,10 +256,18 @@ public class Vertex extends BasicEditable {
 		return ee;
 	}
 			
-	public void simAction(int flag) {
-		if (flag == MouseEvent.BUTTON1) {
+	public void simAction(int flag)
+	{
+		if (flag == MouseEvent.BUTTON1 && !fired && isActive())
+		{
 			canWork = !canWork;
 		}
+	}
+
+	public void fire()
+	{
+		fired = true;
+		for(ControlVariable v : vars) v.setCurrentValue(v.getFinalValue());
 	}
 
 }

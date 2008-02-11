@@ -46,14 +46,17 @@ public class Arc extends DefaultConnection
 
 	public void refresh()
 	{
-		condition.refresh();
-		if (isActive())
+		if (condition != null)
 		{
-			colorOverride = connectionColor;
-		}
-		else
-		{
-			colorOverride = passiveConnectionColor;
+			condition.refresh();
+			if (isActive())
+			{
+				colorOverride = connectionColor;
+			}
+			else
+			{
+				colorOverride = passiveConnectionColor;
+			}
 		}
 	}
 	

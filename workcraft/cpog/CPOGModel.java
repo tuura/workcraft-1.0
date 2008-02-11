@@ -3,6 +3,7 @@ package workcraft.cpog;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.swing.JPanel;
@@ -19,6 +20,7 @@ import workcraft.common.LabelledConnection;
 import workcraft.editor.BasicEditable;
 import workcraft.editor.EditableConnection;
 import workcraft.editor.EditorPane;
+import workcraft.graph.EditableGraphVertex;
 import workcraft.graph.GraphModel.SimThread;
 
 public class CPOGModel extends ModelBase
@@ -37,13 +39,18 @@ public class CPOGModel extends ModelBase
 					sleep( (long)(100 / panelSimControls.getSpeedFactor()));
 					simStep();
 					server.execPython("_redraw()");
-				} catch (InterruptedException e) { break; }
+				}
+				catch (InterruptedException e)
+				{
+					break;
+				}
 			}
 		}
 	}
 
 	SimThread sim_thread = null;
 	public static DefaultSimControls panelSimControls = null;
+	private int state = 0;
 
 	int v_name_cnt = 0;
 	int x_name_cnt = 0;
@@ -125,8 +132,10 @@ public class CPOGModel extends ModelBase
 						break;
 					} catch (DuplicateIdException e) {}
 				}
-			rebuildControlValues();
+
 		} else throw new UnsupportedComponentException();
+		
+		rebuildControlValues();
 		
 		super.addComponent(c, auto_name);
 	}
@@ -139,7 +148,7 @@ public class CPOGModel extends ModelBase
 			Vertex v = (Vertex)c;
 			for (Vertex t : v.getIn()) t.removeOut(v);				
 			for (Vertex t : v.getOut())	t.removeIn(v);
-			for (ControlVariable t : v.getVars()) t.setControlVertex(null);
+			for (ControlVariable t : v.getVars()) t.setMasterVertex(null);
 
 			vertices.remove(c);
 		}
@@ -148,7 +157,7 @@ public class CPOGModel extends ModelBase
 		{
 			ControlVariable v = (ControlVariable)c;
 
-			if (v.getControlVertex() != null) v.getControlVertex().removeVar(v);
+			if (v.getMasterVertex() != null) v.getMasterVertex().removeVar(v);
 			
 			variables.remove(c);
 			rebuildControlValues();
@@ -181,7 +190,7 @@ public class CPOGModel extends ModelBase
 			p = (Vertex)first;
 			q = (ControlVariable)second;
 			
-			if (q.getControlVertex() != null) throw new InvalidConnectionException ("Variable can have at most one control vertex.");
+			if (q.getMasterVertex() != null) throw new InvalidConnectionException ("Variable can have at most one control vertex.");
 			
 			DefaultConnection con = new DefaultConnection(p, q);			
 			con.drawArrow = false;
@@ -189,7 +198,7 @@ public class CPOGModel extends ModelBase
 			if (p.addVar(con) && q.addVertex(con))
 			{
 				connections.add(con);
-				q.setControlVertex(p);
+				q.setMasterVertex(p);
 				return con;
 			}
 			return null;
@@ -203,7 +212,7 @@ public class CPOGModel extends ModelBase
 			p = (Vertex)second;
 			q = (ControlVariable)first;
 			
-			if (q.getControlVertex() != null) throw new InvalidConnectionException ("Variable can have at most one control vertex.");
+			if (q.getMasterVertex() != null) throw new InvalidConnectionException ("Variable can have at most one control vertex.");
 			
 			DefaultConnection con = new DefaultConnection(p, q);			
 			con.drawArrow = false;
@@ -211,7 +220,7 @@ public class CPOGModel extends ModelBase
 			if (p.addVar(con) && q.addVertex(con))
 			{
 				connections.add(con);
-				q.setControlVertex(p);
+				q.setMasterVertex(p);
 				return con;
 			}
 			return null;
@@ -227,7 +236,7 @@ public class CPOGModel extends ModelBase
 			Vertex p = (Vertex)con.getFirst();
 			ControlVariable q = (ControlVariable)con.getSecond();
 			p.removeVar(q);
-			q.setControlVertex(null);
+			q.setMasterVertex(null);
 			connections.remove(con);
 			return;
 		}
@@ -244,6 +253,8 @@ public class CPOGModel extends ModelBase
 
 	public void simReset()
 	{
+		state = 0;
+		for(Vertex v : vertices) v.fired = false;
 	}
 
 	public void simBegin()
@@ -255,8 +266,70 @@ public class CPOGModel extends ModelBase
 		}
 	}
 
-	public void simStep()
-	{	
+	public void simStep() {
+		switch (state) {
+		case 0:
+			for(Vertex v : vertices) v.canFire = false;
+			
+			for (Vertex v : vertices)
+			if (!v.fired && v.isActive())
+			{
+				boolean canfire = true;
+				
+				for (EditableConnection c : v.connections)
+				if (c instanceof Arc) 
+				{
+					Arc a = (Arc) c;
+					if (a.getSecond() == v && a.isActive() && !((Vertex)a.getFirst()).fired)
+					{
+						canfire = false;
+						break;
+					}
+				}
+				
+				if (v.fired) canfire = false;
+				
+				v.canFire = canfire;
+			}
+			state = 1;
+			break;
+		case 1:
+			{
+				Vertex w = null;				
+				if (panelSimControls.isUserInteractionEnabled())
+				{
+					for (Vertex t : vertices)
+					if (t.canFire && t.canWork)
+					{
+						w = t;
+						break;
+					}
+				}
+				else
+				{
+					int cnt = 0;
+					Random rnd = new Random();
+					for (Vertex t : vertices)
+						if (t.canFire)
+						{
+							cnt++;
+							if (rnd.nextInt(cnt) == 0) w = t;
+						}
+				}
+	
+				if (w != null)
+				{
+					w.fire();
+					w.canFire = false;
+					w.canWork = false;
+				}
+				
+				state = 0;
+				
+				break;
+			}
+		}
+
 	}
 
 	public boolean simIsRunning()
@@ -271,6 +344,9 @@ public class CPOGModel extends ModelBase
 			sim_thread.interrupt();
 			sim_thread = null;
 		}
+		for(Vertex v : vertices) v.fired = false;
+		for(ControlVariable v : variables) v.setCurrentValue(v.getInitialValue());
+		editor.repaint();
 	}
 
 	public List<EditableConnection> getConnections()
@@ -307,11 +383,13 @@ public class CPOGModel extends ModelBase
 		return server;
 	}
 
-	public void setLoading(boolean loading) {
+	public void setLoading(boolean loading)
+	{
 		this.loading = loading;
 	}
 
-	public boolean isLoading() {
+	public boolean isLoading()
+	{
 		return loading;
 	}
 

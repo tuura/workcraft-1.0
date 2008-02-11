@@ -49,29 +49,29 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 		setFinalValue(false);
 	}
 
-	private Vertex controlVertex = null;
+	private Vertex masterVertex = null;
 	
 	private Boolean initialValue = false;
 	private Boolean currentValue = false;
 	private Boolean finalValue = false;
 
-	public Vertex getControlVertex()
+	public Vertex getMasterVertex()
 	{
-		return controlVertex;
+		return masterVertex;
 	}
 	
 	public boolean addVertex(DefaultConnection con)
 	{
 		Vertex t = (Vertex)con.getFirst();
-		if (controlVertex != null && controlVertex != t)
+		if (masterVertex != null && masterVertex != t)
 			return false;
 		connections.add(con);
 		return true;
 	}	
 
-	public void setControlVertex(Vertex controlVertex)
+	public void setMasterVertex(Vertex controlVertex)
 	{
-		this.controlVertex = controlVertex;		
+		this.masterVertex = controlVertex;		
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 		p.setLineMode(LineMode.HAIRLINE);
 		//p.setLineWidth(0.005f);
 		
-		if (controlVertex != null)
+		if (masterVertex != null)
 		{
 			p.setFillColor(intFillColor);
 			p.setTextColor(intColor);
@@ -98,7 +98,7 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 		if (selected)
 			p.setLineColor(selectedColor);
 		else
-			if (controlVertex != null)
+			if (masterVertex != null)
 				p.setLineColor(intColor);
 			else
 				p.setLineColor(frameColor);
@@ -118,8 +118,8 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 
 	public String getMasterVertexID()
 	{
-		if (controlVertex == null) return "";
-		return controlVertex.getId(); 
+		if (masterVertex == null) return "";
+		return masterVertex.getId(); 
 	}
 	
 	public List<String> getEditableProperties() {
@@ -170,8 +170,7 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 	public void setInitialValue(Boolean initialValue)
 	{
 		this.initialValue = initialValue;
-		this.currentValue = initialValue;
-		((CPOGModel)ownerDocument).refreshControlValues();
+		if (masterVertex == null || !masterVertex.fired) setCurrentValue(initialValue);
 	}
 	
 	public Boolean getCurrentValue() 
@@ -193,6 +192,7 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 	public void setFinalValue(Boolean finalValue)
 	{
 		this.finalValue = finalValue;
+		if (masterVertex != null && masterVertex.fired) setCurrentValue(initialValue);
 	}
 
 }
