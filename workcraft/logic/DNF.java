@@ -436,4 +436,29 @@ public class DNF
 		
 		return res;
 	}
+	
+	public boolean evaluate(HashMap<String, Boolean> values)
+	{
+		for(DNFClause clause: clauses)
+		{
+			boolean satisfied = true;
+			for(DNFLiteral literal: clause.pos)
+				if (values.containsKey(literal.id) && !values.get(literal.id))
+				{
+					satisfied = false;
+					break;
+				}
+			
+			if (satisfied)
+				for(DNFLiteral literal: clause.neg)
+					if (values.containsKey(literal.id) && values.get(literal.id))
+					{
+						satisfied = false;
+						break;
+					}
+			
+			if (satisfied) return true;
+		}
+		return false;
+	}
 }

@@ -1,5 +1,6 @@
 package workcraft.cpog;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -52,12 +53,17 @@ public class CPOGModel extends ModelBase
 	LinkedList<Vertex> vertices;
 	LinkedList<ControlVariable> variables;
 	LinkedList<DefaultConnection> connections;
+	HashMap<String, Boolean> controlValues;
 
 	public CPOGModel()
 	{
 		vertices = new LinkedList<Vertex>();
 		connections = new LinkedList<DefaultConnection>();
 		variables = new LinkedList<ControlVariable>();
+		controlValues = new HashMap<String, Boolean>();
+		
+		controlValues.put("1", true);
+		controlValues.put("0", false);
 	}
 
 	public String getNextVertexID()
@@ -68,6 +74,25 @@ public class CPOGModel extends ModelBase
 	public String getNextCVID()
 	{
 		return "x"+x_name_cnt++;
+	}
+	
+	private void rebuildControlValues()
+	{
+		controlValues.clear();
+		
+		controlValues.put("1", true);
+		controlValues.put("0", false);
+		
+		for(ControlVariable v: variables) controlValues.put(v.getId(), v.getCurrentValue());
+		for(Vertex v: vertices) v.refresh();
+		for(DefaultConnection c: connections) if (c instanceof Arc) ((Arc)c).refresh();
+	}
+	
+	void refreshControlValues()
+	{
+		for(ControlVariable v: variables) controlValues.put(v.getId(), v.getCurrentValue());
+		for(Vertex v: vertices) v.refresh();
+		for(DefaultConnection c: connections) if (c instanceof Arc) ((Arc)c).refresh();
 	}
 
 	public void addComponent(BasicEditable c, boolean auto_name) throws UnsupportedComponentException
@@ -100,6 +125,7 @@ public class CPOGModel extends ModelBase
 						break;
 					} catch (DuplicateIdException e) {}
 				}
+			rebuildControlValues();
 		} else throw new UnsupportedComponentException();
 		
 		super.addComponent(c, auto_name);
@@ -125,8 +151,8 @@ public class CPOGModel extends ModelBase
 			if (v.getControlVertex() != null) v.getControlVertex().removeVar(v);
 			
 			variables.remove(c);
-		} else throw new UnsupportedComponentException();
-				
+			rebuildControlValues();
+		} else throw new UnsupportedComponentException();				
 	}
 
 	public EditableConnection createConnection(BasicEditable first, BasicEditable second) throws InvalidConnectionException
@@ -138,7 +164,7 @@ public class CPOGModel extends ModelBase
 			p = (Vertex)first;
 			q = (Vertex)second;
 			
-			Arc con = new Arc(p, q);
+			Arc con = new Arc(p, q, this);
 			if (p.addOut(con) && q.addIn(con))
 			{
 				connections.add(con);
@@ -192,7 +218,6 @@ public class CPOGModel extends ModelBase
 		}
 		else
 		throw new InvalidConnectionException ("Invalid connection.");
-
 	}
 
 	public void removeConnection(EditableConnection con) throws UnsupportedComponentException

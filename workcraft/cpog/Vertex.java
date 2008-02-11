@@ -20,6 +20,8 @@ import workcraft.common.DefaultConnection;
 import workcraft.common.LabelledConnection;
 import workcraft.editor.BasicEditable;
 import workcraft.editor.EditableConnection;
+import workcraft.logic.DNF;
+import workcraft.logic.InvalidExpressionException;
 import workcraft.util.Colorf;
 import workcraft.util.Mat4x4;
 import workcraft.util.Vec2;
@@ -47,9 +49,7 @@ public class Vertex extends BasicEditable {
 	private static Colorf selectedVertexOutlineColor = new Colorf(0.5f, 0.0f, 0.0f, 1.0f);
 	private static Colorf userVertexOutlineColor = new Colorf(0.0f, 0.6f, 0.0f, 1.0f);
 
-	private String condition = null;
-	
-	private Boolean active = true;
+	private Condition condition;
 	
 	public boolean canFire = false;
 	public boolean canWork = false;
@@ -101,12 +101,7 @@ public class Vertex extends BasicEditable {
 
 	public Boolean isActive()
 	{
-		return active;
-	}
-
-	public void setActive(Boolean active)
-	{
-		this.active = active;
+		return condition.evaluate();
 	}
 
 	public boolean addIn(DefaultConnection con) {
@@ -147,12 +142,13 @@ public class Vertex extends BasicEditable {
 
 	public String getCondition()
 	{
-		return condition;
+		return condition.string;
 	}	
 
 	public void setCondition(String condition)
 	{
-		this.condition = condition;
+		if (!this.condition.setCondition(condition)) return;
+		
 		String label = getLabel();
 		if (label.lastIndexOf(": ") != -1)
 		{
@@ -166,14 +162,18 @@ public class Vertex extends BasicEditable {
 	{
 		super(parent);
 		boundingBox.setExtents(new Vec2(-0.05f, -0.05f), new Vec2(0.05f, 0.05f));
-		setCondition("1");
+		condition = new Condition("1", (CPOGModel) ownerDocument);
 		setRho("1");
-		setActive(true);
 		out = new LinkedList<Vertex>();
 		in = new LinkedList<Vertex>();
 		vars = new LinkedList<ControlVariable>();
 	}
 
+	public void refresh()
+	{
+		condition.refresh();
+	}
+	
 	public void draw(Painter p)
 	{		
 		p.setTransform(transform.getLocalToViewMatrix());
@@ -185,7 +185,7 @@ public class Vertex extends BasicEditable {
 			if (canWork)
 				p.setFillColor(userVertexOutlineColor);
 			else
-				if (active)
+				if (isActive())
 					p.setFillColor(vertexOutlineColor);
 				else
 					p.setFillColor(passiveVertexOutlineColor);
@@ -228,7 +228,7 @@ public class Vertex extends BasicEditable {
 	public List<String> getEditableProperties() {
 		List<String> list = super.getEditableProperties();
 		list.add("str,Condition,getCondition,setCondition");
-		list.add("bool,Active,isActive,setActive");
+		list.add("bool,Active,isActive,-");
 		list.add("str,Restriction function,getRho,setRho");
 		list.add("str,Controlled set,getControlledSet,-");
 		return list;

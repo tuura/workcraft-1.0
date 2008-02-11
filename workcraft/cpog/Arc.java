@@ -8,6 +8,8 @@ import org.w3c.dom.NodeList;
 
 import workcraft.common.DefaultConnection;
 import workcraft.editor.BasicEditable;
+import workcraft.logic.DNF;
+import workcraft.logic.InvalidExpressionException;
 import workcraft.util.Colorf;
 import workcraft.util.Vec2;
 import workcraft.visual.Painter;
@@ -20,20 +22,32 @@ public class Arc extends DefaultConnection
 	
 	private static Colorf conditionColor = new Colorf (0.7f, 0.1f, 0.0f, 1.0f);
 	
-	private String condition;
+	private Condition condition;
 	
-	private Boolean active = true;
-	
+	private CPOGModel ownerDocument;
 	
 	public Boolean isActive()
 	{
-		return active;
+		return ((Vertex)first).isActive() && ((Vertex)second).isActive() && condition.evaluate();
 	}
 
-	public void setActive(Boolean active)
+	public Arc(CPOGModel ownerDocument)
 	{
-		this.active = active;
-		if (active)
+		this(null, null, ownerDocument);
+	}
+
+	public Arc(BasicEditable first, BasicEditable second, CPOGModel ownerDocument)
+	{
+		super(first, second);
+		this.ownerDocument = ownerDocument;
+		colorOverride = connectionColor;
+		condition = new Condition("1", ownerDocument);
+	}
+
+	public void refresh()
+	{
+		condition.refresh();
+		if (isActive())
 		{
 			colorOverride = connectionColor;
 		}
@@ -42,28 +56,23 @@ public class Arc extends DefaultConnection
 			colorOverride = passiveConnectionColor;
 		}
 	}
-
-	public Arc()
-	{
-		this(null, null);
-	}
-
-	public Arc(BasicEditable first, BasicEditable second)
-	{
-		super(first, second);
-		colorOverride = connectionColor;
-		setCondition("1");
-		setActive(true);
-	}
-
+	
 	public String getCondition()
 	{
-		return condition;
+		return condition.string;
 	}
 
 	public void setCondition(String condition)
 	{
-		this.condition = condition;
+		this.condition.setCondition(condition);
+		if (isActive())
+		{
+			colorOverride = connectionColor;
+		}
+		else
+		{
+			colorOverride = passiveConnectionColor;
+		}
 	}
 	
 	public List<String> getEditableProperties()
@@ -71,7 +80,7 @@ public class Arc extends DefaultConnection
 		List<String> list = super.getEditableProperties();
 
 		list.add("str,Condition,getCondition,setCondition");
-		list.add("bool,Active,isActive,setActive");
+		list.add("bool,Active,isActive,-");
 
 		return list;
 	}
@@ -80,7 +89,7 @@ public class Arc extends DefaultConnection
 	{
 		super.draw(p);
 		
-		if (!condition.equals("1"))
+		if (!condition.string.equals("1"))
 		{
 			updateStretch();
 			p.pushTransform();
@@ -91,7 +100,7 @@ public class Arc extends DefaultConnection
 			v.setY(v.getY() + 0.03f);		
 	
 			p.setTextColor(conditionColor);
-			p.drawString(condition, v, 0.05f, TextAlign.CENTER);
+			p.drawString(condition.string, v, 0.05f, TextAlign.CENTER);
 			
 			p.popTransform();
 		}

@@ -39,6 +39,14 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 	{
 		super(parent);
 		boundingBox.setExtents(new Vec2(-0.03f, -0.03f), new Vec2(0.03f, 0.03f));
+		setInitialValue(false);
+		setFinalValue(false);
+	}
+
+	public ControlVariable()
+	{
+		setInitialValue(false);
+		setFinalValue(false);
 	}
 
 	private Vertex controlVertex = null;
@@ -163,6 +171,7 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 	{
 		this.initialValue = initialValue;
 		this.currentValue = initialValue;
+		((CPOGModel)ownerDocument).refreshControlValues();
 	}
 	
 	public Boolean getCurrentValue() 
@@ -173,6 +182,7 @@ public class ControlVariable extends BasicEditable implements XmlSerializable
 	public void setCurrentValue(Boolean currentValue) 
 	{
 		this.currentValue = currentValue;
+		((CPOGModel)ownerDocument).refreshControlValues();
 	}
 
 	public Boolean getFinalValue()
