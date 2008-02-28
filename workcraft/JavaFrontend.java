@@ -1,49 +1,16 @@
 package workcraft;
 
-import javax.media.opengl.GLCapabilities;
-import javax.swing.SwingUtilities;
-
-import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.JSplitPane;
-import java.awt.Dimension;
-
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JList;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTree;
-import javax.swing.JScrollPane;
-import javax.swing.KeyStroke;
-import javax.swing.ListSelectionModel;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-
-import java.awt.GridBagLayout;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Color;
-import java.awt.HeadlessException;
-import java.awt.Toolkit;
-
-import javax.swing.JButton;
-import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.HeadlessException;
 import java.awt.Insets;
-import javax.swing.JToolBar;
-import javax.swing.JToggleButton;
-
-
+import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.Transferable;
@@ -66,39 +33,34 @@ import java.util.List;
 import java.util.UUID;
 import java.util.WeakHashMap;
 
-import javax.swing.SwingConstants;
-
-import workcraft.editor.BasicEditable;
-import workcraft.editor.BoundingBox;
-import workcraft.editor.ComponentHotkey;
-import workcraft.editor.ComponentWrapper;
-import workcraft.editor.EditableConnection;
-import workcraft.editor.Editor;
-import workcraft.editor.EditorPane;
-import workcraft.editor.GroupNode;
-import workcraft.editor.ModelWrapper;
-import workcraft.editor.EditableNode;
-import workcraft.editor.PropertyEditable;
-import workcraft.editor.PropertyEditor;
-import workcraft.editor.PropertyEditorTable;
-import workcraft.editor.PropertyEditorTableModel;
-import workcraft.editor.TransferableDocumentFragment;
-import workcraft.editor.TreeDragSource;
-import workcraft.editor.colorcell.ColorCellRenderer;
-import workcraft.propertyeditor.EnumWrapper;
-import workcraft.util.Colorf;
-import workcraft.util.Mat4x4;
-import workcraft.util.Vec2;
-import workcraft.visual.Drawable;
-import workcraft.visual.SVGPainter;
-
-import javax.swing.JCheckBox;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
+import javax.swing.JTree;
+import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.JSlider;
-import javax.swing.JLabel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -113,10 +75,27 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.swing.WindowConstants;
-import javax.swing.JTable;
-import java.awt.Rectangle;
-import java.awt.BorderLayout;
+import workcraft.editor.BasicEditable;
+import workcraft.editor.BoundingBox;
+import workcraft.editor.ComponentHotkey;
+import workcraft.editor.ComponentWrapper;
+import workcraft.editor.EditableConnection;
+import workcraft.editor.Editor;
+import workcraft.editor.EditorPane;
+import workcraft.editor.GroupNode;
+import workcraft.editor.ModelWrapper;
+import workcraft.editor.PropertyEditable;
+import workcraft.editor.PropertyEditor;
+import workcraft.editor.PropertyEditorTable;
+import workcraft.editor.PropertyEditorTableModel;
+import workcraft.editor.TransferableDocumentFragment;
+import workcraft.editor.TreeDragSource;
+import workcraft.editor.colorcell.ColorCellRenderer;
+import workcraft.propertyeditor.EnumWrapper;
+import workcraft.util.Colorf;
+import workcraft.util.Mat4x4;
+import workcraft.util.Vec2;
+import workcraft.visual.SVGPainter;
 
 public class JavaFrontend extends JFrame implements Editor, PropertyEditor, TableModelListener, ClipboardOwner {
 
@@ -2103,7 +2082,14 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			server.python.set("_loading", true);
 			doc.loadStart();
 
-
+			
+			try {
+				// load model related parameters
+				doc.fromXmlDom(d);
+			} catch (DuplicateIdException e1) {
+				e1.printStackTrace();
+			}
+			
 			nl = xmldoc.getElementsByTagName("editable");
 			Element re = (Element)nl.item(0);
 
@@ -2120,6 +2106,8 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 				else
 					System.err.println("Invalid file format: invalid root group element (id="+re.getAttribute("id")+"; class="+ GroupNode.class.getName() +")");
 
+			
+			
 			nl = xmldoc.getElementsByTagName("editable-connection");
 			for (int i=0; i<nl.getLength(); i++ ) {
 				Element e = (Element)nl.item(i);

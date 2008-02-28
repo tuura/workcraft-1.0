@@ -35,7 +35,9 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 	private String label = "";
 	public boolean selected = false;
 	protected Document ownerDocument = null;
+	
 	protected Colorf labelColor = new Colorf (0.0f, 0.0f, 0.0f, 1.0f);
+	
 	public boolean highlight = false;
 	
 	
@@ -50,6 +52,11 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		return (labelOrder==0)?-0.05f:0.025f;
 	}
 
+	// wrapper for automated colour selection at child classes
+	protected Colorf getLabelColor() {
+		return labelColor;
+	}
+	
 	protected Boolean getIsShorthandNotation() {
 		PetriModel pm = (PetriModel) this.getOwnerDocument();
 		Boolean isShorthandNotation = false;
@@ -332,7 +339,7 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		Vec2 v2 = superbb.getUpperRight();
 		Vec2 center;
 		
-		p.setTextColor(labelColor);
+		p.setTextColor(getLabelColor());
 		
 		PyObject po;
 		if (server != null) 
@@ -365,6 +372,10 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		//		transform.getLocalToViewMatrix().transform(center);
 				p.drawString(id, center, 0.05f, TextAlign.CENTER);
 			}
+	}
+	
+	public void dblClick() {
+		// qq
 	}
 
 	public void setOwnerDocument(Document ownerDocument) {

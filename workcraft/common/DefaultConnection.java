@@ -3,15 +3,13 @@ package workcraft.common;
 import java.util.LinkedList;
 import java.util.List;
 
-
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DocumentBase;
 import workcraft.editor.BasicEditable;
-import workcraft.editor.EditableConnection;
 import workcraft.editor.EditableAnchor;
-import workcraft.gate.Input;
+import workcraft.editor.EditableConnection;
 import workcraft.util.Colorf;
 import workcraft.util.Mat4x4;
 import workcraft.util.Vec2;
@@ -42,7 +40,12 @@ public class DefaultConnection extends EditableConnection  {
 
 	public enum Type { straightConnection, polylineConnection, bezierConnection };
 
-	public boolean drawArrow = true;
+	
+	// drawArrow == null means it should be automatic, depending on situation
+	// i.e., no arrow for incoming connection of Petri net place with
+	// exactly one incoming connection, one outgoing connection and short-hand notation on
+	public Boolean drawArrow = true;
+	
 	public Type connectionType = Type.straightConnection;
 
 //	public Vec2 firstFixedDir = null;
@@ -658,7 +661,7 @@ public class DefaultConnection extends EditableConnection  {
 	}
 
 	public Boolean isDrawArrow() {
-		return drawArrow;
+		return (drawArrow != null)?drawArrow:false;
 	}
 
 	public void setDrawArrow(Boolean drawArrow) {

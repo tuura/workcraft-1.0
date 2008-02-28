@@ -25,6 +25,7 @@ public abstract class DocumentBase implements Document {
 	protected EditorPane editor = null;
 	
 	protected Boolean loading = false;
+	
 	protected Boolean showGrid = true;
 	protected Boolean showLabels = true;
 	protected Boolean showIDs = true;
@@ -56,6 +57,9 @@ public abstract class DocumentBase implements Document {
 		loading = true;
 	}
 	
+	public boolean isLoading() {
+		return loading;
+	}
 	
 	public void bind(WorkCraftServer server) {
 		this.server = server;
@@ -117,7 +121,7 @@ public abstract class DocumentBase implements Document {
 		return list;
 	}
 
-	public void fromXmlDom(Element element)  {
+	public void fromXmlDom(Element element){
 	/*	String id = e.getAttribute("id");
 		label = e.getAttribute("label");
 		NodeList nl = e.getElementsByTagName("transform");

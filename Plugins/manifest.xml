@@ -37,9 +37,14 @@
 	
   <class name="workcraft.chetri.ChetriModel"/>
 	<class name="workcraft.chetri.EditableChetriTransition"/>
-	<class name="workcraft.chetri.EditableChetriPlace"/>	
+	<class name="workcraft.chetri.EditableChetriPlace"/><class
+		name="workcraft.stg.STGModel">
+</class>
+	<class name="workcraft.stg.EditableSTGPlace"></class>
+	<class name="workcraft.stg.EditableSTGTransition"></class>
+	<class name="workcraft.stg.STGDotGSaver"></class>
 
- <class name="workcraft.sdfs.SDFSCriticalCycleAnalyzer"/>
+	<class name="workcraft.sdfs.SDFSCriticalCycleAnalyzer"/>
  <class name="workcraft.sdfs.ASDFSMapper"/>
   <class name="workcraft.sdfs.SDFS2MGMapper"/>
   

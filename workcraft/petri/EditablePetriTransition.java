@@ -1,6 +1,7 @@
 package workcraft.petri;
 
 
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.UUID;
@@ -23,6 +24,8 @@ import workcraft.visual.ShapeMode;
 public class EditablePetriTransition extends BasicEditable {
 	public static final UUID _modeluuid = UUID.fromString("65f89260-641d-11db-bd13-0800200c9a66");
 	public static final String _displayname = "Transition";
+	public static final String _hotkey = "t";
+	public static final int _hotkeyvk = KeyEvent.VK_T;
 	//private static VertexBuffer geometry = null;
 
 	private LinkedList<EditablePetriPlace> out;
@@ -149,6 +152,7 @@ public class EditablePetriTransition extends BasicEditable {
 		// TODO Auto-generated method stub
 
 	}
+
 	public void fromXmlDom(Element element) throws DuplicateIdException {
 //		NodeList nl = element.getElementsByTagName("transition");
 //		Element te = (Element) nl.item(0);

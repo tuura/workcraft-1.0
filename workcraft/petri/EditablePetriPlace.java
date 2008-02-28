@@ -1,5 +1,6 @@
 package workcraft.petri;
 
+import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -22,6 +23,8 @@ import workcraft.visual.TextAlign;
 public class EditablePetriPlace extends BasicEditable {
 	public static final UUID _modeluuid = UUID.fromString("65f89260-641d-11db-bd13-0800200c9a66");
 	public static final String _displayname = "Place";
+	public static final String _hotkey = "p";
+	public static final int _hotkeyvk = KeyEvent.VK_P;
 
 	private static Colorf placeColor = new Colorf(1.0f, 1.0f, 1.0f, 1.0f);
 	private static Colorf selectedPlaceColor = new Colorf(1.0f, 0.9f, 0.9f, 1.0f);
@@ -35,6 +38,14 @@ public class EditablePetriPlace extends BasicEditable {
 
 	private LinkedList<EditablePetriTransition> out;
 	private LinkedList<EditablePetriTransition> in;
+	
+	public void dblClick() {
+		if (getTokens()==0) {
+			setTokens(1);
+		} else
+			setTokens(0);
+			
+	}
 	
 	public LinkedList<EditablePetriTransition> getOut() {
 		return (LinkedList<EditablePetriTransition>)out.clone();
