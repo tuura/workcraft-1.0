@@ -66,12 +66,39 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 		list.add("int,Forward reset delay,getFwdResetDelay,setFwdResetDelay");
 		list.add("int,Backward eval delay,getBackEvalDelay,setBackEvalDelay");
 		list.add("int,Backward reset delay,getBackResetDelay,setBackResetDelay");
+		list.add("bool,FW enabled,getForwardState_ed,setForwardState");
+		list.add("bool,BW enabled,getBackwardState_ed,setBackwardState");
 		list.add("str,Fwd Eval,getFwdEvalFunc,setFwdEvalFunc");
 		list.add("str,Back Eval,getBackEvalFunc,setBackEvalFunc");
 		list.add("str,Fwd Reset,getFwdResetFunc,setFwdResetFunc");
 		list.add("str,Back Reset,getBackResetFunc,setBackResetFunc");
 		return list;
 	}
+	
+	public void setForwardState(Boolean state) {
+		if (state)
+			this.forward_state = LogicState.EVALUATED;
+		else
+			this.forward_state = LogicState.RESET;
+	}
+	
+	public void setBackwardState(Boolean state) {
+		if (state)
+			this.backward_state = LogicState.EVALUATED;
+		else
+			this.backward_state = LogicState.RESET;
+		
+	}
+	
+	public Boolean getBackwardState_ed() {
+		return (backward_state == LogicState.EVALUATED);		
+	}
+
+	public Boolean getForwardState_ed() {
+		return (forward_state == LogicState.EVALUATED);		
+	}
+
+	
 
 	public SDFSLogic2Way(BasicEditable parent)  throws UnsupportedComponentException {
 		super(parent);

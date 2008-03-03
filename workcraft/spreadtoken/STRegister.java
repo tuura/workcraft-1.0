@@ -16,6 +16,7 @@ import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.editor.BasicEditable;
 import workcraft.sdfs.RegisterState;
+import workcraft.sdfs.SDFSModelBase;
 import workcraft.sdfs.SDFSNode;
 import workcraft.sdfs.SDFSRegisterBase;
 import workcraft.util.Colorf;
@@ -28,9 +29,8 @@ import workcraft.visual.ShapeMode;
 
 public class STRegister extends SDFSRegisterBase   {
 	public static final UUID _modeluuid = UUID.fromString("a57b3350-73d3-11db-9fe1-0800200c9a66");
-	public static final String _displayname = "Register";
-	public static final String _hotkey = "q";
-	public static final int  _hotkeyvk = KeyEvent.VK_Q;
+	public static final UUID[] _modeluuidex = new UUID[] {UUID.fromString("aab78c50-e6bf-11dc-95ff-0800200c9a66")};
+	public static final String _displayname = "Spreadtoken Register";
 
 	private static Colorf token_color = new Colorf (0.0f, 0.0f, 0.0f, 1.0f);
 	private boolean marked;
@@ -143,7 +143,7 @@ public class STRegister extends SDFSRegisterBase   {
 
 	public boolean simTick(int time_ms) {
 		WorkCraftServer server = ownerDocument.getServer();
-		STModel doc = (STModel)ownerDocument;
+		SDFSModelBase doc = (SDFSModelBase)ownerDocument;
 		
 		switch (state) {
 		case ENABLED:

@@ -1,0 +1,51 @@
+<mapping sourceUuid="aab78c50-e6bf-11dc-95ff-0800200c9a66">
+	<expansion sourceClass="workcraft.spreadtoken.STRegister">
+		<cycle suffix="mrk" initializer="isMarked" set="getMarkFunc" reset="getUnmarkFunc"/>
+		<cycle suffix="enb" initializer="isEnabled" set="getEnableFunc" reset="getDisableFunc"/>
+	</expansion>
+	<expansion sourceClass="workcraft.spreadtoken.STLogic">
+		<cycle suffix="evl" initializer="isEvaluated" set="getEvalFunc" reset="getResetFunc"/>
+	</expansion>
+
+	<expansion sourceClass="workcraft.counterflow.CFRegister">
+		<cycle suffix="or" initializer="isOrMarked" set="getOrMarkFunc" reset="getOrUnmarkFunc"/>
+		<cycle suffix="fe" initializer="isForwardEnabled" set="getFwdEnableFunc" reset="getFwdDisableFunc"/>
+		<cycle suffix="and" initializer="isAndMarked" set="getAndMarkFunc" reset="getAndUnmarkFunc"/>
+		<cycle suffix="be" initializer="isBackwardEnabled" set="getBackEnableFunc" reset="getBackDisableFunc"/>
+	</expansion>
+	<expansion sourceClass="workcraft.counterflow.CFLogic">
+		<cycle suffix="fe" initializer="isForwardEvaluated" set="getFwdEvalFunc" reset="getFwdResetFunc"/>
+		<cycle suffix="be" initializer="isBackwardEvaluated" set="getBackEvalFunc" reset="getBackResetFunc"/>
+	</expansion>
+
+	<expansion sourceClass="workcraft.hybridsdfs.ST2CFRegister">
+		<cycle suffix="mrk" initializer="isMarked" set="getMarkFunc" reset="getUnmarkFunc"/>
+		<cycle suffix="enb" initializer="isEnabled" set="getEnableFunc" reset="getDisableFunc"/>
+		<cycle suffix="or" initializer="isOrMarked" set="getOrMarkFunc" reset="getOrUnmarkFunc"/>
+		<cycle suffix="fe" initializer="isForwardEnabled" set="getFwdEnableFunc" reset="getFwdDisableFunc"/>
+		<cycle suffix="and" initializer="isAndMarked" set="getAndMarkFunc" reset="getAndUnmarkFunc"/>
+		<cycle suffix="be" initializer="isBackwardEnabled" set="getBackEnableFunc" reset="getBackDisableFunc"/>
+	</expansion>
+
+	<expansion sourceClass="workcraft.hybridsdfs.CF2STRegister">
+		<cycle suffix="mrk" initializer="isMarked" set="getMarkFunc" reset="getUnmarkFunc"/>
+		<cycle suffix="enb" initializer="isEnabled" set="getEnableFunc" reset="getDisableFunc"/>
+		<cycle suffix="or" initializer="isOrMarked" set="getOrMarkFunc" reset="getOrUnmarkFunc"/>
+		<cycle suffix="fe" initializer="isForwardEnabled" set="getFwdEnableFunc" reset="getFwdDisableFunc"/>
+		<cycle suffix="and" initializer="isAndMarked" set="getAndMarkFunc" reset="getAndUnmarkFunc"/>
+		<cycle suffix="be" initializer="isBackwardEnabled" set="getBackEnableFunc" reset="getBackDisableFunc"/>
+	</expansion>                                      
+
+	<predicate token="m" suffix="mrk1"/>
+	<predicate token="re" suffix="enb1"/>
+	<predicate token="e" suffix="evl1"/>
+	<predicate token="r" suffix="evl0"/>
+	<predicate token="am" suffix="and1"/>
+	<predicate token="om" suffix="or1"/>
+	<predicate token="lfe" suffix="fe1"/>
+	<predicate token="lbe" suffix="be1"/>
+	<predicate token="lfr" suffix="fe0"/>
+	<predicate token="lbr" suffix="be0"/>
+	<predicate token="rfe" suffix="fe1"/>
+	<predicate token="rbe" suffix="be1"/>
+</mapping>

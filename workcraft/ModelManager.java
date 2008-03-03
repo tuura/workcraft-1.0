@@ -164,7 +164,15 @@ public class ModelManager {
 	public void addComponent (Class cls) {
 		try
 		{
+			
 			UUID uuid = (UUID)cls.getField("_modeluuid").get(null);
+			UUID[] uuidex = null;
+			try
+			{
+				uuidex = (UUID[])cls.getField("_modeluuidex").get(null);
+			}
+			catch (NoSuchFieldException e) {}
+			
 			String component_name = (String)cls.getField("_displayname").get(null);
 
 			if (uuid_model_map.get(uuid)==null) {
@@ -181,6 +189,24 @@ public class ModelManager {
 			}
 
 			list.add(cls);
+			
+			if (uuidex != null)
+				for (UUID id :uuidex) {
+					if (uuid_model_map.get(id)==null) {
+						System.err.println ("Component "+component_name+"(class "+cls.getName()+") refers to unknown model (id "+id.toString()+"), skipping");
+						;
+					}
+					
+					list = uuid_component_list_map.get(id);
+
+					if (list == null)
+					{
+						list = new LinkedList<Class>();
+						uuid_component_list_map.put(id, list);
+					}
+
+					list.add(cls);
+				}
 
 			System.out.println("\t"+component_name+" added");
 		}

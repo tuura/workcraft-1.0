@@ -10,9 +10,8 @@ import workcraft.sdfs.SDFSLogic2Way;
 
 public class CFLogic extends SDFSLogic2Way  {
 	public static final UUID _modeluuid = UUID.fromString("9df82f00-7aec-11db-9fe1-0800200c9a66");
-	public static final String _displayname = "Combinatorial Logic";
-	public static final String _hotkey = "w";
-	public static final int _hotkeyvk = KeyEvent.VK_W;	
+	public static final UUID[] _modeluuidex = new UUID[] {UUID.fromString("aab78c50-e6bf-11dc-95ff-0800200c9a66")};
+	public static final String _displayname = "Counterflow Logic";
 
 	public CFLogic(BasicEditable parent) throws UnsupportedComponentException {
 		super(parent);
