@@ -48,6 +48,7 @@ public class Vertex extends BasicEditable {
 	private static Colorf passiveVertexOutlineColor = new Colorf(0.6f, 0.6f, 0.6f, 1.0f);
 	private static Colorf selectedVertexOutlineColor = new Colorf(0.5f, 0.0f, 0.0f, 1.0f);
 	private static Colorf userVertexOutlineColor = new Colorf(0.0f, 0.6f, 0.0f, 1.0f);
+	private static Colorf vertexFiredColor = new Colorf(0.3f, 0.3f, 0.5f, 1.0f);
 
 	private Condition condition;
 	
@@ -201,8 +202,11 @@ public class Vertex extends BasicEditable {
 			if (canFire)
 				p.setFillColor(enabledVertexColor);
 			else
+				if (fired)
+					p.setFillColor(vertexFiredColor);
+				else
 				p.setFillColor(vertexColor);
-
+		
 		p.drawCircle(0.04f, null);
 		
 		super.draw(p);
