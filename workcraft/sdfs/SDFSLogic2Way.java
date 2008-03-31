@@ -59,6 +59,9 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 	protected String backEvalFunc;// = "";
 	protected String fwdResetFunc;// = "";
 	protected String backResetFunc;// = "";
+	
+	protected boolean[] funcEdited; 
+	
 
 	public List<String> getEditableProperties() {
 		List<String> list = super.getEditableProperties();
@@ -102,6 +105,9 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 
 	public SDFSLogic2Way(BasicEditable parent)  throws UnsupportedComponentException {
 		super(parent);
+		funcEdited = new boolean[4];
+		for (int i=0; i<4; i++)
+			funcEdited[i] = false;
 		boundingBox.setExtents(new Vec2(-0.05f, -0.05f), new Vec2(0.05f, 0.05f));
 	}
 
@@ -200,6 +206,10 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 		fwdResetFunc = te.getAttribute("fwd-reset-func");
 		backEvalFunc = te.getAttribute("back-eval-func");
 		backResetFunc = te.getAttribute("back-reset-func");
+		
+		for (int i=0; i<4; i++)
+			funcEdited[i] = Boolean.parseBoolean(te.getAttribute("func-edited-"+i));
+		
 		super.fromXmlDom(element);
 	}
 
@@ -215,6 +225,10 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 		ppe.setAttribute("back-eval-func", backEvalFunc);
 		ppe.setAttribute("fwd-reset-func", fwdResetFunc);
 		ppe.setAttribute("back-reset-func", backResetFunc);
+		
+		for (int i=0; i<4; i++)
+			ppe.setAttribute("func-edited-"+i, Boolean.toString(funcEdited[i]));
+		
 		ee.appendChild(ppe);
 		return ee;
 	}
@@ -402,6 +416,7 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 
 	public void setFwdEvalFunc(String fwdEvalFunc) {
 		this.fwdEvalFunc = fwdEvalFunc;
+		funcEdited[0] = true;
 	}
 
 	public String getFwdEvalFunc() {
@@ -410,6 +425,7 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 
 	public void setBackEvalFunc(String backEvalFunc) {
 		this.backEvalFunc = backEvalFunc;
+		funcEdited[1] = true;
 	}
 
 	public String getBackEvalFunc() {
@@ -418,6 +434,7 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 
 	public void setFwdResetFunc(String fwdResetFunc) {
 		this.fwdResetFunc = fwdResetFunc;
+		funcEdited[2] = true;
 	}
 
 	public String getFwdResetFunc() {
@@ -426,10 +443,17 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 
 	public void setBackResetFunc(String backResetFunc) {
 		this.backResetFunc = backResetFunc;
+		funcEdited[3] = true;
 	}
 
 	public String getBackResetFunc() {
 		return backResetFunc;
+	}
+	
+	
+	public void clearFuncEditedFlags() {
+		for (int i=0;i<4;i++)
+			funcEdited[i] = false;
 	}
 
 	@Override

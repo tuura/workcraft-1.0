@@ -57,6 +57,7 @@
   <class name="workcraft.counterflow.CFModel"/>
 	<class name="workcraft.counterflow.CFLogic"/>
 	<class name="workcraft.counterflow.CFRegister"/>
+	<class name="workcraft.counterflow.ClearRuleEditFlags"/>
 	
   <class name="workcraft.antitoken.ATModel"/>
 	<class name="workcraft.antitoken.ATLogic"/>

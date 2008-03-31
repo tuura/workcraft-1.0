@@ -170,6 +170,16 @@ public class CFRegister extends SDFSRegisterBase {
 		orUnmarkFunc = ne.getAttribute("or-unmark-func");
 		andMarkFunc = ne.getAttribute("and-mark-func");
 		andUnmarkFunc = ne.getAttribute("and-unmark-func");
+		
+		if (ne.getAttribute("forward-state").equals("enabled"))
+			forward_state = RegisterState.ENABLED;
+		else
+			forward_state = RegisterState.DISABLED;
+		
+		if (ne.getAttribute("backward-state").equals("enabled"))
+			backward_state = RegisterState.ENABLED;
+		else
+			backward_state = RegisterState.DISABLED;
 
 		super.fromXmlDom(element);		
 	}
@@ -188,6 +198,8 @@ public class CFRegister extends SDFSRegisterBase {
 		ppe.setAttribute("or-unmark-func", orUnmarkFunc);
 		ppe.setAttribute("and-mark-func", andMarkFunc);
 		ppe.setAttribute("and-unmark-func", andUnmarkFunc);
+		ppe.setAttribute("forward-state", (forward_state == RegisterState.ENABLED)?"enabled":"disabled");
+		ppe.setAttribute("backward-state", (backward_state == RegisterState.ENABLED)?"enabled":"disabled");
 		ee.appendChild(ppe);
 		return ee;
 	}
