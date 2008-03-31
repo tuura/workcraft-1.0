@@ -45,7 +45,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 
-public class EditorPane extends GLJPanel implements GLEventListener, DropTargetListener, XmlSerializable {
+public class EditorPane extends GLCanvas implements GLEventListener, DropTargetListener, XmlSerializable {
 	private DropTarget dropTarget;
 	public Grid grid;
 	private ViewState view;
