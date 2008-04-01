@@ -364,11 +364,24 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 
 			public void mousePressed(java.awt.event.MouseEvent e) {
 				if (e.getButton()==MouseEvent.BUTTON3) {
+					
+					Vec2 v = view.WindowToView(e.getX(), e.getY());
+					BasicEditable n = null;
+					if (root!=null)
+						n = root.getChildAt(v); 
+
+					if (document!=null && document.simIsRunning()) {
+						if (n!=null)
+							n.simAction(e.getButton());
+					}
+
+					
 					prev_cursor.x = e.getX();
 					prev_cursor.y = e.getY();
 					pan_drag = true;
 					setCursor(new Cursor(Cursor.MOVE_CURSOR));
 				}
+					
 				if (e.getButton()==MouseEvent.BUTTON1) {
 					Vec2 v = view.WindowToView(e.getX(), e.getY());
 					BasicEditable n = null;
