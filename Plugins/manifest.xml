@@ -53,6 +53,8 @@
   <class name="workcraft.spreadtoken.STModel"/>
 	<class name="workcraft.spreadtoken.STLogic"/>
 	<class name="workcraft.spreadtoken.STRegister"/>
+	<class name="workcraft.spreadtoken.STController"/>	
+		<class name="workcraft.spreadtoken.STPush"/>	
 	
   <class name="workcraft.counterflow.CFModel"/>
 	<class name="workcraft.counterflow.CFLogic"/>

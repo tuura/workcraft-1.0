@@ -25,7 +25,7 @@ import workcraft.sdfs.SDFSRegisterBase;
 
 public class STModel extends SDFSModelBase {
 	public static final UUID _modeluuid = UUID.fromString("a57b3350-73d3-11db-9fe1-0800200c9a66");
-	public static final String _displayname = "SDFS (Spread Token)";
+	public static final String _displayname = "Data Flow  (Spread Token)";
 		
 	public static final String py_eval_function = 
 		"def e(o):\n" +
@@ -47,7 +47,15 @@ public class STModel extends SDFSModelBase {
 		"\treturn o.isEnabled();\n" +
 		"\n";
 	
-		
+
+	public static final String py_controller_functions = 
+		"def cs(o):\n" +
+		"\treturn o.isSel();\n" +
+		"\n" +
+		"def cn(o):\n" +
+		"\treturn o.isNsel();\n" +
+		"\n";
+	
 
 	int t_name_cnt = 0;
 	int p_name_cnt = 0;
@@ -97,7 +105,32 @@ public class STModel extends SDFSModelBase {
 					} catch (DuplicateIdException e) {
 					}
 				}			
-		} else throw new UnsupportedComponentException();
+		} else if (c instanceof STController) {
+			STController p = (STController)c;
+			p.setOwnerDocument(this);
+			registers.add(p);
+			if (auto_name)
+				for (;;) {
+					try {
+						p.setId(getNextPlaceID());
+						break;
+					} catch (DuplicateIdException e) {
+					}
+				}
+		} else if (c instanceof STPush) {
+			STPush p = (STPush)c;
+			p.setOwnerDocument(this);
+			registers.add(p);
+			if (auto_name)
+				for (;;) {
+					try {
+						p.setId(getNextPlaceID());
+						break;
+					} catch (DuplicateIdException e) {
+					}
+				}
+			
+		}else throw new UnsupportedComponentException();
 		
 		super.addComponent(c, auto_name);
 	}
@@ -124,6 +157,7 @@ public class STModel extends SDFSModelBase {
 		) throw new InvalidConnectionException ("Invalid connection (direct place-to-place connections not allowed)");*/
 		STRegister p,pp;
 		STLogic t, tt;
+		STController c1, c2;
 		if (first instanceof STRegister) {
 			if (second instanceof STLogic) {
 				p = (STRegister)first;
@@ -142,7 +176,7 @@ public class STModel extends SDFSModelBase {
 					return con;
 				}
 			}
-		} else {
+		} else if (first instanceof STLogic) {
 			if (second instanceof STRegister) {
 				p = (STRegister)second;
 				t = (STLogic)first;
@@ -160,8 +194,20 @@ public class STModel extends SDFSModelBase {
 					return conn;
 				}
 			}
+		} else if (first instanceof STController) {
+			if (second instanceof STController) {
+				c1 = (STController)first;
+				c2 = (STController)second;
+				DefaultConnection conn = new DefaultConnection(c1, c2);
+				if (c2.addIn(conn) && c1.addOut(conn)) {
+					connections.add(conn);
+					return conn;
+				}
+
+			}
 		}
-		return null;
+		
+		throw new InvalidConnectionException("Cannot connect "+first.getClass().getSimpleName() + " to " + second.getClass().getSimpleName());
 	}
 
 	public void removeConnection(EditableConnection con) throws UnsupportedComponentException {
@@ -202,6 +248,8 @@ public class STModel extends SDFSModelBase {
 		server.python.exec(py_reset_function);
 		server.python.exec(py_marked_function);
 		server.python.exec(py_enabled_function);
+		server.python.exec(py_controller_functions);
+		
 	}
 
 	public EditorPane getEditor() {
