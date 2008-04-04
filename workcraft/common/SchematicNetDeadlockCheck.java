@@ -64,6 +64,8 @@ public class SchematicNetDeadlockCheck implements Tool {
 		try {
 			saver.writeFile("tmp/_net_.g", rd.reduce(mapper.map(server, editor.getDocument())));
 			p.run(new String[] {"util/punf", "-s", "-t", "-p", "tmp/_net_.g"}, ".", "Unfolding report", true);
+			
+		
 			p.run(new String[] {"util/mpsat", "-D", "-f", "tmp/_net_.mci"}, ".", "Model-checking report", true);
 			File f = new File("tmp/_net_.g");
 			f.delete();

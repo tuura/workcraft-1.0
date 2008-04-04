@@ -481,8 +481,10 @@ public class CF2STRegister extends SDFSRegisterBase   {
 		
 		orMarkFunc = expandRule("self !am,self rfe|self rbe,r-preset !am");
 		orUnmarkFunc = expandRule("self am,self !rfe|self !rbe,r-preset am");
-		andMarkFunc = expandRule("self om,self rfe,self rbe");
-		andUnmarkFunc = expandRule("self !om,self !rfe,self !rbe");
+//		andMarkFunc = expandRule("self om,self rfe,self rbe");
+		andMarkFunc = expandRule("self om,self rfe,self rbe,r-preset om");
+//		andUnmarkFunc = expandRule("self !om,self !rfe,self !rbe");
+		andUnmarkFunc = expandRule("self !om,self !rfe,self !rbe,r-preset !om");
 		
 		enableFunc = expandRule("self !m,self om");
 		disableFunc = expandRule("self m,self !om");

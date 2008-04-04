@@ -111,7 +111,7 @@ public class SchematicNetSemimodularityCheck implements Tool {
 			out.print(formula);
 			out.close();
 
-			if (JOptionPane.showConfirmDialog(null, "Enable shortest trace search option (may take a considerably longer time)?", "Confitm", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
+			if (JOptionPane.showConfirmDialog(null, "Enable shortest trace search option (may take a considerably longer time)?", "Confirm", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
 				p.run(new String[] {"util/mpsat", "-F", "-f", "-d", "@tmp/_smodch","tmp/_net_.mci"}, ".", "Model-checking report", false);
 			else
 				p.run(new String[] {"util/mpsat", "-F", "-d", "@tmp/_smodch","tmp/_net_.mci"}, ".", "Model-checking report", false);

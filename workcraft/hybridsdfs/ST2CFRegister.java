@@ -469,8 +469,10 @@ public class ST2CFRegister extends SDFSRegisterBase   {
 		
 		orMarkFunc = expandRule("self !am,self rfe|self rbe,r-postset !am");
 		orUnmarkFunc = expandRule("self am,self !rfe|self !rbe,r-postset am");
-		andMarkFunc = expandRule("self om,self rfe,self rbe");
-		andUnmarkFunc = expandRule("self !om,self !rfe,self !rbe");
+//		andMarkFunc = expandRule("self om,self rfe,self rbe");
+		andMarkFunc = expandRule("self om,self rfe,self rbe,r-postset om");
+//		andUnmarkFunc = expandRule("self !om,self !rfe,self !rbe");
+		andUnmarkFunc = expandRule("self !om,self !rfe,self !rbe,r-postset !om");
 		
 		enableFunc = expandRule("self !m,preset:l e,preset:r m");
 		disableFunc = expandRule("self m,preset:l r,preset:r !m");

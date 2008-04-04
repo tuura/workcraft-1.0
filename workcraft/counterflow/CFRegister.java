@@ -322,13 +322,16 @@ public class CFRegister extends SDFSRegisterBase {
 
 	@Override
 	public void rebuildRuleFunctions() {
+		
 		fwdEnableFunc = expandRule("self !am,preset:l lfe,preset:r om");
 		fwdDisableFunc = expandRule("self am,preset:l lfr,preset:r !om");
 		backEnableFunc = expandRule("self !am,postset:l lbe,postset:r om");
 		backDisableFunc = expandRule("self am,postset:l lbr,postset:r !om");
 		orMarkFunc = expandRule("self !am,self rfe|self rbe,r-preset !am,r-postset !am");
 		orUnmarkFunc = expandRule("self am,self !rfe|self !rbe,r-preset am,r-postset am");
-		andMarkFunc = expandRule("self om,self rfe,self rbe");
+//		andMarkFunc = expandRule("self om,self rfe,self rbe");
+		andMarkFunc = expandRule("self om,self rfe,self rbe,r-preset om,r-postset om");
+//		andUnmarkFunc = expandRule("self !om,self !rfe,self !rbe,r-preset !om,r-postset !om");
 		andUnmarkFunc = expandRule("self !om,self !rfe,self !rbe");
 	}
 
