@@ -155,7 +155,7 @@ public class STGModel extends PetriModel {
 		super.loadEnd();
 		updateTransitionTypes();
 	}
-	
+		
 	public void updateTransitionTypes() {
 		
 		if (isLoading()) return;
