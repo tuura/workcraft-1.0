@@ -227,11 +227,11 @@ public abstract class DynamicElementBase extends SDFSRegisterBase   {
 	public void fromXmlDom(Element element) throws DuplicateIdException {
 		NodeList nl = element.getElementsByTagName("st-register");
 		Element ne = (Element) nl.item(0);
-		setMarked(Boolean.parseBoolean(ne.getAttribute("marked")));
+/*		setMarked(Boolean.parseBoolean(ne.getAttribute("marked")));
 		markFunc = ne.getAttribute("mark-func");
 		unmarkFunc = ne.getAttribute("unmark-func");
 		enableFunc = ne.getAttribute("enable-func");
-		disableFunc = ne.getAttribute("disable-func");
+		disableFunc = ne.getAttribute("disable-func");*/
 		super.fromXmlDom(element);		
 	}
 

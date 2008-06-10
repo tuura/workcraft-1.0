@@ -84,6 +84,7 @@
 	<class name="workcraft.gate.BlackBox"/>
 	
 	<class name="workcraft.gate.ExtractInterface"/>
+	<class name="workcraft.gate.GateSpeedIndependenceCheck"/>
 
   <class name="workcraft.common.PetriNetMapper"/>
   <class name="workcraft.common.SchematicNetDeadlockCheck"/>

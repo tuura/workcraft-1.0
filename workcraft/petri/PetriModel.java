@@ -555,7 +555,7 @@ public class PetriModel extends DocumentBase {
 					
 					String be = addUsedPair(T1, T2, used_pairs);
 					
-					System.out.println("ADDED "+name1+" "+name2 +" common place:"+ P.getId() + " ; clause:" + be);
+					// System.out.println("ADDED "+name1+" "+name2 +" common place:"+ P.getId() + " ; clause:" + be);
 
 					formulaClauses.add(be);
 				}

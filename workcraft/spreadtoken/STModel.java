@@ -25,7 +25,7 @@ import workcraft.sdfs.SDFSRegisterBase;
 
 public class STModel extends SDFSModelBase {
 	public static final UUID _modeluuid = UUID.fromString("a57b3350-73d3-11db-9fe1-0800200c9a66");
-	public static final String _displayname = "Data Flow  (Spread Token)";
+	public static final String _displayname = "SDFS (Spread Token)";
 		
 	public static final String py_eval_function = 
 		"def e(o):\n" +

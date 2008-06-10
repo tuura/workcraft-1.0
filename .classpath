@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="gluegen-rt.jar"/>
 	<classpathentry kind="lib" path="jython.jar"/>
 	<classpathentry kind="lib" path="jogl.jar"/>
+	<classpathentry kind="lib" path="D:/mech/Workcraft/substance.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

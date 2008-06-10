@@ -34,8 +34,6 @@ public class SchematicNetSemimodularityCheck implements Tool {
 			return true;
 		if (modelUuid.compareTo(CFModel._modeluuid)==0)
 			return true;
-		if (modelUuid.compareTo(GateModel._modeluuid)==0)
-			return true;
 		return false;
 	}
 
@@ -68,21 +66,6 @@ public class SchematicNetSemimodularityCheck implements Tool {
 
 		try {
 			PetriModel schematicNet =mapper.map(server, doc);
-
-			if (doc instanceof GateModel) {
-				GateModel gatedoc = (GateModel)doc;
-				File bojo = new File(gatedoc.getActiveInterfacePath());
-				if (bojo.exists()) {
-					PetriModel iface;
-					try {
-						iface = (PetriModel)editor.load(bojo.getAbsolutePath());
-						schematicNet.applyInterface(iface);
-					} catch (DocumentOpenException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-
 			schematicNet = rd.reduce(schematicNet);
 
 

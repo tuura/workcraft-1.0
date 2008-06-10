@@ -22,6 +22,8 @@ import javax.swing.JTree;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -317,6 +319,25 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				try {
+					//JFrame.setDefaultLookAndFeelDecorated(true);  
+					JDialog.setDefaultLookAndFeelDecorated(true);
+					//UIManager.d
+					UIManager.setLookAndFeel("org.jvnet.substance.skin.SubstanceBusinessLookAndFeel"); 
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (UnsupportedLookAndFeelException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+				
 				JavaFrontend thisClass = new JavaFrontend();
 				thisClass.setVisible(true);				
 			}
@@ -1072,6 +1093,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 			editorView = new EditorPane();
 			editorView.setMinimumSize(new Dimension(0, 0));
+			editorView.setBorder(BorderFactory.createLineBorder(Color.black));
 			editorView.setBackground(Color.white);
 		}
 		return editorView;
