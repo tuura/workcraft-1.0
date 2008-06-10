@@ -11,16 +11,14 @@ import java.util.UUID;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import workcraft.DocumentBase;
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
-import workcraft.Document;
-import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;
 import workcraft.common.DefaultSimControls;
 import workcraft.editor.BasicEditable;
-import workcraft.editor.BoundingBox;
 import workcraft.editor.EditableConnection;
 import workcraft.editor.EditorPane;
 import workcraft.util.Vec2;
@@ -190,16 +188,17 @@ public class PetriModel extends DocumentBase {
 	int p_name_cnt = 0;
 
 	private int state = 0;
-	private boolean loading;
+	
+//	private boolean loading;
 
 	SimThread sim_thread = null;
 	public static DefaultSimControls panelSimControls = null;
 
-	LinkedList<EditablePetriPlace> places;
-	LinkedList<EditablePetriTransition> transitions;
-	LinkedList<DefaultConnection> connections;
-
-
+	protected LinkedList<EditablePetriPlace> places;
+	protected LinkedList<EditablePetriTransition> transitions;
+	protected LinkedList<DefaultConnection> connections;
+	
+	private Boolean shorthandNotation = false;
 
 	public PetriModel() {
 		places = new LinkedList<EditablePetriPlace>();
@@ -411,6 +410,14 @@ public class PetriModel extends DocumentBase {
 	public void validate() {
 	}
 
+	public List<String>getEditableProperties()  {
+		
+		List<String> list = super.getEditableProperties(); 
+		list.add("bool,Shorthand notation,getShorthandNotation,setShorthandNotation");
+		
+		return list;
+	}
+	
 	public JPanel getSimulationControls() {
 		if (panelSimControls == null) {
 			panelSimControls = new DefaultSimControls(_modeluuid.toString());
@@ -430,13 +437,14 @@ public class PetriModel extends DocumentBase {
 		return server;
 	}
 
-	public void setLoading(boolean loading) {
-		this.loading = loading;
-	}
+//	SG10022008 : loading is defined in parent, no need to use others
+//	public void setLoading(boolean loading) {
+//		this.loading = loading;
+//	}
 
-	public boolean isLoading() {
-		return loading;
-	}
+//	public boolean isLoading() {
+//		return loading;
+//	}
 
 	public void getComponents(List<BasicEditable> out) {
 		for (BasicEditable n: places)
@@ -445,7 +453,16 @@ public class PetriModel extends DocumentBase {
 			out.add(n);
 	}
 
+	public void getTransitions(List<EditablePetriTransition> out) {
+		for (EditablePetriTransition n: transitions)
+			out.add(n);
+	}
 
+	public void getPlaces(List<EditablePetriPlace> out) {
+		for (EditablePetriPlace n: places)
+			out.add(n);
+	}
+	
 	private boolean isPairUsed(EditablePetriTransition T1, EditablePetriTransition T2,  HashMap<EditablePetriTransition, LinkedList<EditablePetriTransition>> used_pairs) {
 		LinkedList<EditablePetriTransition> lst = null;
 		lst = used_pairs.get(T1);
@@ -714,5 +731,13 @@ public class PetriModel extends DocumentBase {
 				}
 			}
 		} 
-	} 
-} 	
+	}
+	
+	public Boolean getShorthandNotation() {
+		return shorthandNotation;
+	}
+	
+	public void setShorthandNotation(Boolean shorth) {
+		this.shorthandNotation = shorth;
+	}
+	} 	

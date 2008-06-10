@@ -8,13 +8,13 @@ import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.XmlSerializable;
+import workcraft.petri.PetriModel;
 import workcraft.util.Colorf;
 import workcraft.util.Mat4x4;
 import workcraft.util.Vec2;
 import workcraft.visual.Painter;
 import workcraft.visual.TextAlign;
 
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,8 +35,11 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 	private String label = "";
 	public boolean selected = false;
 	protected Document ownerDocument = null;
+	
 	protected Colorf labelColor = new Colorf (0.0f, 0.0f, 0.0f, 1.0f);
+	
 	public boolean highlight = false;
+	
 	
 	Hashtable<String, String> customProperties = new Hashtable<String, String>();
 	
@@ -44,7 +47,16 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 
 	public LinkedList<EditableConnection> connections = new LinkedList<EditableConnection>();
 	protected int rotate = 0;
+	
+	protected float getLabelYOffset() {
+		return (labelOrder==0)?-0.05f:0.025f;
+	}
 
+	// wrapper for automated colour selection at child classes
+	protected Colorf getLabelColor() {
+		return labelColor;
+	}
+	
 	public void setId(String id) throws DuplicateIdException {
 		if (this.id.equals(id))
 			return;
@@ -314,12 +326,12 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		superbb.addPoint(ur);
 		superbb.addPoint(lr);
 		
-				
+		
 		Vec2 v1 = superbb.getLowerLeft();
 		Vec2 v2 = superbb.getUpperRight();
 		Vec2 center;
-
-		p.setTextColor(labelColor);
+		
+		p.setTextColor(getLabelColor());
 		
 		PyObject po;
 		if (server != null) 
@@ -330,9 +342,10 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		if ((server == null) || (po != null && po.__nonzero__()))
 			if (!label.equals("")) {
 				if (labelOrder == 0)
-					center = new Vec2(0.5f*(v1.getX()+v2.getX()), v1.getY()-0.05f );
+					center = new Vec2(0.5f*(v1.getX()+v2.getX()), v1.getY() + getLabelYOffset() );
 				else
-					center = new Vec2( (v1.getX()+v2.getX())*0.5f , v2.getY()+0.025f );
+					center = new Vec2( (v1.getX()+v2.getX())*0.5f , v2.getY() + getLabelYOffset() );
+				
 		//		transform.getLocalToViewMatrix().transform(center);
 				p.drawString(label, center, 0.05f, TextAlign.CENTER);
 			}
@@ -351,6 +364,10 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		//		transform.getLocalToViewMatrix().transform(center);
 				p.drawString(id, center, 0.05f, TextAlign.CENTER);
 			}
+	}
+	
+	public void dblClick() {
+		// qq
 	}
 
 	public void setOwnerDocument(Document ownerDocument) {

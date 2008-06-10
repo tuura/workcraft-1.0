@@ -85,6 +85,11 @@
 	
 	<class name="workcraft.gate.ExtractInterface"/>
 	<class name="workcraft.gate.GateSpeedIndependenceCheck"/>
+	
+  <class name="workcraft.stg.STGModel"/>	
+    <class name="workcraft.stg.STGDotGSaver"/>	
+     <class name="workcraft.stg.EditableSTGPlace"/>	
+    <class name="workcraft.stg.EditableSTGTransition"/>	
 
   <class name="workcraft.common.PetriNetMapper"/>
   <class name="workcraft.common.SchematicNetDeadlockCheck"/>
