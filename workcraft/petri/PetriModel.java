@@ -500,7 +500,8 @@ public class PetriModel extends ModelBase {
 					EditablePetriTransition T2 = tlst.get(j);
 					if (T1.getCustomProperty("interface")!=null && T2.getCustomProperty("interface")!=null) {
 						continue;
-					}
+					}					
+					
 					if(isPairUsed(T1, T2, used_pairs))
 						continue;
 					if(T1.getOut().contains(P) && T2.getOut().contains(P))
@@ -526,12 +527,37 @@ public class PetriModel extends ModelBase {
 						name2 = name2.substring(0,k+1);
 					}					
 					
-					
-					//System.out.println (name1+ ","+name2);
-					
 					if (name1.equals(name2))
 						continue;
 					
+					// System.out.println (name1+ ","+name2);
+					
+					// !!!! ADDED BY CHEETAH TO EXCLUDE PAIRS OF TRANSITIONS FROM THE SAME MULTI-OUTPUT GATE
+					if (name1.indexOf("_sig_") > 1 && name2.indexOf("_sig_") > 1)
+					{
+						String z1 = name1, z2 = name2;
+						
+						z1 = z1.substring(0, z1.indexOf("_sig_"));
+						z2 = z2.substring(0, z2.indexOf("_sig_"));
+						
+						char l1 = z1.charAt(z1.length() - 1);
+						char l2 = z2.charAt(z2.length() - 1);
+						
+						if (l1 >= 'A' && l1 <= 'Z' && l2 >= 'A' && l2 <= 'Z')
+						{
+							z1 = z1.substring(0, z1.length() - 1);
+							z2 = z2.substring(0, z2.length() - 1);
+							
+							l1 = z1.charAt(z1.length() - 1);
+							l2 = z2.charAt(z2.length() - 1);
+							
+							if (l1 == '_' && z1.equals(z2))
+							{
+								// System.out.println ("Skipped as a multioutput pair!");
+								continue;
+							}
+						}
+					}
 					
 					//System.out.println(P.getId()); 
 					

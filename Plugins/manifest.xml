@@ -10,6 +10,7 @@
 	<class name="workcraft.petri.PetriLabelSaver"/>	
 	<class name="workcraft.petri.PetriDotGSaver"/>
 	<class name="workcraft.petri.PetriDotGSaver2"/>
+	<class name="workcraft.petri.PetriDotGSaver3"/>
 	<class name="workcraft.petri.PetriDotPNTSaver"/>
 	<class name="workcraft.petri.PetriKiller"/>
 	<class name="workcraft.petri.PetriUnfolder"/>
@@ -77,6 +78,8 @@
 	<class name="workcraft.gate.Input"/>
 	<class name="workcraft.gate.Output"/>
 	<class name="workcraft.gate.BlackBox"/>
+	
+	<class name="workcraft.gate.MEElement"/>
 	
 	<class name="workcraft.gate.ExtractInterface"/>
 

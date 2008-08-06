@@ -24,6 +24,12 @@
     <expansion sourceClass="workcraft.gate.Output">
          <cycle suffix="sig" initializer="isSet" set="getSetFunction" reset="getResetFunction" plusTag="getPlusTag" minusTag="getMinusTag"/>
     </expansion>
+
+    <expansion sourceClass="workcraft.gate.MEElement">
+         <cycle suffix="A_sig" initializer="isSetA" set="getSetFunctionA" reset="getResetFunctionA" plusTag="getPlusTag" minusTag="getMinusTag"/>
+         <cycle suffix="B_sig" initializer="isSetB" set="getSetFunctionB" reset="getResetFunctionB" plusTag="getPlusTag" minusTag="getMinusTag"/>
+    </expansion>
+
     <predicate token="s" suffix="sig1"/>
     <predicate token="r" suffix="sig0"/>
 </mapping>

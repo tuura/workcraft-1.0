@@ -108,7 +108,7 @@ public class EditablePetriPlace extends BasicEditable {
 		p.setShapeMode(ShapeMode.FILL);
 
 		if (tiny)
-			p.scale(0.4f, 0.4f);
+			p.scale(0.5f, 0.5f);
 		
 		if (selected)
 			p.setFillColor(selectedPlaceOutlineColor);
@@ -229,6 +229,8 @@ public class EditablePetriPlace extends BasicEditable {
 
 	public void setTiny(Boolean tiny) {
 		this.tiny = tiny;
+//		if (tiny) boundingBox.setExtents(new Vec2(-0.05f * 0.6f, -0.05f * 0.6f), new Vec2(0.05f * 0.6f, 0.05f * 0.6f));
+//		else boundingBox.setExtents(new Vec2(-0.05f, -0.05f), new Vec2(0.05f, 0.05f));
 	}
 
 }

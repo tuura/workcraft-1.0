@@ -226,6 +226,14 @@ public class GateContact extends BasicEditable {
 			}
 			else {
 				s = srcContact.getParentGate().getId();
+				
+				if(srcContact.getParentGate().out.size() > 1)
+				{
+					int k = 0;
+					for(k = 0; k < srcContact.getParentGate().out.size(); k++) if (srcContact == srcContact.getParentGate().out.get(k)) break;
+					s += "_" + (char)('A' + k);
+				}				
+				
 				s = (srcContact.getInvertSignal())?("s("+s+")"):("s("+s+")");				
 				//s = (srcContact.getInvertSignal())?("r("+s+")"):("s("+s+")");
 			}
