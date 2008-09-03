@@ -11,7 +11,7 @@
 	<class name="workcraft.petri.PetriDotGSaver"/>
 	<class name="workcraft.petri.PetriDotGSaver2"/>
 	<class name="workcraft.petri.PetriDotPNTSaver"/>
-	<class name="workcraft.petri.PetriKiller"/>
+	<class name="workcraft.petri.PetriKiller"></class>
 	<class name="workcraft.petri.PetriUnfolder"/>
 	<class name="workcraft.petri.PetriMPSAT"/>	
 	<class name="workcraft.petri.ReadArcsComplexityReduction"/>
@@ -43,6 +43,7 @@
 	<class name="workcraft.stg.EditableSTGPlace"></class>
 	<class name="workcraft.stg.EditableSTGTransition"></class>
 	<class name="workcraft.stg.STGDotGSaver"></class>
+	<class name="workcraft.stg.STGDotGLoader"></class>
 
 	<class name="workcraft.sdfs.SDFSCriticalCycleAnalyzer"/>
  <class name="workcraft.sdfs.ASDFSMapper"/>

@@ -23,6 +23,8 @@ public class STGModel extends PetriModel {
 	public static final UUID _modeluuid = UUID.fromString("10418180-D733-11DC-A679-A32656D89593");
 	public static final String _displayname = "Petri Net (STG)";
 	
+	public static final String signalPattern = "([a-zA-Z\\_][a-zA-Z\\_0-9]*)(\\+|\\*|\\-|~|\\^[01])?(\\/[0-9]+)?";
+	
 	protected String inputList = "";
 	protected String outputList = "";
 
@@ -35,7 +37,7 @@ public class STGModel extends PetriModel {
 		getTransitions(cmp);
 		
 		HashSet<String> s= new HashSet<String>();
-		Pattern p = Pattern.compile("([a-zA-Z\\_][a-zA-Z\\_0-9]+)[\\+\\-~]?(\\/[0-9]+)?$");
+		Pattern p = Pattern.compile(signalPattern);
 		for (BasicEditable be: cmp) {
 			Matcher m = p.matcher(be.getLabel());
 			if (m.matches()&&!s.contains(m.group(1))) s.add(m.group(1));
@@ -61,7 +63,7 @@ public class STGModel extends PetriModel {
 	
 	public EditableConnection createConnection(BasicEditable first, BasicEditable second) throws InvalidConnectionException {
 		if (first == second)
-			throw new InvalidConnectionException ("Can't connect to self!");
+			throw new InvalidConnectionException ("Can't connect to it self!");
 
 		if (first instanceof EditableSTGTransition && second instanceof EditableSTGTransition) {
 			try {
@@ -160,38 +162,43 @@ public class STGModel extends PetriModel {
 		
 		if (isLoading()) return;
 		
-		if (inputList=="" && outputList=="") return;
+		//if (inputList=="" && outputList=="") return;
 		
 		String [] inputs = inputList.split(" ");
 		String [] outputs = outputList.split(" ");
 		
 		// set all to internals, if no name, then it is dummy
 		for (EditablePetriTransition t : transitions) {
-			if (t.getLabel()=="") {
+			if (t.getLabel().equals("")||t.getLabel().equals("dummy")) {
 				((EditableSTGTransition)t).setTransitionType(3);
-			} else
+			} else {
 				((EditableSTGTransition)t).setTransitionType(0);
+			}
 		}
 		
-		String pat = "[\\+\\-~]?(\\/[0-9]+)?$";
+		String pat = "(\\+|\\*|\\-|~|\\^[01])?(\\/[0-9]+)?$";
 		
 		// set outputs
 		for (String o : outputs) {
-			Pattern p = Pattern.compile(o+pat);
-			for (EditablePetriTransition t : transitions) {
-				Matcher m = p.matcher(t.getLabel());
-				if (m.matches())
-					((EditableSTGTransition)t).setTransitionType(2);
+			if (o!="") {
+				Pattern p = Pattern.compile(o+pat);
+				for (EditablePetriTransition t : transitions) {
+					Matcher m = p.matcher(t.getLabel());
+					if (m.matches())
+						((EditableSTGTransition)t).setTransitionType(2);
+				}
 			}
 		}
 
 		// set inputs
 		for (String i : inputs) {
-			Pattern p = Pattern.compile(i+pat);
-			for (EditablePetriTransition t : transitions) {
-				Matcher m = p.matcher(t.getLabel());
-				if (m.matches())
-					((EditableSTGTransition)t).setTransitionType(1);
+			if (i!="") {
+				Pattern p = Pattern.compile(i+pat);
+				for (EditablePetriTransition t : transitions) {
+					Matcher m = p.matcher(t.getLabel());
+					if (m.matches())
+						((EditableSTGTransition)t).setTransitionType(1);
+				}
 			}
 		}
 

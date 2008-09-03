@@ -66,7 +66,7 @@ public class STGDotGSaver implements Tool {
 		
 		doc.getTransitions(transitions);
 		
-		Pattern p = Pattern.compile("([a-zA-Z\\_][a-zA-Z\\_0-9]*)([\\+\\-~]?)(\\/[0-9]+)?$");
+		Pattern p = Pattern.compile(STGModel.signalPattern);
 		String l;
 		
 		LinkedList<BasicEditable> labeled = new LinkedList<BasicEditable>();
@@ -78,7 +78,7 @@ public class STGDotGSaver implements Tool {
 			Matcher m = p.matcher(l); // is label?
 			
 			// work with all transitions except dummies
-			if (l!="") {
+			if (!l.equals("")&&!l.equals("dummy")) {
 				int t = ((EditableSTGTransition)be).getTransitionType();
 				if (m.find()) {
 					switch (t) {
@@ -96,7 +96,7 @@ public class STGDotGSaver implements Tool {
 						System.err.println("Unexpected dummy transition found: "+l);
 					}
 				} else {
-					System.err.println("Transition "+l+" is not recognized!");
+					System.err.println("Transition '"+l+"' is not recognized!");
 				}
 			}
 		}
@@ -105,7 +105,7 @@ public class STGDotGSaver implements Tool {
 		int dnum=0;
 //		out.print("# Dummy names: ");
 		for (BasicEditable be: transitions) {
-			if (be.getLabel().equals("")) {
+			if (be.getLabel().equals("") || be.getLabel().equals("dummy")) {
 				// get a new dummy label available
 				l="";
 				while (l.equals("")) {
@@ -129,7 +129,7 @@ public class STGDotGSaver implements Tool {
 		// debug place names
 //		out.print("# Place names: ");
 		for (BasicEditable be: places) {
-			if (be.getLabel().equals("")) {
+			if (be.getLabel().equals("") ) {
 				// get a new place label available
 				l="";
 				while (l.equals("")) {
@@ -179,8 +179,10 @@ public class STGDotGSaver implements Tool {
 			for (String s: ts) ts2+=" "+s;
 			connections2.add(c.getLabel()+ts2);
 
-			for (int j=0;j<c.getTokens();j++) {
+			if (c.getTokens()>0) {
 				tokens+=" "+c.getLabel();
+				if (c.getTokens()>1)
+					tokens+="="+c.getTokens();
 			}
 		}
 		
@@ -226,9 +228,18 @@ public class STGDotGSaver implements Tool {
 		out.println(".end");
 		out.close();
 		
+
 		// return empty labels
 		for (BasicEditable be: labeled) {
+//			if (be instanceof EditableSTGPlace) continue;
+		
 			be.setLabel("");
+/*			if (be instanceof EditableSTGTransition) {
+				int t = ((EditableSTGTransition)be).getTransitionType(); 
+				if (t==3) {
+					be.setLabel("dummy");
+				}
+			}*/
 		}
 	}
 
@@ -274,7 +285,7 @@ public class STGDotGSaver implements Tool {
 				{
 					JOptionPane.showMessageDialog(null, "File could not be opened for writing.");
 					return;
-				}					
+				}
 			}
 		}
 	}
