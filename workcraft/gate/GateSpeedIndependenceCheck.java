@@ -27,6 +27,7 @@ import workcraft.petri.PetriDotGSaver;
 import workcraft.petri.PetriModel;
 import workcraft.petri.ReadArcsComplexityReduction;
 import workcraft.spreadtoken.STModel;
+import workcraft.stg.STGModel;
 
 public class GateSpeedIndependenceCheck implements Tool {
 	public static final String _modeluuid = "6f704a28-e691-11db-8314-0800200c9a66";
@@ -67,9 +68,9 @@ public class GateSpeedIndependenceCheck implements Tool {
 		File env = new File(doc.getActiveInterfacePath());
 		
 		if (env.exists()) {
-			PetriModel iface;
+			STGModel iface;
 			try {
-				iface = (PetriModel)editor.load(env.getAbsolutePath());
+				iface = (STGModel)editor.load(env.getAbsolutePath());
 				schematicNet.applyInterface(iface);
 			} catch (DocumentOpenException e) {
 				JOptionPane.showMessageDialog(frame, "The environment STG file \"" + env.getPath() +"\" could not be opened ("+e.getMessage()+"). The interface will not be applied.", "Warning", JOptionPane.WARNING_MESSAGE);

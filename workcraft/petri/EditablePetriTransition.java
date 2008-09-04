@@ -1,37 +1,32 @@
 package workcraft.petri;
 
+
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
 
-import javax.media.opengl.GL;
-
-
+import org.python.core.PyObject;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.Document;
 import workcraft.UnsupportedComponentException;
+import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;
 import workcraft.editor.BasicEditable;
-import workcraft.editor.EditableConnection;
+import workcraft.editor.BoundingBox;
 import workcraft.util.Colorf;
 import workcraft.util.Mat4x4;
 import workcraft.util.Vec2;
-import workcraft.visual.JOGLPainter;
 import workcraft.visual.Painter;
 import workcraft.visual.ShapeMode;
-import workcraft.visual.VertexBuffer;
-import workcraft.visual.VertexFormat;
-import workcraft.visual.PrimitiveType;
-import workcraft.visual.VertexFormatException;
 
 public class EditablePetriTransition extends BasicEditable {
 	public static final UUID _modeluuid = UUID.fromString("65f89260-641d-11db-bd13-0800200c9a66");
 	public static final String _displayname = "Transition";
-	private static VertexBuffer geometry = null;
+	public static final String _hotkey = "t";
+	public static final int _hotkeyvk = KeyEvent.VK_T;
+	//private static VertexBuffer geometry = null;
 
 	private LinkedList<EditablePetriPlace> out;
 	private LinkedList<EditablePetriPlace> in;
@@ -46,6 +41,41 @@ public class EditablePetriTransition extends BasicEditable {
 	private static Colorf selectedTransitionOutlineColor = new Colorf(0.5f, 0.0f, 0.0f, 1.0f);
 	private static Colorf userTransitionOutlineColor = new Colorf(0.0f, 0.6f, 0.0f, 1.0f);
 	
+	public boolean hits(Vec2 pointInViewSpace) {
+		
+		Vec2 v = new Vec2(pointInViewSpace);
+		transform.getViewToLocalMatrix().transform(v);
+		if (!getIsDrawBorders()) {
+			float mx = Math.max(Math.abs(v.getX()),Math.abs(v.getY()));
+			return mx<=0.04;
+		}
+		
+		return boundingBox.isInside(v);
+	}
+	
+	protected Boolean getIsShorthandNotation() {
+		Boolean isShorthandNotation = false;
+		
+		if (ownerDocument!=null) isShorthandNotation = ((PetriModel)ownerDocument).getShorthandNotation();
+		return isShorthandNotation;
+	}
+	
+	protected boolean getIsDrawBorders() {
+		
+		WorkCraftServer server = ownerDocument.getServer();
+		PyObject po;
+		if (server != null) 
+			po = server.python.get("_draw_labels");
+		else
+			po = null;
+		
+		return canWork||!getIsShorthandNotation()||getLabel().equals("")||po==null||!po.__nonzero__();
+		
+	}
+	
+//	protected float getLabelYOffset() {
+	//	return (getLabelOrder()==0)?0.03f:-0.07f;
+	//}
 
 	public LinkedList<EditablePetriPlace> getOut() {
 		return (LinkedList<EditablePetriPlace>)out.clone();
@@ -91,6 +121,7 @@ public class EditablePetriTransition extends BasicEditable {
 		p.setTransform(transform.getLocalToViewMatrix());
 		p.setShapeMode(ShapeMode.FILL);
 
+
 		if (selected)
 			p.setFillColor(selectedTransitionOutlineColor);
 		else
@@ -99,7 +130,9 @@ public class EditablePetriTransition extends BasicEditable {
 			else
 				p.setFillColor(transitionOutlineColor);
 		
-		p.drawRect(-0.05f, 0.05f, 0.05f, -0.05f);		
+		if (getIsDrawBorders())
+		// draw the rectangle only if there is no text in it
+			p.drawRect(-0.05f, 0.05f, 0.05f, -0.05f);
 		
 		if (selected)
 			p.setFillColor(selectedTransitionColor);
@@ -126,9 +159,10 @@ public class EditablePetriTransition extends BasicEditable {
 		// TODO Auto-generated method stub
 
 	}
+
 	public void fromXmlDom(Element element) throws DuplicateIdException {
-		NodeList nl = element.getElementsByTagName("transition");
-		Element te = (Element) nl.item(0);
+//		NodeList nl = element.getElementsByTagName("transition");
+//		Element te = (Element) nl.item(0);
 		super.fromXmlDom(element);		
 	}
 

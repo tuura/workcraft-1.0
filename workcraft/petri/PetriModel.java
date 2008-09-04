@@ -21,6 +21,9 @@ import workcraft.common.DefaultSimControls;
 import workcraft.editor.BasicEditable;
 import workcraft.editor.EditableConnection;
 import workcraft.editor.EditorPane;
+import workcraft.stg.EditableSTGPlace;
+import workcraft.stg.EditableSTGTransition;
+import workcraft.stg.STGModel;
 import workcraft.util.Vec2;
 
 public class PetriModel extends DocumentBase {
@@ -583,34 +586,27 @@ public class PetriModel extends DocumentBase {
 	}
 
 
-	public void applyInterface(PetriModel iface)
+	public void applyInterface(STGModel iface)
 	{
 		Hashtable<EditablePetriPlace, EditablePetriPlace> p2p = new Hashtable<EditablePetriPlace, EditablePetriPlace>();
 		Hashtable<EditablePetriTransition, EditablePetriTransition> t2t = new Hashtable<EditablePetriTransition, EditablePetriTransition>();
+		
+		LinkedList<EditablePetriPlace> out = new LinkedList<EditablePetriPlace>();
+		iface.getPlaces(out);
 
-		// BoundingBox bb1 = root.getBoundingBoxInViewSpace();
-		//  BoundingBox bb2 = iface.root.getBoundingBoxInViewSpace();
-
-		for(EditablePetriPlace p: iface.places)
+		for(EditablePetriPlace pp: out)
 		{
-			String id = p.getId();
-
+			EditableSTGPlace p = (EditableSTGPlace)pp;
 			EditablePetriPlace new_p = null;
-			if (id.startsWith("iface_"))
-			{
-				new_p = (EditablePetriPlace)getComponentById(id.substring(6));
-				if (new_p == null)
-					System.err.println ("*hysteric* *search* "+ id.substring(6) ); 
-			}
-			else
-			{
+			
+			if (p.getIn().size() > 1 || p.getOut().size() > 1) {
 				try
 				{
 					new_p = new EditablePetriPlace(getRoot());
 					new_p.transform.copy(p.transform);
 					// new_p.transform.translateRel(0.0f, -(bb1.getUpperRight().getY()+(bb2.getUpperRight().getY()-bb2.getLowerLeft().getY())), 0.0f);
 					new_p.setTokens(p.getTokens());
-					new_p.setId("iface_" + id);
+					new_p.setId("iface_" + p.getId());
 				}
 				catch (UnsupportedComponentException e)
 				{
@@ -619,7 +615,7 @@ public class PetriModel extends DocumentBase {
 				catch (DuplicateIdException e)
 				{
 					e.printStackTrace();
-					System.err.println("Could not create interface place due to id duplication: 'iface_" + id + "'.");
+					System.err.println("Could not create interface place due to id duplication: 'iface_" + p.getId() + "'.");
 				}
 			}
 			p2p.put(p, new_p);
@@ -627,9 +623,24 @@ public class PetriModel extends DocumentBase {
 
 		for(EditablePetriTransition t: iface.transitions)
 		{
+			EditableSTGTransition stgt = (EditableSTGTransition) stgt;
 			String id = t.getId();
-
 			EditablePetriTransition new_t = null;
+
+			
+			switch (stgt.getTransitionType()) {
+				case 1:
+					
+					break;
+				case 2:
+					break;
+					
+				case 0:
+				case 3:
+					
+					break;
+			}
+
 			if (id.startsWith("iface_"))
 			{
 				id = id.substring(6);
@@ -730,7 +741,7 @@ public class PetriModel extends DocumentBase {
 				{
 				}
 			}
-		} 
+		}
 	}
 	
 	public Boolean getShorthandNotation() {

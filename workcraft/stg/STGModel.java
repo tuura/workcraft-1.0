@@ -25,7 +25,7 @@ public class STGModel extends PetriModel {
 	
 	protected String inputList = "";
 	protected String outputList = "";
-
+	
 	// returns all the labels of transitions
 	// /, ~, +, and - are ignored
 	public HashSet<String> getTransitionLabelList(String label) {

@@ -21,6 +21,7 @@ import workcraft.XwdFileFilter;
 import workcraft.editor.Editor;
 import workcraft.editor.EditorPane;
 import workcraft.petri.PetriModel;
+import workcraft.stg.STGModel;
 
 public class ExternalInterfaceApplicator implements Tool {
 	public static final String _modeluuid = "65f89260-641d-11db-bd13-0800200c9a66";
@@ -41,7 +42,7 @@ public class ExternalInterfaceApplicator implements Tool {
 				if (env.getClass() != PetriModel.class)
 					JOptionPane.showMessageDialog(null, "Hmmmm... that is not a Petri Net!", "Deception", JOptionPane.WARNING_MESSAGE);
 				else
-					doc.applyInterface((PetriModel)env);
+					doc.applyInterface((STGModel)env);
 				
 			} catch (DocumentOpenException e) {
 				e.printStackTrace();

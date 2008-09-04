@@ -119,6 +119,10 @@ public class PetriNetMapper implements Tool {
 				else
 					t.setId(baseId + "_plus"+plusCount);
 				
+				t.setLabel(baseId + "+/" + plusCount);
+				
+				
+				
 				if (tag != null)
 					t.setCustomProperty("mapping-tag", tag);
 	
@@ -159,6 +163,8 @@ public class PetriNetMapper implements Tool {
 					t.setId(baseId + "_" + def.suffix+"_minus"+minusCount);
 				else
 					t.setId(baseId + "_minus"+minusCount);
+				
+				t.setLabel(baseId + "-/" + minusCount);
 
 				nodes.put(t.getId(), t);
 				
