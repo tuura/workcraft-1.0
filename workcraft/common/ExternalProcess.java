@@ -190,7 +190,7 @@ public class ExternalProcess extends JDialog{
 		}
 		return jContentPane;
 	}
-
+	
 	public void run(String[] command, String directory, String caption, boolean keepWindow) throws IOException {
 		this.setTitle(caption);
 

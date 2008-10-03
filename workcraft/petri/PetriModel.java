@@ -463,7 +463,7 @@ public class PetriModel extends DocumentBase {
 			out.add(n);
 	}
 	
-	private boolean isPairUsed(EditablePetriTransition T1, EditablePetriTransition T2,  HashMap<EditablePetriTransition, LinkedList<EditablePetriTransition>> used_pairs) {
+	protected boolean isPairUsed(EditablePetriTransition T1, EditablePetriTransition T2,  HashMap<EditablePetriTransition, LinkedList<EditablePetriTransition>> used_pairs) {
 		LinkedList<EditablePetriTransition> lst = null;
 		lst = used_pairs.get(T1);
 		if(lst!=null && lst.contains(T2))
@@ -474,7 +474,7 @@ public class PetriModel extends DocumentBase {
 		return false;
 	}
 
-	private String addUsedPair(EditablePetriTransition T1, EditablePetriTransition T2,  HashMap<EditablePetriTransition, LinkedList<EditablePetriTransition>>used_pairs) {
+	protected String addUsedPair(EditablePetriTransition T1, EditablePetriTransition T2,  HashMap<EditablePetriTransition, LinkedList<EditablePetriTransition>>used_pairs) {
 		//	if(output_formula!="")
 		//	output_formula += "|";
 		//		output_formula += "("+T1.getId()+","+T2.getId()+")";

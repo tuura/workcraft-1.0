@@ -98,7 +98,7 @@ public class STGDotGLoader implements Tool {
 		return be1;
 	}
 	
-	public void readFile (String path, STGModel doc) throws IOException {
+	public boolean readFile (String path, STGModel doc) throws IOException {
 		File file = new File(path);
 		Scanner scanner = new Scanner(file);
 		String s[];
@@ -141,6 +141,9 @@ public class STGDotGLoader implements Tool {
 			
 			if (s[0].equals(".graph")) break;
 		}
+		// if neither type of transition was found, quit with an error
+		if (inputs.isEmpty()&&outputs.isEmpty()&&internal.isEmpty()&&dummy.isEmpty()) return false;
+		
 		
 		BasicEditable be1, be2; // first and second connection candidates
 		Pattern p;
@@ -257,6 +260,7 @@ public class STGDotGLoader implements Tool {
 
 		}
 		scanner.close();
+		return true;
 	}
 		
 	

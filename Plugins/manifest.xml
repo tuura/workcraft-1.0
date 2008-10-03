@@ -44,6 +44,10 @@
 	<class name="workcraft.stg.EditableSTGTransition"></class>
 	<class name="workcraft.stg.STGDotGSaver"></class>
 	<class name="workcraft.stg.STGDotGLoader"></class>
+	<class name="workcraft.stg.STGSemimodularityChecker"></class>
+	<class name="workcraft.stg.STGPetrify"></class>
+	<class name="workcraft.stg.STGRemoveNumbers"></class>
+	<class name="workcraft.stg.STGAddNumbers"></class>
 
 	<class name="workcraft.sdfs.SDFSCriticalCycleAnalyzer"/>
  <class name="workcraft.sdfs.ASDFSMapper"/>

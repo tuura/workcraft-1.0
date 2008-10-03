@@ -1,5 +1,6 @@
 package workcraft.stg;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,6 +61,74 @@ public class STGModel extends PetriModel {
 		}
 		return s;
 	}
+
+	public List<String> buildSemimodularityCheckClauses() {
+//		HashMap<EditableSTGTransition, LinkedList<EditableSTGTransition>> used_pairs = new HashMap<EditableSTGTransition, LinkedList<EditableSTGTransition>>();
+//		HashMap<EditablePetriTransition, LinkedList<EditablePetriTransition>> used_pairs = new HashMap<EditablePetriTransition, LinkedList<EditablePetriTransition>>();
+		LinkedList<String> formulaClauses = new LinkedList<String>(); 
+
+		for(EditablePetriPlace P : places) {
+			
+			LinkedList<EditablePetriTransition> tlst = P.getOut();
+			
+			for(int i=0; i<tlst.size(); i++) {
+				EditableSTGTransition T1 = (EditableSTGTransition)tlst.get(i);
+				for(int j=0; j<tlst.size(); j++) {
+					
+					if (i==j) continue;
+					
+					EditableSTGTransition T2 = (EditableSTGTransition)tlst.get(j);
+					
+					// if both transitions are inputs, don't add it
+					//if (T1.getCustomProperty("interface")!=null && T2.getCustomProperty("interface")!=null) {
+					//	continue;
+					//}
+					
+					
+					// we need to check, whether T1 can be disabled by T2
+					// T1 should be output signal, and T2 does not form read arc
+					// formula consists of both transitions' pre-place names concatenated with '&' 
+					
+					if (T1.getTransitionType()==1) {
+						continue;
+					}
+					
+					// check for having read ark 
+					if(T2.getOut().contains(P)) continue;
+					
+					String name1 = T1.getLabel();
+					String name2 = T2.getLabel();
+					
+					
+					
+
+					if (name1.equals(name2)) continue;
+
+					
+					String str = "";
+					
+					// create list of pre-places
+					
+					HashSet<EditablePetriPlace> plst = new HashSet<EditablePetriPlace>(T1.getIn());
+					plst.addAll(T2.getIn());
+					
+					boolean f = false;
+					for(EditablePetriPlace p : plst) {
+						str += (f?"&":"")+p.getId();
+						f = true;
+					}
+					
+//					System.out.println("ADDED check for "+name1+" disabled by "+name2 +" common place:"+ P.getId() + " ; clause:" + str);
+					formulaClauses.add(name1 + " " + name2 + " " + str);
+					
+				}
+			}
+		}
+		// sort before return
+		Collections.sort(formulaClauses);
+		return formulaClauses;
+	}
+	
 	
 	public EditableConnection createConnection(BasicEditable first, BasicEditable second) throws InvalidConnectionException {
 		if (first == second)
