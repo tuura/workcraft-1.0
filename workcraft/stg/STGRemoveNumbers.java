@@ -15,28 +15,8 @@ public class STGRemoveNumbers implements Tool{
 	public static final String _modeluuid = "10418180-D733-11DC-A679-A32656D89593";
 	public static final String _displayname = "Remove numbers";
 
-	@Override
-	public void deinit(WorkCraftServer server) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public ToolType getToolType() {
-		return ToolType.TRANSFORM;
-	}
 
-	@Override
-	public void init(WorkCraftServer server) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean isModelSupported(UUID modelUuid) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	public void removeNumbers(STGModel model) {
 		// remove all numbered transition labels from the diagram
@@ -54,12 +34,28 @@ public class STGRemoveNumbers implements Tool{
 		}
 	}
 
-	@Override
+	public void deinit(WorkCraftServer server) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public ToolType getToolType() {
+		return ToolType.TRANSFORM;
+	}
+
+	public void init(WorkCraftServer server) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean isModelSupported(UUID modelUuid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	public void run(Editor editor, WorkCraftServer server) {
 		STGModel model = (STGModel) (editor.getDocument());
 		removeNumbers(model);
-		
-		
 		
 	}
 

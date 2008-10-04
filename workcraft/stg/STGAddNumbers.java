@@ -22,45 +22,20 @@ public class STGAddNumbers implements Tool{
 	public static final String _modeluuid = "10418180-D733-11DC-A679-A32656D89593";
 	public static final String _displayname = "Add numbers";
 	
-	private static STGRemoveNumbers numrem;  
-
-	@Override
-	public void deinit(WorkCraftServer server) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public ToolType getToolType() {
-		return ToolType.TRANSFORM;
-	}
-
-	@Override
-	public void init(WorkCraftServer server) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean isModelSupported(UUID modelUuid) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
+	private static STGRemoveNumbers numrem;  	
 	
 	class TransPosComparator implements Comparator<EditablePetriTransition> {
+
+		public int compare(EditablePetriTransition arg0, EditablePetriTransition arg1) {
+				Vec2 v0 = arg0.transform.getTranslation2d();
+				Vec2 v1 = arg1.transform.getTranslation2d();
 				
-		@Override
-		public int compare(EditablePetriTransition arg0,
-				EditablePetriTransition arg1) {
-			Vec2 v0 = arg0.transform.getTranslation2d();
-			Vec2 v1 = arg1.transform.getTranslation2d();
-			
-			if ((int)(v0.getY()*4-v1.getY()*4)==0)
-				return (int)(v1.getX()*80-v0.getX()*80);
-			
-			return (int)(v0.getY()*4-v1.getY()*4);
+				if ((int)(v0.getY()*4-v1.getY()*4)==0)
+					return (int)(v1.getX()*80-v0.getX()*80);
+				
+				return (int)(v0.getY()*4-v1.getY()*4);
 		}
+				
 
 	}
 	
@@ -99,7 +74,32 @@ public class STGAddNumbers implements Tool{
 		
 	}
 
-	@Override
+
+
+	public void deinit(WorkCraftServer server) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public ToolType getToolType() {
+		return ToolType.TRANSFORM;
+	}
+
+
+	public void init(WorkCraftServer server) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public boolean isModelSupported(UUID modelUuid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
 	public void run(Editor editor, WorkCraftServer server) {
 		STGModel model = (STGModel) (editor.getDocument());
 		

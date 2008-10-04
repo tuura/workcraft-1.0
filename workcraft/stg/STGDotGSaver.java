@@ -268,26 +268,27 @@ public class STGDotGSaver implements Tool {
 		return true;
 	}
 
-	@Override
+
 	public void deinit(WorkCraftServer server) {
-
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Override
 	public ToolType getToolType() {
-		return ToolType.EXPORT;
+		// TODO Auto-generated method stub
+		return  ToolType.EXPORT;
 	}
 
-	@Override
 	public void init(WorkCraftServer server) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Override
 	public boolean isModelSupported(UUID modelUuid) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public void run(Editor editor, WorkCraftServer server) {
 		STGModel doc = (STGModel) (editor.getDocument());
 		String last_directory = editor.getLastDirectory();
@@ -313,6 +314,7 @@ public class STGDotGSaver implements Tool {
 				}
 			}
 		}
+		
 	}
 
 }

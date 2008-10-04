@@ -1,10 +1,11 @@
 package workcraft.stg;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -30,22 +31,6 @@ public class STGDotGLoader implements Tool {
 	public static final String _modeluuid = "10418180-D733-11DC-A679-A32656D89593";
 	public static final String _displayname = "Import from .g format";
 
-	@Override
-	public void deinit(WorkCraftServer server) {
-	
-	}
-	@Override
-	public ToolType getToolType() {
-		return ToolType.IMPORT;
-	}
-	
-	@Override
-	public void init(WorkCraftServer server) {
-	}
-	@Override
-	public boolean isModelSupported(UUID modelUuid) {
-		return false;
-	}
 
 	// create the lists of all of the transition types
 	ArrayList<String> internal	= new ArrayList<String>();
@@ -100,14 +85,18 @@ public class STGDotGLoader implements Tool {
 	
 	public boolean readFile (String path, STGModel doc) throws IOException {
 		File file = new File(path);
-		Scanner scanner = new Scanner(file);
+		
+//		Scanner scanner = new Scanner(file);
+		
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		String str;
 		String s[];
 		String inputList="";
 		String outputList="";
 		
 		// read heading
-		while (scanner.hasNext()) {
-			s = scanner.nextLine().trim().split("[ \\t\\v\\f]+");
+		while ((str=br.readLine())!=null) {
+			s = str.trim().split("[ \\t\\v\\f]+");
 			if (s.length==0) continue;
 			if (s[0].charAt(0)=='#') continue;
 			
@@ -148,13 +137,11 @@ public class STGDotGLoader implements Tool {
 		BasicEditable be1, be2; // first and second connection candidates
 		Pattern p;
 		Matcher m;
-		String str;
 		SortedMap<String, BasicEditable> bem = new TreeMap<String, BasicEditable>();
 
 		// read connections
-		while (scanner.hasNext()) {
-			str = scanner.nextLine().trim(); 
-			s = str.split("[ \\t\\v\\f]+");
+		while ((str=br.readLine())!=null) { 
+			s = str.trim().split("[ \\t\\v\\f]+");
 			if (s.length==0) continue;
 			if (s[0].charAt(0)=='#') continue;
 			
@@ -259,13 +246,31 @@ public class STGDotGLoader implements Tool {
 			doc.setSTGOutputList(outputList);
 
 		}
-		scanner.close();
+		br.close();
 		return true;
 	}
 		
-	
-	
-	@Override
+
+	public void deinit(WorkCraftServer server) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public ToolType getToolType() {
+		// TODO Auto-generated method stub
+		return ToolType.IMPORT;
+	}
+
+	public void init(WorkCraftServer server) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean isModelSupported(UUID modelUuid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	public void run(Editor editor, WorkCraftServer server) {
 		STGModel doc = (STGModel) (editor.getDocument());
 		String last_directory = editor.getLastDirectory();
@@ -291,6 +296,7 @@ public class STGDotGLoader implements Tool {
 				}					
 			}
 		}
+		
 	}
 
 }
