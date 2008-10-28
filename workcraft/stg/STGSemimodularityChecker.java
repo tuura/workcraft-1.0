@@ -49,8 +49,9 @@ public class STGSemimodularityChecker implements Tool {
 			ExternalProcess p = new ExternalProcess(frame);
 	
 			String formula = "";
+//			p.run(new String[] {"util/petrify", "-ip", "-o", "tmp/_new_net_.g", "tmp/_net_.g"}, ".", "Petrify", true);
 
-			p.run(new String[] {"util/punf", "-s", "-t", "-p", "tmp/_net_.g"}, ".", "Unfolding report", true);
+			p.run(new String[] {"util/punf", "-s", "-t", "-p", "tmp/_new_net_.g"}, ".", "Unfolding report", true);
 
 
 /*			PrintWriter out = new PrintWriter(new FileWriter("tmp/_smodch"));
@@ -68,7 +69,7 @@ public class STGSemimodularityChecker implements Tool {
 				name2=strl[1];
 				formula=strl[2];
 				
-				p.run(new String[] {"util/mpsat", "-F", "-f", "-d", formula, "tmp/_net_.mci"}, ".", "Model-checking report", false);
+				p.run(new String[] {"util/mpsat", "-F", "-f", "-d", formula, "tmp/_new_net_.mci"}, ".", "Model-checking report", false);
 				
 				String badTrace = MPSATOutputParser.parsePetriNetTrace(p.getOutput());
 
