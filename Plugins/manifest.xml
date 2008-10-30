@@ -6,7 +6,7 @@
 
   <class name="workcraft.petri.PetriModel"/>
 	<class name="workcraft.petri.EditablePetriTransition"/>
-	<class name="workcraft.petri.EditablePetriPlace"/>
+	<class name="workcraft.petri.EditablePetriPlace"></class>
 	<class name="workcraft.petri.PetriLabelSaver"/>	
 	<class name="workcraft.petri.PetriDotGSaver"/>
 	<class name="workcraft.petri.PetriDotGSaver2"/>
@@ -48,6 +48,7 @@
 	<class name="workcraft.stg.STGPetrify"></class>
 	<class name="workcraft.stg.STGRemoveNumbers"></class>
 	<class name="workcraft.stg.STGAddNumbers"></class>
+	<class name="workcraft.stg.STGUnfolder"></class>
 
 	<class name="workcraft.sdfs.SDFSCriticalCycleAnalyzer"/>
  <class name="workcraft.sdfs.ASDFSMapper"/>
@@ -82,8 +83,8 @@
 	<class name="workcraft.gate.Joint"/>
 	<class name="workcraft.gate.Input"/>
 	<class name="workcraft.gate.Output"/>
-	<class name="workcraft.gate.BlackBox"/>
-	
+	<class name="workcraft.gate.BlackBox"/><class name="workcraft.gate.MEElement"></class>
+
 	<class name="workcraft.gate.ExtractInterface"/>
 
   <class name="workcraft.common.PetriNetMapper"/>
