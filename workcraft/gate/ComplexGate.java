@@ -243,7 +243,7 @@ public class ComplexGate extends BasicGate {
 			try {
 				GateContact c = in.removeLast();
 				ownerDocument.removeComponent(c);
-				ownerDocument.getServer().unregisterObject(c.getId());
+				//ownerDocument.getServer().unregisterObject(c.getId());
 			}
 			catch(UnsupportedComponentException e) {
 				e.printStackTrace();

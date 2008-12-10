@@ -87,7 +87,16 @@ public class PetriDotGSaver3 implements Tool {
 
 		out.print(".marking {");
 
-		for(EditablePetriPlace p: doc.places) if (p.getTokens()>0) out.print(" "+p.getLabel());
+		for(EditablePetriPlace p: doc.places)
+			if (p.getTokens()>0)
+			{
+				if (p.getIn().size() != 1 || p.getOut().size() != 1)
+					out.print(" "+p.getLabel());
+				else
+				{
+					out.print(" <" + p.getIn().getFirst().getLabel() + "," + p.getOut().getFirst().getLabel() + ">");			
+				}
+			}
 		out.println(" }");
 		out.println(".end");
 		out.close();
