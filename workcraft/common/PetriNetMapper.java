@@ -298,10 +298,9 @@ public class PetriNetMapper implements Tool {
 						set = set.minimise();
 				//		System.err.println("AFTER: " + set + "\n\n");
 						
-						
 						for (DNFClause clause : set.clauses) {
 							EditablePetriTransition t = addPlusTransition(target, plusTag);
-
+							
 							for (DNFLiteral literal : clause.pos) {
 								Object obj = nodes.get(literal.id);
 
