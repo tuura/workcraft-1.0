@@ -1,49 +1,16 @@
 package workcraft;
 
-import javax.media.opengl.GLCapabilities;
-import javax.swing.SwingUtilities;
-
-import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.JSplitPane;
-import java.awt.Dimension;
-
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JList;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTree;
-import javax.swing.JScrollPane;
-import javax.swing.KeyStroke;
-import javax.swing.ListSelectionModel;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-
-import java.awt.GridBagLayout;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Color;
-import java.awt.HeadlessException;
-import java.awt.Toolkit;
-
-import javax.swing.JButton;
-import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.HeadlessException;
 import java.awt.Insets;
-import javax.swing.JToolBar;
-import javax.swing.JToggleButton;
-
-
+import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.Transferable;
@@ -53,12 +20,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -66,39 +35,35 @@ import java.util.List;
 import java.util.UUID;
 import java.util.WeakHashMap;
 
-import javax.swing.SwingConstants;
-
-import workcraft.editor.BasicEditable;
-import workcraft.editor.BoundingBox;
-import workcraft.editor.ComponentHotkey;
-import workcraft.editor.ComponentWrapper;
-import workcraft.editor.EditableConnection;
-import workcraft.editor.Editor;
-import workcraft.editor.EditorPane;
-import workcraft.editor.GroupNode;
-import workcraft.editor.ModelWrapper;
-import workcraft.editor.EditableNode;
-import workcraft.editor.PropertyEditable;
-import workcraft.editor.PropertyEditor;
-import workcraft.editor.PropertyEditorTable;
-import workcraft.editor.PropertyEditorTableModel;
-import workcraft.editor.TransferableDocumentFragment;
-import workcraft.editor.TreeDragSource;
-import workcraft.editor.colorcell.ColorCellRenderer;
-import workcraft.propertyeditor.EnumWrapper;
-import workcraft.util.Colorf;
-import workcraft.util.Mat4x4;
-import workcraft.util.Vec2;
-import workcraft.visual.Drawable;
-import workcraft.visual.SVGPainter;
-
-import javax.swing.JCheckBox;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
+import javax.swing.JTree;
+import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.JSlider;
-import javax.swing.JLabel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -114,10 +79,29 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.swing.WindowConstants;
-import javax.swing.JTable;
-import java.awt.Rectangle;
-import java.awt.BorderLayout;
+import workcraft.common.ExternalProcess;
+import workcraft.editor.BasicEditable;
+import workcraft.editor.BoundingBox;
+import workcraft.editor.ComponentHotkey;
+import workcraft.editor.ComponentWrapper;
+import workcraft.editor.EditableConnection;
+import workcraft.editor.Editor;
+import workcraft.editor.EditorPane;
+import workcraft.editor.GroupNode;
+import workcraft.editor.ModelWrapper;
+import workcraft.editor.PropertyEditable;
+import workcraft.editor.PropertyEditor;
+import workcraft.editor.PropertyEditorTable;
+import workcraft.editor.PropertyEditorTableModel;
+import workcraft.editor.TransferableDocumentFragment;
+import workcraft.editor.TreeDragSource;
+import workcraft.editor.colorcell.ColorCellRenderer;
+import workcraft.propertyeditor.EnumWrapper;
+import workcraft.util.Colorf;
+import workcraft.util.Mat4x4;
+import workcraft.util.Vec2;
+import workcraft.visual.PSPainter;
+import workcraft.visual.SVGPainter;
 
 public class JavaFrontend extends JFrame implements Editor, PropertyEditor, TableModelListener, ClipboardOwner {
 
@@ -168,118 +152,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 	private static final long serialVersionUID = 1L;	
 
-	/**
-	 * This method initializes mnuEdit	
-	 * 	
-	 * @return javax.swing.JMenu	
-	 */
-	private JMenu getMnuEdit() {
-		if (mnuEdit == null) {
-			mnuEdit = new JMenu();
-			mnuEdit.setText("Edit");
-			mnuEdit.setMnemonic(KeyEvent.VK_E);
-			mnuEdit.add(getMnuCopy());
-			mnuEdit.add(getMnuPaste());
-		}
-		return mnuEdit;
-	}
-
-	/**
-	 * This method initializes mnuCopy	
-	 * 	
-	 * @return javax.swing.JMenuItem	
-	 */
-	private JMenuItem getMnuCopy() {
-		if (mnuCopy == null) {
-			mnuCopy = new JMenuItem();
-			mnuCopy.setText("Copy");
-			mnuCopy.setMnemonic(KeyEvent.VK_C);
-			mnuCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));			
-
-			mnuCopy.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					copy();
-				}
-			});
-		}
-		return mnuCopy;
-	}
-
-	/**
-	 * This method initializes mnuPaste	
-	 * 	
-	 * @return javax.swing.JMenuItem	
-	 */
-	private JMenuItem getMnuPaste() {
-		if (mnuPaste == null) {
-			mnuPaste = new JMenuItem();
-			mnuPaste.setText("Paste");
-			mnuPaste.setMnemonic(KeyEvent.VK_P);
-			mnuPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));			
-
-			mnuPaste.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					paste();
-				}
-			});
-		}
-		return mnuPaste;
-	}
-
-	/**
-	 * This method initializes mnuExport	
-	 * 	
-	 * @return javax.swing.JMenu	
-	 */
-	private JMenu getMnuExport() {
-		if (mnuExport == null) {
-			mnuExport = new JMenu();
-			mnuExport.setText("Export");
-			mnuExport.add(getMnuExportGraphics());
-		}
-		return mnuExport;
-	}
-
-	/**
-	 * This method initializes mnuImport	
-	 * 	
-	 * @return javax.swing.JMenu	
-	 */
-	private JMenu getMnuImport() {
-		if (mnuImport == null) {
-			mnuImport = new JMenu();
-			mnuImport.setText("Import");
-			mnuImport.setEnabled(false);
-		}
-		return mnuImport;
-	}
-
-	/**
-	 * This method initializes mnuConversion	
-	 * 	
-	 * @return javax.swing.JMenu	
-	 */
-	private JMenu getMnuConversion() {
-		if (mnuTransform == null) {
-			mnuTransform = new JMenu();
-			mnuTransform.setText("Transform");
-			mnuTransform.setEnabled(false);
-		}
-		return mnuTransform;
-	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				JavaFrontend thisClass = new JavaFrontend();
-				thisClass.setVisible(true);				
-			}
-		});
-	}
-
+	
 	WeakHashMap<JMenuItem, Tool> mnu_tool_map = new WeakHashMap<JMenuItem, Tool>();
 
 	private JSplitPane splitMain = null;
@@ -350,6 +223,9 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 	private JMenuItem jMenuItem = null;
 
 	private JMenuItem mnuExportGraphics = null;
+	private JMenuItem mnuExportPSGraphics = null;
+	private JMenuItem mnuExportPDFGraphics = null;
+	
 
 	private JMenu mnuTools = null;
 
@@ -372,6 +248,157 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		super();
 		initialize();
 	}
+	
+	/**
+	 * This method initializes mnuEdit	
+	 * 	
+	 * @return javax.swing.JMenu	
+	 */
+	private JMenu getMnuEdit() {
+		if (mnuEdit == null) {
+			mnuEdit = new JMenu();
+			mnuEdit.setText("Edit");
+			mnuEdit.setMnemonic(KeyEvent.VK_E);
+			mnuEdit.add(getMnuCopy());
+			mnuEdit.add(getMnuPaste());
+		}
+		return mnuEdit;
+	}
+
+	/**
+	 * This method initializes mnuCopy	
+	 * 	
+	 * @return javax.swing.JMenuItem	
+	 */
+	private JMenuItem getMnuCopy() {
+		if (mnuCopy == null) {
+			mnuCopy = new JMenuItem();
+			mnuCopy.setText("Copy");
+			mnuCopy.setMnemonic(KeyEvent.VK_C);
+			mnuCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));			
+
+			mnuCopy.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					copy();
+				}
+			});
+		}
+		return mnuCopy;
+	}
+
+	/**
+	 * This method initializes mnuPaste	
+	 * 	
+	 * @return javax.swing.JMenuItem	
+	 */
+	private JMenuItem getMnuPaste() {
+		if (mnuPaste == null) {
+			mnuPaste = new JMenuItem();
+			mnuPaste.setText("Paste");
+			mnuPaste.setMnemonic(KeyEvent.VK_P);
+			mnuPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));			
+
+			mnuPaste.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					paste();
+				}
+			});
+		}
+		return mnuPaste;
+	}
+
+	private JMenuItem getMnuExportPSGraphics() {
+		if (mnuExportPSGraphics == null) {
+			mnuExportPSGraphics = new JMenuItem();
+			mnuExportPSGraphics.setText("Encapsulated PostScript...");
+			mnuExportPSGraphics.setActionCommand("Encapsulated PostScript...");
+			mnuExportPSGraphics.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					exportPSGraphics();
+				}
+			});
+		}
+		return mnuExportPSGraphics;
+	}
+
+	/**
+	 * This method initializes mnuExportPDFGraphics	
+	 * 	
+	 * @return javax.swing.JMenuItem	
+	 */
+	private JMenuItem getMnuExportPDFGraphics() {
+		if (mnuExportPDFGraphics == null) {
+			mnuExportPDFGraphics = new JMenuItem();
+			mnuExportPDFGraphics.setActionCommand("PDF (using ps2pdf)...");
+			mnuExportPDFGraphics.setText("PDF (using ps2pdf)...");
+			mnuExportPDFGraphics.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					exportPDFGraphics();
+				}
+			});
+		}
+		return mnuExportPDFGraphics;
+	}
+	
+	/**
+	 * This method initializes mnuExport	
+	 * 	
+	 * @return javax.swing.JMenu	
+	 */
+	private JMenu getMnuExport() {
+		if (mnuExport == null) {
+			mnuExport = new JMenu();
+			mnuExport.setText("Export");
+			mnuExport.add(getMnuExportGraphics());
+			mnuExport.add(getMnuExportPSGraphics());
+			mnuExport.add(getMnuExportPDFGraphics());
+		}
+		return mnuExport;
+	}
+	
+
+
+	/**
+	 * This method initializes mnuImport	
+	 * 	
+	 * @return javax.swing.JMenu	
+	 */
+	private JMenu getMnuImport() {
+		if (mnuImport == null) {
+			mnuImport = new JMenu();
+			mnuImport.setText("Import");
+			mnuImport.setEnabled(false);
+		}
+		return mnuImport;
+	}
+
+	/**
+	 * This method initializes mnuConversion	
+	 * 	
+	 * @return javax.swing.JMenu	
+	 */
+	private JMenu getMnuConversion() {
+		if (mnuTransform == null) {
+			mnuTransform = new JMenu();
+			mnuTransform.setText("Transform");
+			mnuTransform.setEnabled(false);
+		}
+		return mnuTransform;
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				JDialog.setDefaultLookAndFeelDecorated(true);
+				JavaFrontend thisClass = new JavaFrontend();
+				thisClass.setVisible(true);				
+			}
+		});
+	}
+
 
 	public void beginSimulation() {
 		Model document = editorView.getDocument();
@@ -439,15 +466,15 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		DefaultListModel list = (DefaultListModel)l.getModel(); 
 
 		l.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
+
 		LinkedList<String> modelNames = new LinkedList<String>();
 		Hashtable<String, Class> modelClasses = new Hashtable<String, Class>();
-		
+
 		for (Class cls : models) {
 			modelNames.add(server.mmgr.getModelDisplayName(cls));
 			modelClasses.put(server.mmgr.getModelDisplayName(cls), cls);
 		}
-		
+
 		Collections.sort(modelNames);
 
 		for (String m: modelNames) {
@@ -471,8 +498,8 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		dialog.dispose();
 		updateTitle();
 	}
-	
-	
+
+
 	public void open() 
 	{
 		if (!checkChanges())
@@ -489,15 +516,15 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		try {
 			doc = load(fc.getSelectedFile().getAbsolutePath());
 			setDocumentUI(doc);
-			
+
 			file_name = fc.getSelectedFile().getPath();
 			updateTitle();
-		
-			
+
+
 		} catch (DocumentOpenException e) {
 			e.printStackTrace();
 		}
-		
+
 		editorView.resetChanged();
 		editorView.repaint();
 		editorView.requestFocus();
@@ -506,12 +533,12 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 		btnToggleGrid.setSelected(editorView.draw_grid);
 		btnToggleIds.setSelected(editorView.show_ids);
 		btnToggleLabels.setSelected(editorView.show_labels);
-		
+
 		//TODO: PACHINIT' load editor properties nah
 
 		last_directory = fc.getSelectedFile().getParent();
 	}
-	
+
 	public void save() {
 		if (file_name == null) {
 			saveAs();			
@@ -565,7 +592,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			DOMSource source = new DOMSource(doc);
 			StreamResult result = new StreamResult(new OutputStreamWriter(fos));
 
-//			t.transform(new DOMSource(doc),
+			//			t.transform(new DOMSource(doc),
 			//				new StreamResult(new OutputStreamWriter(out, "utf-8"));
 
 			transformer.transform(source, result);
@@ -655,6 +682,122 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 			File f = new File(path);
 			last_directory = f.getParent(); 			
+		}
+	}
+
+	protected void exportPSGraphics() {
+		JFileChooser fc = new JFileChooser();
+		fc.setFileFilter(new PsFileFilter());
+		if (last_directory != null)
+			fc.setCurrentDirectory(new File(last_directory));
+		if (fc.showSaveDialog(this)==JFileChooser.APPROVE_OPTION) {
+			String path = fc.getSelectedFile().getPath();
+			if (!path.endsWith(".eps"))
+				path += ".eps";
+
+			BoundingBox bb = editorView.getBoundingBox();
+			Vec2 ll = bb.getLowerLeft();
+			Vec2 ur = bb.getUpperRight();
+
+			ll.setXY(ll.getX()-0.3f, ll.getY()-0.3f);
+			ur.setXY(ur.getX()+0.3f, ur.getY()+0.3f);
+
+			PSPainter psp;
+			PrintWriter out;
+			try {
+				out = new PrintWriter(new File(path));
+
+				out.println ("%!PS-Adobe-3.0 EPSF-3.0");
+				out.println ("%%Creator: Workcraft rev.1");
+				out.println ("%%DocumentMedia: Plain "+ String.format("%d %d", (int)( (ur.getX() - ll.getX() )*283), (int)((ur.getY() - ll.getY())*283)) + " 0 ( ) ( )");
+				out.println ("%%BoundingBox: " + String.format("%d %d %d %d", 0, 0, (int)((ur.getX() - ll.getX())*283), (int)( (ur.getY() - ll.getY())*283)));
+				out.println ("%%HiResBoundingBox: " + String.format("%f %f %f %f", 0.0f, 0.0f, ((ur.getX() - ll.getX())*283.0f), ((ur.getY() - ll.getY())*283.0f)));
+				out.println ("%%LanguageLevel: 2\n");
+
+
+				psp = new PSPainter(out, 283.0f, -ll.getX(), -ll.getY());
+
+				editorView.overridePainter(psp);
+
+				// psp.scale(1.0f, -1.0f);
+				//svgp.setRootTransform();
+
+				boolean grid_restore = 	editorView.draw_grid;
+				editorView.draw_grid = false;
+				// editorView.setGridRange(ll, ur);
+				editorView.draw();
+				editorView.draw_grid = grid_restore;
+				editorView.restorePainter();
+
+				out.close();
+
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				return;
+			}
+		}
+	}
+
+	protected void exportPDFGraphics() {
+		JFileChooser fc = new JFileChooser();
+		fc.setFileFilter(new PdfFileFilter());
+		if (last_directory != null)
+			fc.setCurrentDirectory(new File(last_directory));
+		if (fc.showSaveDialog(this)==JFileChooser.APPROVE_OPTION) {
+			String path = fc.getSelectedFile().getPath();
+			if (!path.endsWith(".pdf"))
+				path += ".pdf";
+
+			String tmppspath = path+".eps";
+
+			BoundingBox bb = editorView.getBoundingBox();
+			Vec2 ll = bb.getLowerLeft();
+			Vec2 ur = bb.getUpperRight();
+
+			ll.setXY(ll.getX()-0.3f, ll.getY()-0.3f);
+			ur.setXY(ur.getX()+0.3f, ur.getY()+0.3f);
+
+			PSPainter psp;
+			PrintWriter out;
+			try {
+				out = new PrintWriter(new File(tmppspath));
+
+				out.println ("%!PS-Adobe-3.0 EPSF-3.0");
+				out.println ("%%Creator: Workcraft rev.1");
+				out.println ("%%DocumentMedia: Plain "+ String.format("%d %d", (int)( (ur.getX() - ll.getX() )*283), (int)((ur.getY() - ll.getY())*283)) + " 0 ( ) ( )");
+				out.println ("%%BoundingBox: " + String.format("%d %d %d %d", 0, 0, (int)((ur.getX() - ll.getX())*283), (int)( (ur.getY() - ll.getY())*283)));
+				out.println ("%%HiResBoundingBox: " + String.format("%f %f %f %f", 0.0f, 0.0f, ((ur.getX() - ll.getX())*283.0f), ((ur.getY() - ll.getY())*283.0f)));
+				out.println ("%%LanguageLevel: 2\n");
+
+
+				psp = new PSPainter(out, 283.0f, -ll.getX(), -ll.getY());
+
+				editorView.overridePainter(psp);
+
+				// psp.scale(1.0f, -1.0f);
+				//svgp.setRootTransform();
+
+				boolean grid_restore = 	editorView.draw_grid;
+				editorView.draw_grid = false;
+				// editorView.setGridRange(ll, ur);
+				editorView.draw();
+				editorView.draw_grid = grid_restore;
+				editorView.restorePainter();
+
+				out.close();
+
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				return;
+			}
+
+			ExternalProcess ps2pdf = new ExternalProcess(this);
+			try {
+				ps2pdf.run(new String[] { "ps2pdf", "-dEPSCrop", "-dEmbedAllFonts", tmppspath, path}, "./tmp", "ps2pdf", false);
+				new File(tmppspath).delete();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -898,7 +1041,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 	private EditorPane getEditorView() {
 		if (editorView == null ) {
-//			GLCapabilities caps = new GLCapabilities();
+			//			GLCapabilities caps = new GLCapabilities();
 			//		caps.setSampleBuffers(true);
 			//	caps.setNumSamples(2);
 
@@ -1556,7 +1699,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 	private void setDocumentUI(Model document) {
 		stopSimulation();
-				
+
 		Class model_class = document.getClass();
 		UUID model_uuid = ModelManager.getModelUUID(model_class);
 
@@ -1584,7 +1727,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 			LinkedList<String> generalNames = new LinkedList<String>();
 			Hashtable<String, JMenuItem> generalItems = new Hashtable<String, JMenuItem>();
-			
+
 			LinkedList<String> exportNames = new LinkedList<String>();
 			Hashtable<String, JMenuItem> exportItems = new Hashtable<String, JMenuItem>();
 
@@ -1594,11 +1737,11 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			LinkedList<String> conversionNames = new LinkedList<String>();
 			Hashtable<String, JMenuItem> conversionItems = new Hashtable<String, JMenuItem>();
 
-			
+
 			if (tools!=null) {
 				for (Class cls : tools) {
 					String displayName = ModelManager.getToolDisplayName(cls); 
-					
+
 					JMenuItem toolItem = new JMenuItem();
 					toolItem.setText(displayName+"...");
 
@@ -1614,7 +1757,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 							mnu_tool_map.get((JMenuItem)e.getSource()).run(JavaFrontend.this, server);
 						}
 					});
-					
+
 					switch (tool.getToolType()) {
 					case GENERAL:
 						generalNames.add(displayName);
@@ -1669,34 +1812,37 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 					}
 				}
 			}
-			
+
 			Collections.sort(generalNames);
 			Collections.sort(importNames);
 			Collections.sort(exportNames);
 			Collections.sort(conversionNames);
-			
+
 			mnuTools.removeAll();
 			mnuTools.setEnabled(!generalNames.isEmpty());
 			for (String n : generalNames)
 				mnuTools.add(generalItems.get(n));
-			
+
 			mnuTransform.removeAll();
 			mnuTransform.setEnabled(!conversionNames.isEmpty());
 			for (String n : conversionNames)
 				mnuTransform.add(conversionItems.get(n));
-			
+
 			mnuImport.removeAll();
 			mnuImport.setEnabled(!importNames.isEmpty());
 			for (String n : importNames)
 				mnuImport.add(importItems.get(n));
-			
+
 			mnuExport.removeAll();
 			mnuExport.add(getMnuExportGraphics());
+			mnuExport.add(getMnuExportPSGraphics());
+			mnuExport.add(getMnuExportPDFGraphics());
+			
 			if (!exportNames.isEmpty())
 				mnuExport.addSeparator();
 			for (String n : exportNames)
 				mnuExport.add(exportItems.get(n));
-			
+
 
 			panelModelSpecificControls.removeAll();
 			JPanel simctl = document.getSimulationControls(); 
@@ -1993,7 +2139,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 	public void stepSimulation() {
 		Model document = editorView.getDocument();
-		
+
 		if (document == null)
 			return;
 		document.simStep();
@@ -2002,7 +2148,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 	public void stopSimulation() {
 		Model document = editorView.getDocument();
-		
+
 		if (document==null)
 			return;
 
@@ -2021,7 +2167,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 	public void updateTitle() {
 		Model document = editorView.getDocument();
-		
+
 		String title = "";
 		if (file_name!=null)
 			title += file_name + " ";
@@ -2100,7 +2246,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 
 
 			doc = (Model)model_class.newInstance();
-			
+
 			server.python.set("_loading", true);
 			doc.loadStart();
 
@@ -2111,7 +2257,7 @@ public class JavaFrontend extends JFrame implements Editor, PropertyEditor, Tabl
 			GroupNode root = new GroupNode(doc, "_root");
 			doc.setRoot(root);
 
-			
+
 			if (re.getAttribute("class").equals(GroupNode.class.getName()))
 				try {
 					root.fromXmlDom(re);
