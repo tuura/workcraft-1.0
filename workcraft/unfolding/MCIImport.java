@@ -3,20 +3,14 @@ package workcraft.unfolding;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
-import org.python.core.Py;
-import org.python.core.PyObject;
 
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
@@ -25,12 +19,12 @@ import workcraft.ToolType;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.editor.Editor;
-import workcraft.editor.EditorPane;
 
 
 public class MCIImport implements Tool {
 
-	class BadTiming extends Exception {};
+	class BadTiming extends Exception {
+		private static final long serialVersionUID = 1L;};
 
 	public static final String _modeluuid = "23a72f18-5c90-11dc-8314-0800200c9a66";
 	public static final String _displayname = "Import unfolding (.mci)";
@@ -86,6 +80,7 @@ public class MCIImport implements Tool {
 			}
 		}
 	}
+	
 
 	public UnfoldingModel readMCIFile (String path, String tagsFilePath) throws IOException {
 		UnfoldingModel doc = new UnfoldingModel();

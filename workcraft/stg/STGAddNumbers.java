@@ -58,7 +58,7 @@ public class STGAddNumbers implements Tool{
 		
 		
 		for (EditablePetriTransition t : tlst) {
-			if (trnum.containsKey(t.getLabel())) {
+			if (trnum.containsKey(t.getLabel())&&!t.getLabel().equals("")) {
 				numbered.add(t.getLabel());
 			}
 			trnum.put(t.getLabel(), 0);

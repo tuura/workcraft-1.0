@@ -57,16 +57,23 @@ public class PetriModel extends DocumentBase {
 
 		void check(EditablePetriTransition t) {
 			LinkedList<EditablePetriPlace> pl = t.getIn();
-			if (pl.isEmpty())
-				return;
+			
+			/*
+			 * SG06102008
+			 * transition with no input places is always activated 
+			 */
+			//if (pl.isEmpty())
+			//	return;
 
 			boolean canfire = true;
+			
 			for (EditablePetriPlace p : pl) {
 				if (p.getTokens()<1) {
 					canfire = false;
 					break;
 				}
 			}
+			
 			if (canfire) {
 				t.canFire = true;
 				enabled.add(t);
@@ -187,7 +194,7 @@ public class PetriModel extends DocumentBase {
 	int t_name_cnt = 0;
 	int p_name_cnt = 0;
 
-	private int state = 0;
+//	private int state = 0;
 	
 //	private boolean loading;
 

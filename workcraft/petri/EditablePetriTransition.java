@@ -14,7 +14,6 @@ import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;
 import workcraft.editor.BasicEditable;
-import workcraft.editor.BoundingBox;
 import workcraft.util.Colorf;
 import workcraft.util.Mat4x4;
 import workcraft.util.Vec2;
@@ -71,12 +70,15 @@ public class EditablePetriTransition extends BasicEditable {
 	}
 
 	public LinkedList<EditablePetriPlace> getOut() {
-		return (LinkedList<EditablePetriPlace>)out.clone();
+		LinkedList<EditablePetriPlace> ret = new LinkedList<EditablePetriPlace>(out);
+		return ret;
 	}
 
 	public LinkedList<EditablePetriPlace> getIn() {
-		return (LinkedList<EditablePetriPlace>)in.clone();
+		LinkedList<EditablePetriPlace> ret = new LinkedList<EditablePetriPlace>(in);
+		return ret;
 	}
+	
 	public void removeIn(EditablePetriPlace t) {
 		in.remove(t);
 	}
