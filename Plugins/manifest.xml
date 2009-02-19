@@ -49,6 +49,8 @@
 	<class name="workcraft.stg.STGRemoveNumbers"></class>
 	<class name="workcraft.stg.STGAddNumbers"></class>
 	<class name="workcraft.stg.STGUnfolder"></class>
+	<class name="workcraft.stg.STGDeadlockCheck"></class>
+	<class name="workcraft.stg.STGSelectByID"></class>
 
 	<class name="workcraft.sdfs.SDFSCriticalCycleAnalyzer"/>
  <class name="workcraft.sdfs.ASDFSMapper"/>
