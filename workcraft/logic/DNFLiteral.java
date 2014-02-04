@@ -2,7 +2,6 @@ package workcraft.logic;
 
 public class DNFLiteral
 {
-
 	public String id;
 		
 	DNFLiteral(String id) {

@@ -214,12 +214,14 @@ public class CFRegister extends SDFSRegisterBase {
 			if (server.python.eval(fwdDisableFunc).__nonzero__()) {
 				forward_state = RegisterState.DISABLED;
 				doc.addTraceEvent(this.id + "/fwd_dis");
+				return true;
 			}
 			break;
 		case DISABLED:
 			if (server.python.eval(fwdEnableFunc).__nonzero__()) {
 				forward_state = RegisterState.ENABLED;
 				doc.addTraceEvent(this.id + "/fwd_enb");
+				return true;
 			}
 			break;				
 		}
@@ -229,12 +231,14 @@ public class CFRegister extends SDFSRegisterBase {
 			if (server.python.eval(backDisableFunc).__nonzero__()) {
 				backward_state = RegisterState.DISABLED;
 				doc.addTraceEvent(this.id + "/back_dis");
+				return true;
 			}
 			break;
 		case DISABLED:
 			if (server.python.eval(backEnableFunc).__nonzero__()) {
 				backward_state = RegisterState.ENABLED;
 				doc.addTraceEvent(this.id + "/back_enb");
+				return true;
 			}
 			break;				
 		}
@@ -247,6 +251,7 @@ public class CFRegister extends SDFSRegisterBase {
 						doc.addTraceEvent(this.id + "/or_mrk");
 						can_work = false;
 						or_waiting = false;
+						return true;
 					} else {
 						or_waiting = true;												
 					}
@@ -255,6 +260,7 @@ public class CFRegister extends SDFSRegisterBase {
 					or_waiting = false;
 					orMarked = true;
 					doc.addTraceEvent(this.id + "/or_mrk");
+					return true;
 				}
 			}
 		} else {
@@ -267,6 +273,7 @@ public class CFRegister extends SDFSRegisterBase {
 						doc.addTraceEvent(this.id + "/or_unmrk");
 						can_work = false;
 						or_waiting = false;
+						return true;
 					} else {
 						or_waiting = true;												
 					}
@@ -275,6 +282,7 @@ public class CFRegister extends SDFSRegisterBase {
 					or_waiting = false;
 					doc.addTraceEvent(this.id + "/or_unmrk");
 					orMarked = false;
+					return true;
 				}
 			}
 		}
@@ -288,6 +296,7 @@ public class CFRegister extends SDFSRegisterBase {
 						doc.addTraceEvent(this.id + "/and_mrk");
 						can_work = false;
 						and_waiting = false;
+						return true;
 					} else {
 						and_waiting = true;												
 					}
@@ -296,6 +305,7 @@ public class CFRegister extends SDFSRegisterBase {
 					and_waiting = false;
 					andMarked = true;
 					doc.addTraceEvent(this.id + "/and_mrk");
+					return true;
 				}
 		} else {
 
@@ -306,6 +316,7 @@ public class CFRegister extends SDFSRegisterBase {
 						doc.addTraceEvent(this.id + "/and_unmrk");
 						can_work = false;
 						and_waiting = false;
+						return true;
 					} else {
 						and_waiting = true;												
 					}
@@ -314,10 +325,11 @@ public class CFRegister extends SDFSRegisterBase {
 					and_waiting = false;
 					andMarked = false;
 					doc.addTraceEvent(this.id + "/and_unmrk");
+					return true;
 				}
 		}
 
-		return true;
+		return false;
 	}
 
 	@Override

@@ -49,8 +49,8 @@ public class DefaultConnection extends EditableConnection  {
 
 	public Vec2 [] internal;
 
-	private Vec2 v1 = null;
-	private Vec2 v2 = null;
+	protected Vec2 v1 = null;
+	protected Vec2 v2 = null;
 	private Vec2 stretch = null;
 	
 	
@@ -76,7 +76,7 @@ public class DefaultConnection extends EditableConnection  {
 		this.second = second;
 	}
 
-	private void updateStretch() {
+	protected void updateStretch() {
 		v1 = new Vec2();
 		v2 = new Vec2();
 		
@@ -627,7 +627,7 @@ public class DefaultConnection extends EditableConnection  {
 		return res;
 	}
 
-	private Vec2 getPointOnConnection(float t)
+	protected Vec2 getPointOnConnection(float t)
 	{
 		Vec2 res = new Vec2();
 		switch(connectionType)

@@ -28,18 +28,23 @@ public abstract class SDFSModelBase extends DocumentBase {
 
 	protected List<String> traceReplay = null;
 	private SimThread sim_thread = null;
-	protected boolean allowNextStep = true;
+	protected boolean allowNextStep = false;
 
 	public class SimThread extends Thread {
 		public void run() {
 
 			Iterator<String> i = null;
-			boolean nextActionFinished = true;
-			String next = null;
+			boolean nextActionFinished = false;
+
 
 			if (traceReplay != null)
 				i = traceReplay.iterator();
-
+			
+			String next = null;
+			
+			if (i.hasNext())
+				next = i.next().split("/", 2)[0];
+				
 			while (true) {
 				try {
 					sleep(30);
@@ -56,11 +61,12 @@ public abstract class SDFSModelBase extends DocumentBase {
 						if (panelSimControls.isStepByStepEnabled())
 							if (!allowNextStep)
 								continue;
-						if (nextActionFinished)
+						if (nextActionFinished) {
 								if (i.hasNext())
 									next = i.next().split("/", 2)[0];
 								else
 									next = null;
+						}
 
 						if (next != null) {
 							//System.out.println("Next action: " +next);
@@ -71,7 +77,7 @@ public abstract class SDFSModelBase extends DocumentBase {
 								if (l.getId().equals(next)) {
 									nextActionFinished = l.simTick(time);
 
-									//System.err.println (l.getId()+" TICK!");
+									System.err.println (l.getId()+" TICK!");
 
 									nextFound = true;
 									break;
@@ -82,7 +88,7 @@ public abstract class SDFSModelBase extends DocumentBase {
 									if (r.getId().equals(next)) {
 										nextActionFinished =  r.simTick(time);
 
-										//	System.err.println (r.getId()+" TICK!");
+										System.err.println (r.getId()+" TICK!");
 
 										nextFound = true;
 										break;

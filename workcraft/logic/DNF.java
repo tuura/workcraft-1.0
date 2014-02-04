@@ -3,6 +3,7 @@ package workcraft.logic;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 import java.util.Vector;
 
@@ -12,11 +13,13 @@ public class DNF
 	{
 		String token;
 		int precedence;
+		boolean inverse;
 		
 		Token(String token, int precedence)
 		{
 			this.token = token;
 			this.precedence = precedence;
+			inverse = false;
 		}
 	}	
 	
@@ -107,6 +110,12 @@ public class DNF
 		return res;
 	}
 	
+	// no predicates dummy
+	public void parseExpression(String expression) throws InvalidExpressionException
+	{
+		parseExpression(expression, new HashMap<String, String>());
+	}
+		
 	public void parseExpression(String expression, HashMap<String, String> predicates) throws InvalidExpressionException
 	{
 		Stack<Token> ops = new Stack<Token>();
@@ -188,6 +197,64 @@ public class DNF
 		
 		Stack<DNF> stack = new Stack<DNF>();
 		
+		// Negations elimination
+		
+		for(int i = 0; i<res.size(); i++)
+		{
+			Token token = res.elementAt(i);
+			if (token.token.equals("!"))
+			{
+				Stack<Integer> todo = new Stack<Integer>();
+				
+				todo.add(i - 1);
+				
+				while(!todo.isEmpty())
+				{
+					int j = todo.pop();
+					Token next = null;
+					
+					while(true)
+					{
+						next = res.elementAt(j);
+						if (next.precedence == 0) break;
+						if (next.token.equals("+")) break;
+						if (next.token.equals("*")) break;
+						j--;
+					}
+					
+					if (next.precedence == 0)
+					{
+						next.inverse = !next.inverse;
+					}
+					else
+					{
+						// De Morgan
+						
+						if (next.token.equals("+")) next.token = "*";
+						else
+						if (next.token.equals("*")) next.token = "+";
+						
+						todo.push(j - 1);
+						
+						j--;
+						int need = 1;
+						while(need > 0)
+						{
+							next = res.elementAt(j);
+							if (next.precedence == 0) need--;
+							if (next.token.equals("+")) need++;
+							if (next.token.equals("*")) need++;
+							j--;
+						}
+						
+						todo.push(j);						
+					}
+					
+				}
+				
+			}
+		}
+		
 		for(int i = 0; i<res.size(); i++)
 		{
 			Token token = res.elementAt(i);
@@ -205,13 +272,13 @@ public class DNF
 				DNFLiteral literal = new DNFLiteral(id);
 				DNFClause clause = new DNFClause();
 				DNF dnf = new DNF();
-				stack.push(dnf.add(clause.multiplyBy(literal, true)));				
+				stack.push(dnf.add(clause.multiplyBy(literal, !token.inverse)));				
 			}
 			else
 			if (token.token.equals("!"))
 			{
-				if (stack.size()<1) throw new InvalidExpressionException("Operand for NOT operator not found");
-				stack.push(stack.pop().negate());
+//				if (stack.size()<1) throw new InvalidExpressionException("Operand for NOT operator not found");
+//				stack.push(stack.pop().negate());
 			}
 			else
 			if (token.token.equals("+"))
@@ -235,7 +302,8 @@ public class DNF
 		clauses.addAll(stack.peek().clauses);		
 	}
 	
-	public String toString() {
+	public String toString()
+	{
 		String res = "";
 		for (DNFClause c : clauses) {
 			if (res.length() > 0)
@@ -428,5 +496,30 @@ public class DNF
 		}
 		
 		return res;
+	}
+	
+	public boolean evaluate(HashMap<String, Boolean> values)
+	{
+		for(DNFClause clause: clauses)
+		{
+			boolean satisfied = true;
+			for(DNFLiteral literal: clause.pos)
+				if (values.containsKey(literal.id) && !values.get(literal.id))
+				{
+					satisfied = false;
+					break;
+				}
+			
+			if (satisfied)
+				for(DNFLiteral literal: clause.neg)
+					if (values.containsKey(literal.id) && values.get(literal.id))
+					{
+						satisfied = false;
+						break;
+					}
+			
+			if (satisfied) return true;
+		}
+		return false;
 	}
 }
