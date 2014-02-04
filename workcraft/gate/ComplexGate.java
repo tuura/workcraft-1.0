@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -263,7 +263,7 @@ public class ComplexGate extends BasicGate {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
-		org.w3c.dom.Document d = ee.getOwnerDocument();
+		Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("complex");
 		ppe.setAttribute("type", Boolean.toString(complexOrAnd));
 		ppe.setAttribute("config", getConfig());

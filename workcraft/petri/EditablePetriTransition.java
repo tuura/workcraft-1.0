@@ -1,12 +1,12 @@
 package workcraft.petri;
 
-
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.UUID;
 
 import org.python.core.PyObject;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import workcraft.DuplicateIdException;
@@ -45,19 +45,14 @@ public class EditablePetriTransition extends BasicEditable {
 		
 		Vec2 v = new Vec2(pointInViewSpace);
 		transform.getViewToLocalMatrix().transform(v);
+		
 		if (!getIsDrawBorders()) {
-			float mx = Math.max(Math.abs(v.getX()),Math.abs(v.getY()));
-			return mx<=0.04;
+			float x = Math.max(0.08f, getLabel().length()*0.026f);;
+			
+			return (new BoundingBox(new Vec2(-x/2f+0.01f, -0.04f), new Vec2(x/2f-0.01f, 0.04f))).isInside(v);
 		}
 		
 		return boundingBox.isInside(v);
-	}
-	
-	protected Boolean getIsShorthandNotation() {
-		Boolean isShorthandNotation = false;
-		
-		if (ownerDocument!=null) isShorthandNotation = ((PetriModel)ownerDocument).getShorthandNotation();
-		return isShorthandNotation;
 	}
 	
 	protected boolean getIsDrawBorders() {
@@ -73,9 +68,9 @@ public class EditablePetriTransition extends BasicEditable {
 		
 	}
 	
-//	protected float getLabelYOffset() {
-	//	return (getLabelOrder()==0)?0.03f:-0.07f;
-	//}
+	protected float getLabelYOffset() {
+		return (getLabelOrder()==0)?0.03f:-0.07f;
+	}
 
 	public LinkedList<EditablePetriPlace> getOut() {
 		return (LinkedList<EditablePetriPlace>)out.clone();
@@ -109,10 +104,29 @@ public class EditablePetriTransition extends BasicEditable {
 		connections.add(con);
 		return true;
 	}
+	
+	public void updateBoundingBox() {
+		float x = Math.max(0.08f, getLabel().length()*0.026f);
+		
+		if (getLabel().equals("")||getLabelOrder()==0) x=0.08f;
+		
+/*		if (getIsDrawBorders()) {
+			boundingBox.setExtents(new Vec2(-x/2-0.01f, -0.05f), new Vec2(x/2+0.01f, 0.05f));
+		} else {*/
+			boundingBox.setExtents(new Vec2(-x/2f, -0.05f), new Vec2(x/2f, 0.05f));
+//		}
+	}
 
-	public EditablePetriTransition() throws UnsupportedComponentException {
-		super();
-		boundingBox.setExtents(new Vec2(-0.05f, -0.05f), new Vec2(0.05f, 0.05f));
+	public void setLabel(String label) {
+		super.setLabel(label);
+		updateBoundingBox();
+	}
+
+	public EditablePetriTransition(BasicEditable parent) throws UnsupportedComponentException {
+		super(parent);
+		
+		updateBoundingBox();
+		
 		in = new LinkedList<EditablePetriPlace>();
 		out = new LinkedList<EditablePetriPlace>();
 	}
@@ -120,7 +134,7 @@ public class EditablePetriTransition extends BasicEditable {
 	public void doDraw(Painter p) {
 		p.setTransform(transform.getLocalToViewMatrix());
 		p.setShapeMode(ShapeMode.FILL);
-
+		float x = Math.max(0.08f, getLabel().length()*0.026f);
 
 		if (selected)
 			p.setFillColor(selectedTransitionOutlineColor);
@@ -130,9 +144,13 @@ public class EditablePetriTransition extends BasicEditable {
 			else
 				p.setFillColor(transitionOutlineColor);
 		
-		if (getIsDrawBorders())
-		// draw the rectangle only if there is no text in it
-			p.drawRect(-0.05f, 0.05f, 0.05f, -0.05f);
+		if (getLabel().equals("")||getLabelOrder()==0) x=0.08f;
+		
+		if (getIsDrawBorders()) {
+			// draw the rectangle only if there is no text in it
+			p.drawRect(-x/2, 0.05f, x/2, -0.05f);
+		}
+		
 		
 		if (selected)
 			p.setFillColor(selectedTransitionColor);
@@ -142,34 +160,31 @@ public class EditablePetriTransition extends BasicEditable {
 			else
 				p.setFillColor(transitionColor);
 		
-		p.drawRect(-0.04f, 0.04f, 0.04f, -0.04f);
+		p.drawRect(-x/2f+0.01f, 0.04f, +x/2f-0.01f, -0.04f);
 		
 		super.doDraw(p);
 	}
 
 	@Override
 	public BasicEditable getChildAt(Vec2 point) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	
 	@Override
 	public void update(Mat4x4 matView) {
-		// TODO Auto-generated method stub
 
 	}
-
 	public void fromXmlDom(Element element) throws DuplicateIdException {
+//		TODO: do we need it?
 //		NodeList nl = element.getElementsByTagName("transition");
 //		Element te = (Element) nl.item(0);
-		// System.out.println ("Completed loading " + getClass().getName());
 		super.fromXmlDom(element);		
 	}
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element); 
-		org.w3c.dom.Document d = ee.getOwnerDocument();
+		Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("transition");
 		ee.appendChild(ppe);
 		return ee;

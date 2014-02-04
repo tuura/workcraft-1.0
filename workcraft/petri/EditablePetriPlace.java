@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -13,7 +13,6 @@ import workcraft.DuplicateIdException;
 import workcraft.UnsupportedComponentException;
 import workcraft.common.DefaultConnection;
 import workcraft.editor.BasicEditable;
-import workcraft.stg.STGModel;
 import workcraft.util.Colorf;
 import workcraft.util.Mat4x4;
 import workcraft.util.Vec2;
@@ -33,13 +32,11 @@ public class EditablePetriPlace extends BasicEditable {
 	private static Colorf selectedPlaceOutlineColor = new Colorf(0.5f, 0.0f, 0.0f, 1.0f);
 	private static Colorf tokenColor = new Colorf(0.0f, 0.0f, 0.0f, 1.0f);
 
-	
 	private int token_count;
 	private Boolean tiny = false;
 
 	private LinkedList<EditablePetriTransition> out;
 	private LinkedList<EditablePetriTransition> in;
-	
 	public void dblClick() {
 		if (getTokens()==0) {
 			setTokens(1);
@@ -47,7 +44,7 @@ public class EditablePetriPlace extends BasicEditable {
 			setTokens(0);
 			
 	}
-	
+
 	public LinkedList<EditablePetriTransition> getOut() {
 		return (LinkedList<EditablePetriTransition>)out.clone();
 	}
@@ -63,6 +60,7 @@ public class EditablePetriPlace extends BasicEditable {
 	public void removeOut(EditablePetriTransition t) {
 		out.remove(t);
 	}
+	
 	
 	@Override
 	public boolean hits(Vec2 pointInViewSpace) {
@@ -102,41 +100,29 @@ public class EditablePetriPlace extends BasicEditable {
 	public int getTokens() {
 		return token_count;
 	}
-	
-	public EditablePetriPlace() throws UnsupportedComponentException {
-		super();
+
+	public EditablePetriPlace(BasicEditable parent) throws UnsupportedComponentException {
+		super(parent);
 		boundingBox.setExtents(new Vec2(-0.05f, -0.05f), new Vec2(0.05f, 0.05f));
 		token_count = 0;
 		out = new LinkedList<EditablePetriTransition>();
 		in = new LinkedList<EditablePetriTransition>();
 	}
 	
-	protected Boolean getIsShorthandNotation() {
-		Boolean isShorthandNotation = false;
-		
-		if (ownerDocument!=null) isShorthandNotation = ((PetriModel)ownerDocument).getShorthandNotation();
-		return isShorthandNotation;
-	}
 	private boolean getIsDrawPlaceCircle() {
 		return getIsShorthandNotation() && 
 			in!=null && in.size()==1 && 
 			out!=null && out.size()==1; 
 	}
-	
+
 	public void doDraw(Painter p) {
 
 		p.setTransform(transform.getLocalToViewMatrix());
 		p.setShapeMode(ShapeMode.FILL);
-<<<<<<< TREE
 		
 		if (tiny ) {
 			p.scale(0.4f, 0.4f);
 		}
-=======
-
-		if (tiny)
-			p.scale(0.5f, 0.5f);
->>>>>>> MERGE-SOURCE
 		
 		if (selected)
 			p.setFillColor(selectedPlaceOutlineColor);
@@ -203,6 +189,7 @@ public class EditablePetriPlace extends BasicEditable {
 		// TODO Auto-generated method stub
 
 	}
+
 	
 	public List<String> getEditableProperties() {
 		List<String> list = super.getEditableProperties();
@@ -211,7 +198,6 @@ public class EditablePetriPlace extends BasicEditable {
 		list.add("color,^ Color,getPlaceColor,setPlaceColor");
 		list.add("color,^ Token color,getTokenColor,setTokenColor");
 		list.add("color,^ Outline color,getPlaceOutlineColor,setPlaceOutlineColor");
-		
 		return list;
 	}
 
@@ -227,7 +213,7 @@ public class EditablePetriPlace extends BasicEditable {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
-		org.w3c.dom.Document d = ee.getOwnerDocument();
+		Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("place");
 		ppe.setAttribute("tokens", Integer.toString(getTokens()));
 		ppe.setAttribute("tiny", Boolean.toString(getTiny()));
@@ -268,6 +254,5 @@ public class EditablePetriPlace extends BasicEditable {
 //		if (tiny) boundingBox.setExtents(new Vec2(-0.05f * 0.6f, -0.05f * 0.6f), new Vec2(0.05f * 0.6f, 0.05f * 0.6f));
 //		else boundingBox.setExtents(new Vec2(-0.05f, -0.05f), new Vec2(0.05f, 0.05f));
 	}
-
 
 }

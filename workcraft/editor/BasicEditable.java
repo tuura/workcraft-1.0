@@ -40,6 +40,7 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 	public boolean highlight = false;
 
 	
+	
 	Hashtable<String, String> customProperties = new Hashtable<String, String>();
 
 	private static int labelOrder = 0;
@@ -56,6 +57,18 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		return labelColor;
 	}
 	
+<<<<<<< TREE
+=======
+	protected Boolean getIsShorthandNotation() {
+		PetriModel pm = (PetriModel) this.getOwnerDocument();
+		Boolean isShorthandNotation = false;
+		
+		if (pm!=null) isShorthandNotation = pm.getShorthandNotation();
+		return isShorthandNotation;
+	}
+	
+	public void setId(String id) throws DuplicateIdException {
+>>>>>>> MERGE-SOURCE
 		if (this.id.equals(id))
 			return;
 
@@ -319,15 +332,22 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		superbb.addPoint(lr);
 
 		
+<<<<<<< TREE
+=======
+		
+>>>>>>> MERGE-SOURCE
 		Vec2 v1 = superbb.getLowerLeft();
 		Vec2 v2 = superbb.getUpperRight();
 		Vec2 center;
 		
 		p.setTextColor(getLabelColor());
+<<<<<<< TREE
 
 
 		if (ownerDocument.getDrawLabels() && !label.equals("")) {
 			if (labelOrder == 0)
+=======
+>>>>>>> MERGE-SOURCE
 		
 		PyObject po;
 		if (server != null) 
@@ -339,11 +359,18 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 			if (!label.equals("")) {
 				if (labelOrder == 0)
 					center = new Vec2(0.5f*(v1.getX()+v2.getX()), v1.getY() + getLabelYOffset() );
+<<<<<<< TREE
 			else
+=======
+				else
+>>>>>>> MERGE-SOURCE
 					center = new Vec2( (v1.getX()+v2.getX())*0.5f , v2.getY() + getLabelYOffset() );
 				
+<<<<<<< TREE
 			p.drawString(label, center, 0.05f, TextAlign.CENTER);
 		}
+=======
+>>>>>>> MERGE-SOURCE
 		//		transform.getLocalToViewMatrix().transform(center);
 				p.drawString(label, center, 0.05f, TextAlign.CENTER);
 			}

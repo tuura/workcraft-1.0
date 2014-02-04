@@ -326,6 +326,19 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		addMouseListener(new java.awt.event.MouseAdapter() {  
 
 			public void mouseClicked(java.awt.event.MouseEvent e) {
+				
+				if (e.getClickCount()==2 && e.getButton()==MouseEvent.BUTTON1) {
+					Vec2 v = view.WindowToView(e.getX(), e.getY());
+					BasicEditable n = null;
+					if (root!=null)
+						n = root.getChildAt(v); 
+
+					if (document!=null && !document.simIsRunning()) {
+						if (n!=null)
+							n.dblClick();
+					}
+				}
+				
 				if (!pan_drag)
 				{
 					if(selected_connection!=null)
@@ -361,8 +374,10 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 				}
 
 			}
+			
 
 			public void mousePressed(java.awt.event.MouseEvent e) {
+
 				if (e.getButton()==MouseEvent.BUTTON3) {
 					
 					Vec2 v = view.WindowToView(e.getX(), e.getY());
@@ -566,7 +581,14 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 	public void documentToXml(Element doc) {
 		org.w3c.dom.Document d = doc.getOwnerDocument();
 		Element de = d.createElement("document");
+<<<<<<< TREE
 		de.setAttribute("model-uuid", server.getModelUUID(document.getClass()).toString());
+=======
+		de.setAttribute("model-uuid", ModelManager.getModelUUID(document.getClass()).toString());
+		
+		document.toXmlDom(de); // save document personal data
+		
+>>>>>>> MERGE-SOURCE
 		root.toXmlDom(de);
 		doc.appendChild(de);
 		for (EditableConnection con : document.getConnections()) {

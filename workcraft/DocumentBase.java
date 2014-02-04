@@ -70,6 +70,7 @@ public abstract class DocumentBase implements Document {
 	protected Boolean drawLabels = true;
 	protected Boolean drawIds = true;
 	protected Boolean loading = false;
+	
 	protected Boolean showGrid = true;
 	protected Boolean showLabels = true;
 	protected Boolean showIDs = true;
@@ -81,15 +82,40 @@ public abstract class DocumentBase implements Document {
 	protected boolean showHighlight = false;
 	protected Colorf highlightColor = new Colorf(1.0f, 0.0f, 0.0f, 1.0f);
 	
+	public void recBind(BasicEditable n, WorkCraftServer server) {
+		try {
+			server.registerObject(n, n.getId());
+		} catch (DuplicateIdException e) {
+			e.printStackTrace();
+		}
+		for (BasicEditable nn : n.getChildren()) {
+			recBind(nn, server);
+		}
+	}
+	
 	public void loadEnd() {
 		loading = false;
+		
 	}
 
 	public void loadStart() {
 		loading = true;
 	}
 	
-	public void removeComponent(BasicEditable c) {
+	public boolean isLoading() {
+		return loading;
+	}
+	
+	public void bind(WorkCraftServer server) {
+		this.server = server;
+		server.python.set("_document", this);
+		if (root!=null)
+			recBind(root, server);
+	}
+	
+	public void removeComponent(BasicEditable c) throws UnsupportedComponentException {
+		if (server!=null)
+			server.unregisterObject(c.getId());
 		idMap.remove(c.getId());
 		
 		for (BasicEditable n : c.getChildren())
@@ -97,6 +123,18 @@ public abstract class DocumentBase implements Document {
 	}
 	
 	public void addComponent(BasicEditable c) throws UnsupportedComponentException, DuplicateIdException {
+		root.removeChild(c);
+	}
+	
+	public void addComponent(BasicEditable c, boolean auto_name) throws UnsupportedComponentException {
+		//System.err.println ("Adding component " + c.getId());
+		if (auto_name && loading)
+			try {
+				c.setId(c.getId()+"_ld");
+			} catch (DuplicateIdException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		idMap.put(c.getId(), c);
 		// root.addChild(c);
 		c.setOwnerDocument(this);
@@ -134,7 +172,7 @@ public abstract class DocumentBase implements Document {
 		return list;
 	}
 
-	public void fromXmlDom(Element element)  {
+	public void fromXmlDom(Element element){
 	/*	String id = e.getAttribute("id");
 		label = e.getAttribute("label");
 		NodeList nl = e.getElementsByTagName("transform");

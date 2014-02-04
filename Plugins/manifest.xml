@@ -2,13 +2,13 @@
 
   <class name="workcraft.petri.PetriModel"/>
 	<class name="workcraft.petri.EditablePetriTransition"/>
-	<class name="workcraft.petri.EditablePetriPlace"/>
+	<class name="workcraft.petri.EditablePetriPlace"></class>
 	<class name="workcraft.petri.PetriLabelSaver"/>	
 	<class name="workcraft.petri.PetriDotGSaver"/>
 	<class name="workcraft.petri.PetriDotGSaver2"/>
 	<class name="workcraft.petri.PetriDotGSaver3"/>
 	<class name="workcraft.petri.PetriDotPNTSaver"/>
-	<class name="workcraft.petri.PetriKiller"/>
+	<class name="workcraft.petri.PetriKiller"></class>
 	<class name="workcraft.petri.PetriUnfolder"/>
 	<class name="workcraft.petri.PetriMPSAT"/>	
 	<class name="workcraft.petri.ReadArcsComplexityReduction"/>
@@ -43,11 +43,24 @@
 	
   <class name="workcraft.chetri.ChetriModel"/>
 	<class name="workcraft.chetri.EditableChetriTransition"/>
-	<class name="workcraft.chetri.EditableChetriPlace"/>	
+	<class name="workcraft.chetri.EditableChetriPlace"/><class
+		name="workcraft.stg.STGModel">
+</class>
+	<class name="workcraft.stg.EditableSTGPlace"></class>
+	<class name="workcraft.stg.EditableSTGTransition"></class>
+	<class name="workcraft.stg.STGDotGSaver"></class>
+	<class name="workcraft.stg.STGDotGLoader"></class>
+	<class name="workcraft.stg.STGSemimodularityChecker"></class>
+	<class name="workcraft.stg.STGPetrify"></class>
+	<class name="workcraft.stg.STGRemoveNumbers"></class>
+	<class name="workcraft.stg.STGAddNumbers"></class>
+	<class name="workcraft.stg.STGUnfolder"></class>
+	<class name="workcraft.stg.STGDeadlockCheck"></class>
+	<class name="workcraft.stg.STGSelectByID"></class>
 
 
 
- <class name="workcraft.sdfs.SDFSCriticalCycleAnalyzer"/>
+	<class name="workcraft.sdfs.SDFSCriticalCycleAnalyzer"/>
  <class name="workcraft.sdfs.ASDFSMapper"/>
   <class name="workcraft.sdfs.SDFS2MGMapper"/>
   
@@ -87,8 +100,8 @@
 	<class name="workcraft.gate.Joint"/>
 	<class name="workcraft.gate.Input"/>
 	<class name="workcraft.gate.Output"/>
-	<class name="workcraft.gate.BlackBox"/>
-	
+	<class name="workcraft.gate.BlackBox"/><class name="workcraft.gate.MEElement"></class>
+
 	<class name="workcraft.gate.MEElement"/>
 	
 	<class name="workcraft.gate.ExtractInterface"/>

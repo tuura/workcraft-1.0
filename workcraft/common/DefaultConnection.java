@@ -3,14 +3,13 @@ package workcraft.common;
 import java.util.LinkedList;
 import java.util.List;
 
-
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DocumentBase;
 import workcraft.editor.BasicEditable;
-import workcraft.editor.EditableConnection;
 import workcraft.editor.EditableAnchor;
+import workcraft.editor.EditableConnection;
 import workcraft.util.Colorf;
 import workcraft.util.Mat4x4;
 import workcraft.util.Vec2;
@@ -41,7 +40,12 @@ public class DefaultConnection extends EditableConnection  {
 
 	public enum Type { straightConnection, polylineConnection, bezierConnection };
 
-	public boolean drawArrow = true;
+	
+	// drawArrow == null means it should be automatic, depending on situation
+	// i.e., no arrow for incoming connection of Petri net place with
+	// exactly one incoming connection, one outgoing connection and short-hand notation on
+	public Boolean drawArrow = true;
+	
 	public Type connectionType = Type.straightConnection;
 
 //	public Vec2 firstFixedDir = null;
@@ -327,8 +331,75 @@ public class DefaultConnection extends EditableConnection  {
 		super.select();
 	}
 
+	public Vec2 getOutgoingVector()
+	{
+		Vec2 ret = null;
+		switch(connectionType)
+		{
+		case straightConnection:
+			ret = new Vec2(v2);
+			ret.sub(v1);
+			break;
+		case polylineConnection:
+			
+			int n = (internal==null)?0:internal.length;
+			
+			if (n>0) {
+				ret = linearInnerToAnchor(internal[0], v1, v2, stretch);
+				ret.sub(v1);
+			} else {
+				ret = new Vec2(v2);
+				ret.sub(v1);
+			}
+			break;
+		case bezierConnection:
+			
+			ret = bezierInnerToAnchor(internal[0], v1, stretch);
+			ret.sub(v1);
+			
+			break;
+		}
+		return ret;
+	}
+
+	public Vec2 getIncomingVector()
+	{
+		Vec2 ret = null;
+		switch(connectionType)
+		{
+		case straightConnection:
+			ret = new Vec2(v2);
+			ret.sub(v1);
+			break;
+		case polylineConnection:
+			
+			int n = (internal==null)?0:internal.length;
+			
+			if (n>0) {
+				
+				ret = new Vec2(v2);
+				ret.sub(linearInnerToAnchor(internal[n-1], v1, v2, stretch));
+			} else {
+				ret = new Vec2(v2);
+				ret.sub(v1);
+			}
+			break;
+		case bezierConnection:
+			
+			ret = new Vec2(v2);
+			ret.sub(bezierInnerToAnchor(internal[1], v1, stretch));
+			
+			break;
+		}
+		return ret;
+	}
+	
+	
+	
+	
 	public void draw(Painter p)
 	{
+		
 		updateStretch();
 
 		Colorf connectionColor = DefaultConnection.connectionColor;
@@ -336,6 +407,8 @@ public class DefaultConnection extends EditableConnection  {
 		
 		if (first.highlight && second.highlight && ((DocumentBase)first.getOwnerDocument()).isShowHighlight())
 			connectionColor = (((DocumentBase)first.getOwnerDocument()).getHighlightColor());
+		
+		
 		
 		p.pushTransform();
 		p.setIdentityTransform();
@@ -351,7 +424,7 @@ public class DefaultConnection extends EditableConnection  {
 		case straightConnection:
 
 			p.drawLine(v1, v2);
-
+			
 			if (drawArrow) 
 			{
 				Vec2 v3 = this.getArrowPoint();
@@ -449,6 +522,7 @@ public class DefaultConnection extends EditableConnection  {
 
 			break;
 		}
+		
 		super.draw(p);
 
 		p.popTransform();
@@ -587,7 +661,7 @@ public class DefaultConnection extends EditableConnection  {
 	}
 
 	public Boolean isDrawArrow() {
-		return drawArrow;
+		return (drawArrow != null)?drawArrow:false;
 	}
 
 	public void setDrawArrow(Boolean drawArrow) {

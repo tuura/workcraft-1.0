@@ -60,6 +60,11 @@ public class GateContact extends BasicEditable {
 		}
 		transform.translateAbs(offs);
 	}
+	
+	public void dblClick() {
+		this.setInvertSignal(!getInvertSignal());
+	}
+
 
 	public void doDraw(Painter p) {
 		acceptTransform();

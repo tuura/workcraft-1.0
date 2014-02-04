@@ -5,16 +5,16 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import workcraft.DocumentOpenException;
-import workcraft.Document;
+import workcraft.Model;
 
 public interface Editor {
 	public void save();
 	public void saveAs();
 	public void open();
-	public Document load(String path) throws DocumentOpenException;
-	public void setDocument(Document document);
+	public Model load(String path) throws DocumentOpenException;
+	public void setDocument(Model document);
 	public List<BasicEditable> getSelection();
-	public Document getDocument();
+	public Model getDocument();
 	public String getFileName();
 	public String getLastDirectory();
 	public Component getSimControls();

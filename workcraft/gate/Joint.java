@@ -24,7 +24,7 @@ public class Joint extends BasicGate {
 
 	public Joint(BasicEditable parent) throws UnsupportedComponentException {
 		super(parent);
-		rad = 0.005f;
+		rad = 0.01f;
 		initContacts();
 	}
 	
