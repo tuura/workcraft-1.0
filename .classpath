@@ -7,7 +7,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="jython.jar"/>
 	<classpathentry kind="lib" path="jogl.jar"/>
-	<classpathentry kind="lib" path="js.jar" sourcepath="D:/Rhino/src"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

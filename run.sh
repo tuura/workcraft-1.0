@@ -23,6 +23,10 @@ esac
 
 if [ SO_DIR ];
 then
-  cd $WORKCRAFT_HOME
+  if [ -d $WORKCRAFT_HOME ]
+  then
+    cd $WORKCRAFT_HOME
+  fi
+
   LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SO_DIR java -classpath ".:jogl.jar:jython.jar:gluegen-rt.jar" workcraft/JavaFrontend
 fi

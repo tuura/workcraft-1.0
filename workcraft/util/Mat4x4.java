@@ -311,6 +311,8 @@ public class Mat4x4 implements XmlSerializable {
 		parent_element.appendChild(e);
 		return e;
 	}
+	
+	//public Vec3 
 
 	public String toString() {
 		String r ="{";

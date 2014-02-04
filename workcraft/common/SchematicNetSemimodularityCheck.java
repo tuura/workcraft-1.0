@@ -34,8 +34,6 @@ public class SchematicNetSemimodularityCheck implements Tool {
 			return true;
 		if (modelUuid.compareTo(CFModel._modeluuid)==0)
 			return true;
-		if (modelUuid.compareTo(GateModel._modeluuid)==0)
-			return true;
 		return false;
 	}
 
@@ -68,21 +66,6 @@ public class SchematicNetSemimodularityCheck implements Tool {
 
 		try {
 			PetriModel schematicNet =mapper.map(server, doc);
-
-			if (doc instanceof GateModel) {
-				GateModel gatedoc = (GateModel)doc;
-				File bojo = new File(gatedoc.getActiveInterfacePath());
-				if (bojo.exists()) {
-					PetriModel iface;
-					try {
-						iface = (PetriModel)editor.load(bojo.getAbsolutePath());
-						schematicNet.applyInterface(iface);
-					} catch (DocumentOpenException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-
 			schematicNet = rd.reduce(schematicNet);
 
 
@@ -111,7 +94,7 @@ public class SchematicNetSemimodularityCheck implements Tool {
 			out.print(formula);
 			out.close();
 
-			if (JOptionPane.showConfirmDialog(null, "Enable shortest trace search option (may take a considerably longer time)?", "Confitm", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
+			if (JOptionPane.showConfirmDialog(null, "Enable shortest trace search option (may take a considerably longer time)?", "Confirm", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
 				p.run(new String[] {"util/mpsat", "-F", "-f", "-d", "@tmp/_smodch","tmp/_net_.mci"}, ".", "Model-checking report", false);
 			else
 				p.run(new String[] {"util/mpsat", "-F", "-d", "@tmp/_smodch","tmp/_net_.mci"}, ".", "Model-checking report", false);

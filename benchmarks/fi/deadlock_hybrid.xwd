@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<workcraft>
+  <options tab="2"/>
+  <editor>
+    <options grid="true" ids="true" labels="true" snap="true"/>
+    <viewstate s="0.9090909" tx="-0.662235" ty="0.59999996"/>
+  </editor>
+  <document model-uuid="aab78c50-e6bf-11dc-95ff-0800200c9a66">
+    <editable class="workcraft.editor.GroupNode" id="_root" label="" rotation="0" selected="false">
+      <transform>
+        <vec3 x="0.0" y="0.0" z="0.0"/>
+        <vec3 x="1.0" y="1.0" z="1.0"/>
+      </transform>
+      <custom-properties/>
+      <editable class="workcraft.counterflow.CFLogic" id="l12" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-1.2" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-logic-2way back-eval-delay="300" back-eval-func="lbe(l13)" back-reset-delay="300" back-reset-func="lbr(l13)" fwd-eval-delay="300" fwd-eval-func="(lfe(l14)&amp;lfe(l11))&amp;om(r10)" fwd-reset-delay="300" fwd-reset-func="(lfr(l14)&amp;lfr(l11))&amp;(not om(r10))"/>
+      </editable>
+      <editable class="workcraft.counterflow.CFLogic" id="l10" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.6" y="0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-logic-2way back-eval-delay="300" back-eval-func="om(r12)" back-reset-delay="300" back-reset-func="(not om(r12))" fwd-eval-delay="300" fwd-eval-func="om(r11)" fwd-reset-delay="300" fwd-reset-func="(not om(r11))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l16" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-2.0" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r14)" reset-func="(not m(r14))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r0" label="" rotation="0" selected="true">
+        <transform>
+          <vec3 x="0.3" y="0.5" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r0)&amp;(not m(r15))" enable-func="(not m(r0))&amp;m(r15)" mark-func="re(r0)&amp;m(r15)&amp;(not m(r1))" marked="true" unmark-func="(not re(r0))&amp;(not m(r15))&amp;m(r1)"/>
+      </editable>
+      <editable class="workcraft.counterflow.CFLogic" id="l15" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.4" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-logic-2way back-eval-delay="300" back-eval-func="om(r13)" back-reset-delay="300" back-reset-func="(not om(r13))" fwd-eval-delay="300" fwd-eval-func="lfe(l6)" fwd-reset-delay="300" fwd-reset-func="lfr(l6)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r15" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-2.0" y="0.5" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r15)&amp;r(l16)" enable-func="(not m(r15))&amp;e(l16)" mark-func="re(r15)&amp;m(r14)&amp;(not m(r0))" marked="false" unmark-func="(not re(r15))&amp;(not m(r14))&amp;m(r0)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r1" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="0.6" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r1)&amp;r(l0)" enable-func="(not m(r1))&amp;e(l0)" mark-func="re(r1)&amp;m(r0)&amp;(not m(r2))" marked="false" unmark-func="(not re(r1))&amp;(not m(r0))&amp;m(r2)"/>
+      </editable>
+      <editable class="workcraft.counterflow.CFRegister" id="r8" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.2" y="-0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <cf-register and-mark-func="om(r8)&amp;rfe(r8)&amp;rbe(r8)" and-token="false" and-unmark-func="(not om(r8))&amp;(not rfe(r8))&amp;(not rbe(r8))" back-disable-func="am(r8)&amp;lbr(l7)" back-enable-func="(not am(r8))&amp;lbe(l7)" fwd-disable-func="am(r8)&amp;lfr(l6)" fwd-enable-func="(not am(r8))&amp;lfe(l6)" or-mark-func="(not am(r8))&amp;(rfe(r8)|rbe(r8))&amp;(not am(r2))&amp;(not am(r9))" or-token="false" or-unmark-func="am(r8)&amp;((not rfe(r8))|(not rbe(r8)))&amp;am(r2)&amp;am(r9)"/>
+      </editable>
+      <editable class="workcraft.counterflow.CFRegister" id="r12" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.8" y="0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <cf-register and-mark-func="om(r12)&amp;rfe(r12)&amp;rbe(r12)" and-token="false" and-unmark-func="(not om(r12))&amp;(not rfe(r12))&amp;(not rbe(r12))" back-disable-func="am(r12)&amp;lbr(l11)" back-enable-func="(not am(r12))&amp;lbe(l11)" fwd-disable-func="am(r12)&amp;lfr(l10)" fwd-enable-func="(not am(r12))&amp;lfe(l10)" or-mark-func="(not am(r12))&amp;(rfe(r12)|rbe(r12))&amp;(not am(r11))&amp;(not am(r14))" or-token="false" or-unmark-func="am(r12)&amp;((not rfe(r12))|(not rbe(r12)))&amp;am(r11)&amp;am(r14)"/>
+      </editable>
+      <editable class="workcraft.counterflow.CFRegister" id="r10" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-1.0" y="-0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <cf-register and-mark-func="om(r10)&amp;rfe(r10)&amp;rbe(r10)" and-token="false" and-unmark-func="(not om(r10))&amp;(not rfe(r10))&amp;(not rbe(r10))" back-disable-func="am(r10)&amp;lbr(l12)" back-enable-func="(not am(r10))&amp;lbe(l12)" fwd-disable-func="am(r10)&amp;lfr(l8)" fwd-enable-func="(not am(r10))&amp;lfe(l8)" or-mark-func="(not am(r10))&amp;(rfe(r10)|rbe(r10))&amp;(not am(r9))&amp;(not am(r14))" or-token="false" or-unmark-func="am(r10)&amp;((not rfe(r10))|(not rbe(r10)))&amp;am(r9)&amp;am(r14)"/>
+      </editable>
+      <editable class="workcraft.counterflow.CFLogic" id="l8" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.8" y="-0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-logic-2way back-eval-delay="300" back-eval-func="om(r10)" back-reset-delay="300" back-reset-func="(not om(r10))" fwd-eval-delay="300" fwd-eval-func="om(r9)" fwd-reset-delay="300" fwd-reset-func="(not om(r9))"/>
+      </editable>
+      <editable class="workcraft.counterflow.CFRegister" id="r11" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.4" y="0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <cf-register and-mark-func="om(r11)&amp;rfe(r11)&amp;rbe(r11)" and-token="false" and-unmark-func="(not om(r11))&amp;(not rfe(r11))&amp;(not rbe(r11))" back-disable-func="am(r11)&amp;lbr(l10)" back-enable-func="(not am(r11))&amp;lbe(l10)" fwd-disable-func="am(r11)&amp;lfr(l9)" fwd-enable-func="(not am(r11))&amp;lfe(l9)" or-mark-func="(not am(r11))&amp;(rfe(r11)|rbe(r11))&amp;(not am(r2))&amp;(not am(r12))" or-token="false" or-unmark-func="am(r11)&amp;((not rfe(r11))|(not rbe(r11)))&amp;am(r2)&amp;am(r12)"/>
+      </editable>
+      <editable class="workcraft.counterflow.CFLogic" id="l7" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.4" y="-0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-logic-2way back-eval-delay="300" back-eval-func="om(r9)" back-reset-delay="300" back-reset-func="(not om(r9))" fwd-eval-delay="300" fwd-eval-func="om(r8)" fwd-reset-delay="300" fwd-reset-func="(not om(r8))"/>
+      </editable>
+      <editable class="workcraft.counterflow.CFLogic" id="l11" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-1.0" y="0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-logic-2way back-eval-delay="300" back-eval-func="lbe(l12)" back-reset-delay="300" back-reset-func="lbr(l12)" fwd-eval-delay="300" fwd-eval-func="om(r12)" fwd-reset-delay="300" fwd-reset-func="(not om(r12))"/>
+      </editable>
+      <editable class="workcraft.hybridsdfs.CF2STRegister" id="r14" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-1.7" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <cf2st-register and-mark-func="om(r14)&amp;rfe(r14)&amp;rbe(r14)" and-token="false" and-unmark-func="(not om(r14))&amp;(not rfe(r14))&amp;(not rbe(r14))" back-disable-func="am(r14)&amp;(not m(r14))" back-enable-func="(not am(r14))&amp;m(r14)" disable-func="m(r14)&amp;(not om(r14))" enable-func="(not m(r14))&amp;om(r14)" fwd-disable-func="am(r14)&amp;lfr(l13)" fwd-enable-func="(not am(r14))&amp;lfe(l13)" mark-func="re(r14)&amp;(not m(r15))" marked="false" or-mark-func="(not am(r14))&amp;(rfe(r14)|rbe(r14))&amp;(not (am(r13)|am(r10)|am(r12)))" or-token="false" or-unmark-func="am(r14)&amp;((not rfe(r14))|(not rbe(r14)))&amp;(am(r13)&amp;am(r10)&amp;am(r12))" unmark-func="(not re(r14))&amp;m(r15)"/>
+      </editable>
+      <editable class="workcraft.counterflow.CFRegister" id="r13" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.6" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <cf-register and-mark-func="om(r13)&amp;rfe(r13)&amp;rbe(r13)" and-token="false" and-unmark-func="(not om(r13))&amp;(not rfe(r13))&amp;(not rbe(r13))" back-disable-func="am(r13)&amp;lbr(l14)" back-enable-func="(not am(r13))&amp;lbe(l14)" fwd-disable-func="am(r13)&amp;lfr(l15)" fwd-enable-func="(not am(r13))&amp;lfe(l15)" or-mark-func="(not am(r13))&amp;(rfe(r13)|rbe(r13))&amp;(not am(r2))&amp;(not am(r14))" or-token="false" or-unmark-func="am(r13)&amp;((not rfe(r13))|(not rbe(r13)))&amp;am(r2)&amp;am(r14)"/>
+      </editable>
+      <editable class="workcraft.counterflow.CFRegister" id="r9" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.6" y="-0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <cf-register and-mark-func="om(r9)&amp;rfe(r9)&amp;rbe(r9)" and-token="false" and-unmark-func="(not om(r9))&amp;(not rfe(r9))&amp;(not rbe(r9))" back-disable-func="am(r9)&amp;lbr(l8)" back-enable-func="(not am(r9))&amp;lbe(l8)" fwd-disable-func="am(r9)&amp;lfr(l7)" fwd-enable-func="(not am(r9))&amp;lfe(l7)" or-mark-func="(not am(r9))&amp;(rfe(r9)|rbe(r9))&amp;(not am(r8))&amp;(not am(r10))" or-token="false" or-unmark-func="am(r9)&amp;((not rfe(r9))|(not rbe(r9)))&amp;am(r8)&amp;am(r10)"/>
+      </editable>
+      <editable class="workcraft.counterflow.CFLogic" id="l14" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.8" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-logic-2way back-eval-delay="300" back-eval-func="lbe(l12)" back-reset-delay="300" back-reset-func="lbr(l12)" fwd-eval-delay="300" fwd-eval-func="om(r13)" fwd-reset-delay="300" fwd-reset-func="(not om(r13))"/>
+      </editable>
+      <editable class="workcraft.counterflow.CFLogic" id="l6" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.0" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-logic-2way back-eval-delay="300" back-eval-func="(lbe(l15)&amp;lbe(l9))&amp;om(r8)" back-reset-delay="300" back-reset-func="(lbr(l15)&amp;lbr(l9))&amp;(not om(r8))" fwd-eval-delay="300" fwd-eval-func="om(r2)" fwd-reset-delay="300" fwd-reset-func="(not om(r2))"/>
+      </editable>
+      <editable class="workcraft.hybridsdfs.ST2CFRegister" id="r2" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="0.3" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st2cf-register and-mark-func="om(r2)&amp;rfe(r2)&amp;rbe(r2)" and-token="false" and-unmark-func="(not om(r2))&amp;(not rfe(r2))&amp;(not rbe(r2))" back-disable-func="am(r2)&amp;lbr(l6)" back-enable-func="(not am(r2))&amp;lbe(l6)" disable-func="m(r2)&amp;(not m(r1))" enable-func="(not m(r2))&amp;m(r1)" fwd-disable-func="am(r2)&amp;(not m(r2))" fwd-enable-func="(not am(r2))&amp;m(r2)" mark-func="re(r2)&amp;m(r1)&amp;(not om(r2))&amp;(not am(r2))" marked="false" or-mark-func="(not am(r2))&amp;(rfe(r2)|rbe(r2))&amp;(not (am(r11)|am(r13)|am(r8)))" or-token="false" or-unmark-func="am(r2)&amp;((not rfe(r2))|(not rbe(r2)))&amp;(am(r11)&amp;am(r13)&amp;am(r8))" unmark-func="(not re(r2))&amp;(not m(r1))&amp;om(r2)&amp;am(r2)"/>
+      </editable>
+      <editable class="workcraft.counterflow.CFLogic" id="l9" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.2" y="0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-logic-2way back-eval-delay="300" back-eval-func="om(r11)" back-reset-delay="300" back-reset-func="(not om(r11))" fwd-eval-delay="300" fwd-eval-func="lfe(l6)" fwd-reset-delay="300" fwd-reset-func="lfr(l6)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l0" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="0.6" y="0.5" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r0)" reset-func="(not m(r0))"/>
+      </editable>
+      <editable class="workcraft.counterflow.CFLogic" id="l13" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-1.4" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-logic-2way back-eval-delay="300" back-eval-func="om(r14)" back-reset-delay="300" back-reset-func="(not om(r14))" fwd-eval-delay="300" fwd-eval-func="lfe(l12)" fwd-reset-delay="300" fwd-reset-func="lfr(l12)"/>
+      </editable>
+    </editable>
+    <editable-connection first="l0" second="r1" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r1" second="r2" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r2" second="l6" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l6" second="r8" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r8" second="l7" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l7" second="r9" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r9" second="l8" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l8" second="r10" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r10" second="l12" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l6" second="l15" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l15" second="r13" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r13" second="l14" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l14" second="l12" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l6" second="l9" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l9" second="r11" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r11" second="l10" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l10" second="r12" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r12" second="l11" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l11" second="l12" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l12" second="l13" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l13" second="r14" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r14" second="l16" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l16" second="r15" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r15" second="r0" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r0" second="l0" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+  </document>
+</workcraft>

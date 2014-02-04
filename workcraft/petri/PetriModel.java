@@ -11,18 +11,19 @@ import java.util.UUID;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import workcraft.DocumentBase;
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
-import workcraft.Document;
-import workcraft.DocumentBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.Framework;
 import workcraft.common.DefaultConnection;
 import workcraft.common.DefaultSimControls;
 import workcraft.editor.BasicEditable;
-import workcraft.editor.BoundingBox;
 import workcraft.editor.EditableConnection;
 import workcraft.editor.EditorPane;
+import workcraft.stg.EditableSTGPlace;
+import workcraft.stg.EditableSTGTransition;
+import workcraft.stg.STGModel;
 import workcraft.util.Vec2;
 
 public class PetriModel extends DocumentBase {
@@ -189,15 +190,17 @@ public class PetriModel extends DocumentBase {
 	int p_name_cnt = 0;
 
 	private int state = 0;
-	private boolean loading;
+	
+//	private boolean loading;
 
 	SimThread sim_thread = null;
 	public static DefaultSimControls panelSimControls = null;
 
-	LinkedList<EditablePetriPlace> places;
-	LinkedList<EditablePetriTransition> transitions;
-	LinkedList<DefaultConnection> connections;
-
+	protected LinkedList<EditablePetriPlace> places;
+	protected LinkedList<EditablePetriTransition> transitions;
+	protected LinkedList<DefaultConnection> connections;
+	
+	private Boolean shorthandNotation = false;
 	public PetriModel() {
 		places = new LinkedList<EditablePetriPlace>();
 		transitions = new LinkedList<EditablePetriTransition>();
@@ -395,6 +398,14 @@ public class PetriModel extends DocumentBase {
 	public void validate() {
 	}
 
+	public List<String>getEditableProperties()  {
+		
+		List<String> list = super.getEditableProperties(); 
+		list.add("bool,Shorthand notation,getShorthandNotation,setShorthandNotation");
+		
+		return list;
+	}
+	
 	public JPanel getSimulationControls() {
 		if (panelSimControls == null) {
 			panelSimControls = new DefaultSimControls(_modeluuid.toString());
@@ -414,13 +425,14 @@ public class PetriModel extends DocumentBase {
 		return server;
 	}
 
-	public void setLoading(boolean loading) {
-		this.loading = loading;
-	}
+//	SG10022008 : loading is defined in parent, no need to use others
+//	public void setLoading(boolean loading) {
+//		this.loading = loading;
+//	}
 
-	public boolean isLoading() {
-		return loading;
-	}
+//	public boolean isLoading() {
+//		return loading;
+//	}
 
 	public void getComponents(List<BasicEditable> out) {
 		for (BasicEditable n: places)
@@ -429,7 +441,16 @@ public class PetriModel extends DocumentBase {
 			out.add(n);
 	}
 
+	public void getTransitions(List<EditablePetriTransition> out) {
+		for (EditablePetriTransition n: transitions)
+			out.add(n);
+	}
 
+	public void getPlaces(List<EditablePetriPlace> out) {
+		for (EditablePetriPlace n: places)
+			out.add(n);
+	}
+	
 	private boolean isPairUsed(EditablePetriTransition T1, EditablePetriTransition T2,  HashMap<EditablePetriTransition, LinkedList<EditablePetriTransition>> used_pairs) {
 		LinkedList<EditablePetriTransition> lst = null;
 		lst = used_pairs.get(T1);
@@ -539,7 +560,7 @@ public class PetriModel extends DocumentBase {
 					
 					String be = addUsedPair(T1, T2, used_pairs);
 					
-					System.out.println("ADDED "+name1+" "+name2 +" common place:"+ P.getId() + " ; clause:" + be);
+					// System.out.println("ADDED "+name1+" "+name2 +" common place:"+ P.getId() + " ; clause:" + be);
 
 					formulaClauses.add(be);
 				}
@@ -550,34 +571,27 @@ public class PetriModel extends DocumentBase {
 	}
 
 
-	public void applyInterface(PetriModel iface)
+	public void applyInterface(STGModel iface)
 	{
 	/*	Hashtable<EditablePetriPlace, EditablePetriPlace> p2p = new Hashtable<EditablePetriPlace, EditablePetriPlace>();
 		Hashtable<EditablePetriTransition, EditablePetriTransition> t2t = new Hashtable<EditablePetriTransition, EditablePetriTransition>();
+		
+		LinkedList<EditablePetriPlace> out = new LinkedList<EditablePetriPlace>();
+		iface.getPlaces(out);
 
-		// BoundingBox bb1 = root.getBoundingBoxInViewSpace();
-		//  BoundingBox bb2 = iface.root.getBoundingBoxInViewSpace();
-
-		for(EditablePetriPlace p: iface.places)
+		for(EditablePetriPlace pp: out)
 		{
-			String id = p.getId().toString();
-
+			EditableSTGPlace p = (EditableSTGPlace)pp;
 			EditablePetriPlace new_p = null;
-			if (id.startsWith("iface_"))
-			{
-				new_p = (EditablePetriPlace)getComponentById(id.substring(6));
-				if (new_p == null)
-					System.err.println ("*hysteric* *search* "+ id.substring(6) ); 
-			}
-			else
-			{
+			
+			if (p.getIn().size() > 1 || p.getOut().size() > 1) {
 				try
 				{
 					new_p = new EditablePetriPlace(getRoot());
 					new_p.transform.copy(p.transform);
 					// new_p.transform.translateRel(0.0f, -(bb1.getUpperRight().getY()+(bb2.getUpperRight().getY()-bb2.getLowerLeft().getY())), 0.0f);
 					new_p.setTokens(p.getTokens());
-					new_p.setId("iface_" + id);
+					new_p.setId("iface_" + p.getId());
 				}
 				catch (UnsupportedComponentException e)
 				{
@@ -586,7 +600,7 @@ public class PetriModel extends DocumentBase {
 				catch (DuplicateIdException e)
 				{
 					e.printStackTrace();
-					System.err.println("Could not create interface place due to id duplication: 'iface_" + id + "'.");
+					System.err.println("Could not create interface place due to id duplication: 'iface_" + p.getId() + "'.");
 				}
 			}
 			p2p.put(p, new_p);
@@ -594,9 +608,24 @@ public class PetriModel extends DocumentBase {
 
 		for(EditablePetriTransition t: iface.transitions)
 		{
+			EditableSTGTransition stgt = (EditableSTGTransition) stgt;
 			String id = t.getId();
-
 			EditablePetriTransition new_t = null;
+
+			
+			switch (stgt.getTransitionType()) {
+				case 1:
+					
+					break;
+				case 2:
+					break;
+					
+				case 0:
+				case 3:
+					
+					break;
+			}
+
 			if (id.startsWith("iface_"))
 			{
 				id = id.substring(6);
@@ -702,9 +731,17 @@ public class PetriModel extends DocumentBase {
 
 	public LinkedList<EditablePetriPlace> getPlaces() {
 		return places;
-	}
+		}
 
 	public LinkedList<EditablePetriTransition> getTransitions() {
 		return transitions;
-	} 
-} 	
+	}
+	
+	public Boolean getShorthandNotation() {
+		return shorthandNotation;
+	}
+	
+	public void setShorthandNotation(Boolean shorth) {
+		this.shorthandNotation = shorth;
+	}
+	} 	

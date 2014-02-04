@@ -36,7 +36,9 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 	private LogicState forward_state = LogicState.RESET;
 	private LogicState backward_state = LogicState.RESET;
 
-	private boolean can_evaluate = false;
+	
+	protected boolean can_work_fwd = false;
+	protected boolean can_work_back = false;
 
 	private int fwd_eval_delay = 300;
 	private int fwd_reset_delay = 300;
@@ -60,12 +62,17 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 	protected String fwdResetFunc;// = "";
 	protected String backResetFunc;// = "";
 
+	protected boolean[] funcEdited; 
+
+
 	public List<String> getEditableProperties() {
 		List<String> list = super.getEditableProperties();
 		list.add("int,Forward eval delay,getFwdEvalDelay,setFwdEvalDelay");
 		list.add("int,Forward reset delay,getFwdResetDelay,setFwdResetDelay");
 		list.add("int,Backward eval delay,getBackEvalDelay,setBackEvalDelay");
 		list.add("int,Backward reset delay,getBackResetDelay,setBackResetDelay");
+		list.add("bool,FW enabled,getForwardState_ed,setForwardState");
+		list.add("bool,BW enabled,getBackwardState_ed,setBackwardState");
 		list.add("str,Fwd Eval,getFwdEvalFunc,setFwdEvalFunc");
 		list.add("str,Back Eval,getBackEvalFunc,setBackEvalFunc");
 		list.add("str,Fwd Reset,getFwdResetFunc,setFwdResetFunc");
@@ -73,8 +80,36 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 		return list;
 	}
 
+	public void setForwardState(Boolean state) {
+		if (state)
+			this.forward_state = LogicState.EVALUATED;
+		else
+			this.forward_state = LogicState.RESET;
+	}
+
+	public void setBackwardState(Boolean state) {
+		if (state)
+			this.backward_state = LogicState.EVALUATED;
+		else
+			this.backward_state = LogicState.RESET;
+
+	}
+
+	public Boolean getBackwardState_ed() {
+		return (backward_state == LogicState.EVALUATED);		
+	}
+
+	public Boolean getForwardState_ed() {
+		return (forward_state == LogicState.EVALUATED);		
+	}
+
+
+
 	public SDFSLogic2Way(BasicEditable parent)  throws UnsupportedComponentException {
 		super(parent);
+		funcEdited = new boolean[4];
+		for (int i=0; i<4; i++)
+			funcEdited[i] = false;
 		boundingBox.setExtents(new Vec2(-0.05f, -0.05f), new Vec2(0.05f, 0.05f));
 	}
 
@@ -87,7 +122,6 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 		p.setLineMode(LineMode.HAIRLINE);
 
 		p.setFillColor(selectedColor);
-
 
 		if (selected) {
 			p.setFillColor(selectedColor);
@@ -160,8 +194,8 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 	@Override
 	public void update(Mat4x4 matView) {
 		// TODO Auto-generated method stub
-
 	}
+
 	public void fromXmlDom(Element element) throws DuplicateIdException {
 		NodeList nl = element.getElementsByTagName("sdfs-logic-2way");
 		Element te = (Element) nl.item(0);
@@ -173,6 +207,10 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 		fwdResetFunc = te.getAttribute("fwd-reset-func");
 		backEvalFunc = te.getAttribute("back-eval-func");
 		backResetFunc = te.getAttribute("back-reset-func");
+
+		for (int i=0; i<4; i++)
+			funcEdited[i] = Boolean.parseBoolean(te.getAttribute("func-edited-"+i));
+
 		super.fromXmlDom(element);
 	}
 
@@ -188,6 +226,10 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 		ppe.setAttribute("back-eval-func", backEvalFunc);
 		ppe.setAttribute("fwd-reset-func", fwdResetFunc);
 		ppe.setAttribute("back-reset-func", backResetFunc);
+
+		for (int i=0; i<4; i++)
+			ppe.setAttribute("func-edited-"+i, Boolean.toString(funcEdited[i]));
+
 		ee.appendChild(ppe);
 		return ee;
 	}
@@ -202,12 +244,13 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 		case RESET:
 			boolean can_evaluate = server.python.eval(fwdEvalFunc).__nonzero__();
 			if (can_evaluate) {
-				//		if ( (mon.isUserInteractionEnabled() && can_evaluate) || !mon.isUserInteractionEnabled() ) {
-				forward_state = LogicState.EVALUATING;
-				fwd_event_progress = 0.0f;
-				fwd_event_start = time_ms;
-				can_evaluate = false;
-				//	}
+				if ( (doc.isUserInteractionEnabled() && can_work_fwd) || !doc.isUserInteractionEnabled() ) {
+					forward_state = LogicState.EVALUATING;
+					fwd_event_progress = 0.0f;
+					fwd_event_start = time_ms;
+					can_evaluate = false;
+					can_work_fwd = false;
+				}
 			}
 			break;
 		case RESETTING:
@@ -229,12 +272,14 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 				fwd_event_progress = (float)(time_ms - fwd_event_start) / (float)(fwd_eval_delay);
 			break;
 		case EVALUATED:
-			// check preset
-			boolean can_reset = server.python.eval(fwdResetFunc).__nonzero__();
-			if (can_reset) {
-				forward_state = LogicState.RESETTING;
-				fwd_event_progress = 0.0f;
-				fwd_event_start = time_ms;
+			if ( (doc.isUserInteractionEnabled() && can_work_fwd) || !doc.isUserInteractionEnabled() ) {
+				boolean can_reset = server.python.eval(fwdResetFunc).__nonzero__();
+				if (can_reset) {
+					forward_state = LogicState.RESETTING;
+					fwd_event_progress = 0.0f;
+					fwd_event_start = time_ms;
+					can_work_fwd = false;
+				}
 			}
 			break;
 		}
@@ -244,12 +289,13 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 			// check postset
 			boolean can_evaluate = server.python.eval(backEvalFunc).__nonzero__();
 			if (can_evaluate) {
-				//		if ( (mon.isUserInteractionEnabled() && can_evaluate) || !mon.isUserInteractionEnabled() ) {
-				backward_state = LogicState.EVALUATING;
-				back_event_progress = 0.0f;
-				back_event_start = time_ms;
-				can_evaluate = false;
-				//	}
+				if ( (doc.isUserInteractionEnabled() && can_work_back) || !doc.isUserInteractionEnabled() ) {
+					backward_state = LogicState.EVALUATING;
+					back_event_progress = 0.0f;
+					back_event_start = time_ms;
+					can_evaluate = false;
+					can_work_back = false;
+				}
 			}
 			break;
 		case RESETTING:
@@ -273,9 +319,12 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 		case EVALUATED:
 			boolean can_reset = server.python.eval(backResetFunc).__nonzero__();
 			if (can_reset) {
-				backward_state = LogicState.RESETTING;
-				back_event_progress = 0.0f;
-				back_event_start = time_ms;
+				if ( (doc.isUserInteractionEnabled() && can_work_back) || !doc.isUserInteractionEnabled() ) {
+					backward_state = LogicState.RESETTING;
+					back_event_progress = 0.0f;
+					back_event_start = time_ms;
+					can_work_back = false;
+				}
 			}
 			break;
 		}
@@ -283,15 +332,6 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 		return stateChanged;
 	}
 
-	public void simAction(int flag) {
-		if (flag == MouseEvent.BUTTON1) {
-			can_evaluate = true;
-		}
-	}
-
-	public boolean canEvaluate() {
-		return can_evaluate;
-	}
 
 	public void setFwdEvalDelay(Integer fwd_eval_delay) {
 		this.fwd_eval_delay = fwd_eval_delay;
@@ -375,6 +415,7 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 
 	public void setFwdEvalFunc(String fwdEvalFunc) {
 		this.fwdEvalFunc = fwdEvalFunc;
+		funcEdited[0] = true;
 	}
 
 	public String getFwdEvalFunc() {
@@ -383,6 +424,7 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 
 	public void setBackEvalFunc(String backEvalFunc) {
 		this.backEvalFunc = backEvalFunc;
+		funcEdited[1] = true;
 	}
 
 	public String getBackEvalFunc() {
@@ -391,6 +433,7 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 
 	public void setFwdResetFunc(String fwdResetFunc) {
 		this.fwdResetFunc = fwdResetFunc;
+		funcEdited[2] = true;
 	}
 
 	public String getFwdResetFunc() {
@@ -399,10 +442,17 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 
 	public void setBackResetFunc(String backResetFunc) {
 		this.backResetFunc = backResetFunc;
+		funcEdited[3] = true;
 	}
 
 	public String getBackResetFunc() {
 		return backResetFunc;
+	}
+
+
+	public void clearFuncEditedFlags() {
+		for (int i=0;i<4;i++)
+			funcEdited[i] = false;
 	}
 
 	@Override
@@ -425,4 +475,14 @@ public abstract class SDFSLogic2Way extends SDFSLogicBase {
 		return s;
 	}
 
+	public void simAction(int flag) {
+		
+		
+		
+		if (flag == MouseEvent.BUTTON1) {
+			can_work_fwd  = true;
+		} else if  (flag == MouseEvent.BUTTON3) {
+			can_work_back = true;
+		}
+	}
 }

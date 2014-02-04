@@ -84,7 +84,7 @@ public class ExternalProcess {
 		stdoutThread.interrupt();
 		stderrThread.interrupt();
 
-		if (keepWindow)
+		if (keepWindow || (returnCode != 0))
 			btnCancel.setText("OK");
 		else
 			setVisible(false);

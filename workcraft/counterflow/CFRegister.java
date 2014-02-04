@@ -15,6 +15,7 @@ import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.editor.BasicEditable;
 import workcraft.sdfs.RegisterState;
+import workcraft.sdfs.SDFSModelBase;
 import workcraft.sdfs.SDFSRegisterBase;
 import workcraft.util.Colorf;
 import workcraft.util.Vec2;
@@ -25,9 +26,8 @@ import workcraft.visual.ShapeMode;
 
 public class CFRegister extends SDFSRegisterBase {
 	public static final UUID _modeluuid = UUID.fromString("9df82f00-7aec-11db-9fe1-0800200c9a66");
-	public static final String _displayname = "Register";
-	public static final String _hotkey = "q";
-	public static final int  _hotkeyvk = KeyEvent.VK_Q;
+	public static final UUID[] _modeluuidex = new UUID[] {UUID.fromString("aab78c50-e6bf-11dc-95ff-0800200c9a66")};
+	public static final String _displayname = "Counterflow Register";
 
 	private static Colorf or_token_color = new Colorf (0.0f, 0.0f, 0.0f, 1.0f);
 	private static Colorf and_token_color = new Colorf (0.0f, 0.0f, 0.0f, 1.0f);
@@ -143,6 +143,8 @@ public class CFRegister extends SDFSRegisterBase {
 		List<String> list = super.getEditableProperties();
 		list.add("bool,OR marked,isOrMarked,setOrMarked");
 		list.add("bool,AND marked,isAndMarked,setAndMarked");
+		list.add("bool,FW enabled,getForward_state,setForward_state");
+		list.add("bool,BW enabled,getBackward_state,setBackward_state");
 		list.add("str,Fwd enabling,getFwdEnableFunc,setFwdEnableFunc");
 		list.add("str,Back enabling,getBackEnableFunc,setBackEnableFunc");
 		list.add("str,Fwd disabling,getFwdDisableFunc,setFwdDisableFunc");
@@ -168,6 +170,16 @@ public class CFRegister extends SDFSRegisterBase {
 		orUnmarkFunc = ne.getAttribute("or-unmark-func");
 		andMarkFunc = ne.getAttribute("and-mark-func");
 		andUnmarkFunc = ne.getAttribute("and-unmark-func");
+		
+		if (ne.getAttribute("forward-state").equals("enabled"))
+			forward_state = RegisterState.ENABLED;
+		else
+			forward_state = RegisterState.DISABLED;
+		
+		if (ne.getAttribute("backward-state").equals("enabled"))
+			backward_state = RegisterState.ENABLED;
+		else
+			backward_state = RegisterState.DISABLED;
 
 		super.fromXmlDom(element);		
 	}
@@ -186,13 +198,15 @@ public class CFRegister extends SDFSRegisterBase {
 		ppe.setAttribute("or-unmark-func", orUnmarkFunc);
 		ppe.setAttribute("and-mark-func", andMarkFunc);
 		ppe.setAttribute("and-unmark-func", andUnmarkFunc);
+		ppe.setAttribute("forward-state", (forward_state == RegisterState.ENABLED)?"enabled":"disabled");
+		ppe.setAttribute("backward-state", (backward_state == RegisterState.ENABLED)?"enabled":"disabled");
 		ee.appendChild(ppe);
 		return ee;
 	}
 
 	public boolean simTick(int time_ms) {
 		WorkCraftServer server = ownerDocument.getServer();		
-		CFModel doc = ((CFModel)ownerDocument);
+		SDFSModelBase doc = ((SDFSModelBase)ownerDocument);
 		boolean user = doc.isUserInteractionEnabled();
 
 		switch (forward_state) {
@@ -308,13 +322,16 @@ public class CFRegister extends SDFSRegisterBase {
 
 	@Override
 	public void rebuildRuleFunctions() {
+		
 		fwdEnableFunc = expandRule("self !am,preset:l lfe,preset:r om");
 		fwdDisableFunc = expandRule("self am,preset:l lfr,preset:r !om");
 		backEnableFunc = expandRule("self !am,postset:l lbe,postset:r om");
 		backDisableFunc = expandRule("self am,postset:l lbr,postset:r !om");
 		orMarkFunc = expandRule("self !am,self rfe|self rbe,r-preset !am,r-postset !am");
 		orUnmarkFunc = expandRule("self am,self !rfe|self !rbe,r-preset am,r-postset am");
-		andMarkFunc = expandRule("self om,self rfe,self rbe");
+//		andMarkFunc = expandRule("self om,self rfe,self rbe");
+		andMarkFunc = expandRule("self om,self rfe,self rbe,r-preset om,r-postset om");
+//		andUnmarkFunc = expandRule("self !om,self !rfe,self !rbe,r-preset !om,r-postset !om");
 		andUnmarkFunc = expandRule("self !om,self !rfe,self !rbe");
 	}
 
@@ -441,5 +458,28 @@ public class CFRegister extends SDFSRegisterBase {
 		s[2] = forward_state;
 		s[3] = backward_state;
 		return s;
+	}
+
+	public Boolean getForward_state() {
+		return (forward_state == RegisterState.ENABLED);		
+	}
+
+	public void setForward_state(Boolean state) {
+		if (state)
+			this.forward_state = RegisterState.ENABLED;
+		else
+			this.forward_state = RegisterState.DISABLED;
+	}
+	
+	public Boolean getBackward_state() {
+		return (backward_state == RegisterState.ENABLED);		
+	}
+
+	public void setBackward_state(Boolean state) {
+		if (state)
+			this.backward_state = RegisterState.ENABLED;
+		else
+			this.backward_state = RegisterState.DISABLED;
+		
 	}
 }

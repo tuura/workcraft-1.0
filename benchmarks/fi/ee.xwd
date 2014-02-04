@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<workcraft>
+  <options tab="2"/>
+  <editor>
+    <options grid="true" ids="true" labels="true" snap="true"/>
+    <viewstate s="0.56447387" tx="-1.2698838" ty="0.1125405"/>
+  </editor>
+  <document model-uuid="a57b3350-73d3-11db-9fe1-0800200c9a66">
+    <editable class="workcraft.editor.GroupNode" id="_root" label="" rotation="0" selected="false">
+      <transform>
+        <vec3 x="0.0" y="0.0" z="0.0"/>
+        <vec3 x="1.0" y="1.0" z="1.0"/>
+      </transform>
+      <custom-properties/>
+      <editable class="workcraft.spreadtoken.STLogic" id="l4" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="0.2" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="(m(r2)|m(r4))" reset-func="(not (m(r2)|m(r4)))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r0_copy_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-2.6000001" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r0_copy_copy)&amp;r(l12_copy)" enable-func="(not m(r0_copy_copy))&amp;e(l12_copy)" mark-func="re(r0_copy_copy)&amp;m(r13_copy)&amp;(not (m(r3_copy_copy)|m(r1_copy_copy)))" marked="false" unmark-func="(not re(r0_copy_copy))&amp;(not m(r13_copy))&amp;(m(r3_copy_copy)&amp;m(r1_copy_copy))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r4" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="0.3" y="0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r4)&amp;r(l2)" enable-func="(not m(r4))&amp;e(l2)" mark-func="re(r4)&amp;m(r3)&amp;(not m(r5))" marked="false" unmark-func="(not re(r4))&amp;(not m(r3))&amp;m(r5)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r2_copy_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-3.3000002" y="-0.19999999" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r2_copy_copy)&amp;r(l1_copy_copy)" enable-func="(not m(r2_copy_copy))&amp;e(l1_copy_copy)" mark-func="re(r2_copy_copy)&amp;m(r1_copy_copy)&amp;(not m(r5_copy_copy))" marked="false" unmark-func="(not re(r2_copy_copy))&amp;(not m(r1_copy_copy))&amp;m(r5_copy_copy)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l4_copy_copy" label="" rotation="0" selected="true">
+        <transform>
+          <vec3 x="-3.4" y="0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="(m(r2_copy_copy)|m(r4_copy_copy))" reset-func="(not (m(r2_copy_copy)|m(r4_copy_copy)))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r1_copy_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-2.9" y="-0.19999999" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r1_copy_copy)&amp;r(l0_copy_copy)" enable-func="(not m(r1_copy_copy))&amp;e(l0_copy_copy)" mark-func="re(r1_copy_copy)&amp;m(r0_copy_copy)&amp;(not m(r2_copy_copy))" marked="false" unmark-func="(not re(r1_copy_copy))&amp;(not m(r0_copy_copy))&amp;m(r2_copy_copy)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l1_copy_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-3.1" y="-0.19999999" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r1_copy_copy)" reset-func="(not m(r1_copy_copy))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l20" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="1.0" y="0.4" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r22)" reset-func="(not m(r22))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r3_copy_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-2.9" y="0.19999999" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r3_copy_copy)&amp;r(l0_copy_copy)" enable-func="(not m(r3_copy_copy))&amp;e(l0_copy_copy)" mark-func="re(r3_copy_copy)&amp;m(r0_copy_copy)&amp;(not m(r4_copy_copy))" marked="false" unmark-func="(not re(r3_copy_copy))&amp;(not m(r0_copy_copy))&amp;m(r4_copy_copy)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r3" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="0.7" y="0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r3)&amp;r(l0)" enable-func="(not m(r3))&amp;e(l0)" mark-func="re(r3)&amp;m(r0)&amp;(not m(r4))" marked="false" unmark-func="(not re(r3))&amp;(not m(r0))&amp;m(r4)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r4_copy_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-3.3000002" y="0.19999999" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r4_copy_copy)&amp;r(l2_copy_copy)" enable-func="(not m(r4_copy_copy))&amp;e(l2_copy_copy)" mark-func="re(r4_copy_copy)&amp;m(r3_copy_copy)&amp;(not m(r5_copy_copy))" marked="false" unmark-func="(not re(r4_copy_copy))&amp;(not m(r3_copy_copy))&amp;m(r5_copy_copy)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l12_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-2.4" y="0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r13_copy)" reset-func="(not m(r13_copy))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r5" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.0" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r5)&amp;r(l4)" enable-func="(not m(r5))&amp;e(l4)" mark-func="re(r5)&amp;(m(r2)&amp;m(r4))&amp;(not m(r13))" marked="false" unmark-func="(not re(r5))&amp;(not (m(r2)|m(r4)))&amp;m(r13)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r13_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-2.2" y="0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r13_copy)&amp;r(l5_copy)" enable-func="(not m(r13_copy))&amp;e(l5_copy)" mark-func="re(r13_copy)&amp;m(r5_copy)&amp;(not m(r0_copy_copy))" marked="false" unmark-func="(not re(r13_copy))&amp;(not m(r5_copy))&amp;m(r0_copy_copy)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l0" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="0.8" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r0)" reset-func="(not m(r0))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r0" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="1.0" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r0)&amp;r(l20)" enable-func="(not m(r0))&amp;e(l20)" mark-func="re(r0)&amp;m(r22)&amp;(not (m(r1)|m(r3)))" marked="false" unmark-func="(not re(r0))&amp;(not m(r22))&amp;(m(r1)&amp;m(r3))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r4_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-1.500001" y="0.20000002" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r4_copy)&amp;r(l2_copy)" enable-func="(not m(r4_copy))&amp;e(l2_copy)" mark-func="re(r4_copy)&amp;m(r3_copy)&amp;(not m(r5_copy))" marked="false" unmark-func="(not re(r4_copy))&amp;(not m(r3_copy))&amp;m(r5_copy)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l5_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-2.0000014" y="0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r5_copy)" reset-func="(not m(r5_copy))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r1_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-1.1000004" y="-0.19999999" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r1_copy)&amp;r(l0_copy)" enable-func="(not m(r1_copy))&amp;e(l0_copy)" mark-func="re(r1_copy)&amp;m(r0_copy)&amp;(not m(r2_copy))" marked="false" unmark-func="(not re(r1_copy))&amp;(not m(r0_copy))&amp;m(r2_copy)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l5" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.2" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r5)" reset-func="(not m(r5))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r3_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-1.1000004" y="0.20000002" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r3_copy)&amp;r(l0_copy)" enable-func="(not m(r3_copy))&amp;e(l0_copy)" mark-func="re(r3_copy)&amp;m(r0_copy)&amp;(not m(r4_copy))" marked="false" unmark-func="(not re(r3_copy))&amp;(not m(r0_copy))&amp;m(r4_copy)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r2" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="0.3" y="-0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r2)&amp;r(l1)" enable-func="(not m(r2))&amp;e(l1)" mark-func="re(r2)&amp;m(r1)&amp;(not m(r5))" marked="false" unmark-func="(not re(r2))&amp;(not m(r1))&amp;m(r5)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l2_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-1.3000004" y="0.20000002" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r3_copy)" reset-func="(not m(r3_copy))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l1_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-1.3000004" y="-0.19999999" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r1_copy)" reset-func="(not m(r1_copy))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l0_copy_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-2.8000002" y="0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r0_copy_copy)" reset-func="(not m(r0_copy_copy))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r5_copy_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-3.6" y="0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r5_copy_copy)&amp;r(l4_copy_copy)" enable-func="(not m(r5_copy_copy))&amp;e(l4_copy_copy)" mark-func="re(r5_copy_copy)&amp;(m(r4_copy_copy)&amp;m(r2_copy_copy))&amp;(not m(r21))" marked="false" unmark-func="(not re(r5_copy_copy))&amp;(not (m(r4_copy_copy)|m(r2_copy_copy)))&amp;m(r21)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l0_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-1.0000005" y="0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r0_copy)" reset-func="(not m(r0_copy))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r2_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-1.500001" y="-0.19999999" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r2_copy)&amp;r(l1_copy)" enable-func="(not m(r2_copy))&amp;e(l1_copy)" mark-func="re(r2_copy)&amp;m(r1_copy)&amp;(not m(r5_copy))" marked="false" unmark-func="(not re(r2_copy))&amp;(not m(r1_copy))&amp;m(r5_copy)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l4_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-1.6000009" y="0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="(m(r2_copy)|m(r4_copy))" reset-func="(not (m(r2_copy)|m(r4_copy)))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l12" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.5999999" y="0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r13)" reset-func="(not m(r13))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l2" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="0.5" y="0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r3)" reset-func="(not m(r3))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l1" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="0.5" y="-0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r1)" reset-func="(not m(r1))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r5_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-1.8000014" y="0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r5_copy)&amp;r(l4_copy)" enable-func="(not m(r5_copy))&amp;e(l4_copy)" mark-func="re(r5_copy)&amp;(m(r2_copy)&amp;m(r4_copy))&amp;(not m(r13_copy))" marked="false" unmark-func="(not re(r5_copy))&amp;(not (m(r2_copy)|m(r4_copy)))&amp;m(r13_copy)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r0_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.79999995" y="0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r0_copy)&amp;r(l12)" enable-func="(not m(r0_copy))&amp;e(l12)" mark-func="re(r0_copy)&amp;m(r13)&amp;(not (m(r3_copy)|m(r1_copy)))" marked="false" unmark-func="(not re(r0_copy))&amp;(not m(r13))&amp;(m(r3_copy)&amp;m(r1_copy))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r1" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="0.7" y="-0.2" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r1)&amp;r(l0)" enable-func="(not m(r1))&amp;e(l0)" mark-func="re(r1)&amp;m(r0)&amp;(not m(r2))" marked="false" unmark-func="(not re(r1))&amp;(not m(r0))&amp;m(r2)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r22" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="0.7" y="0.4" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r22)&amp;(not m(r28))" enable-func="(not m(r22))&amp;m(r28)" mark-func="re(r22)&amp;m(r28)&amp;(not m(r0))" marked="true" unmark-func="(not re(r22))&amp;(not m(r28))&amp;m(r0)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r13" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-0.4" y="-0.0" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r13)&amp;r(l5)" enable-func="(not m(r13))&amp;e(l5)" mark-func="re(r13)&amp;m(r5)&amp;(not m(r0_copy))" marked="false" unmark-func="(not re(r13))&amp;(not m(r5))&amp;m(r0_copy)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r28" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="0.5" y="0.4" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r28)&amp;(not m(r21))" enable-func="(not m(r28))&amp;m(r21)" mark-func="re(r28)&amp;m(r21)&amp;(not m(r22))" marked="false" unmark-func="(not re(r28))&amp;(not m(r21))&amp;m(r22)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l5_copy_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-3.6000001" y="0.4" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r5_copy_copy)" reset-func="(not m(r5_copy_copy))"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STRegister" id="r21" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="0.3" y="0.4" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <sdfs-register/>
+        <st-register disable-func="m(r21)&amp;r(l5_copy_copy)" enable-func="(not m(r21))&amp;e(l5_copy_copy)" mark-func="re(r21)&amp;m(r5_copy_copy)&amp;(not m(r28))" marked="false" unmark-func="(not re(r21))&amp;(not m(r5_copy_copy))&amp;m(r28)"/>
+      </editable>
+      <editable class="workcraft.spreadtoken.STLogic" id="l2_copy_copy" label="" rotation="0" selected="false">
+        <transform>
+          <vec3 x="-3.1" y="0.19999999" z="0.0"/>
+          <vec3 x="1.0" y="1.0" z="1.0"/>
+        </transform>
+        <custom-properties/>
+        <sdfs-node user-edited="false"/>
+        <st-logic eval-func="m(r3_copy_copy)" reset-func="(not m(r3_copy_copy))"/>
+      </editable>
+    </editable>
+    <editable-connection first="r0" second="l0" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l0" second="r1" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r1" second="l1" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l1" second="r2" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r2" second="l4" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r4" second="l4" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l0" second="r3" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r3" second="l2" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l2" second="r4" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l4" second="r5" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r5" second="l5" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r0_copy" second="l0_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l0_copy" second="r1_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r1_copy" second="l1_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l1_copy" second="r2_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r2_copy" second="l4_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r4_copy" second="l4_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l0_copy" second="r3_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r3_copy" second="l2_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l2_copy" second="r4_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l4_copy" second="r5_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r5_copy" second="l5_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l5" second="r13" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r13" second="l12" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l12" second="r0_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r0_copy_copy" second="l0_copy_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l0_copy_copy" second="r1_copy_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r1_copy_copy" second="l1_copy_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l1_copy_copy" second="r2_copy_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r2_copy_copy" second="l4_copy_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r4_copy_copy" second="l4_copy_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l0_copy_copy" second="r3_copy_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r3_copy_copy" second="l2_copy_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l2_copy_copy" second="r4_copy_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l4_copy_copy" second="r5_copy_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r5_copy_copy" second="l5_copy_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r13_copy" second="l12_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l12_copy" second="r0_copy_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l5_copy" second="r13_copy" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l5_copy_copy" second="r21" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r22" second="l20" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r21" second="r28" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="r28" second="r22" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+    <editable-connection first="l20" second="r0" selected="false">
+      <connection arrow="true" type="straight"/>
+    </editable-connection>
+  </document>
+</workcraft>

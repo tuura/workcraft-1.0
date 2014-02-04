@@ -40,6 +40,8 @@
 	<class name="workcraft.chetri.EditableChetriTransition"/>
 	<class name="workcraft.chetri.EditableChetriPlace"/>	
 
+
+
  <class name="workcraft.sdfs.SDFSCriticalCycleAnalyzer"/>
  <class name="workcraft.sdfs.ASDFSMapper"/>
   <class name="workcraft.sdfs.SDFS2MGMapper"/>
@@ -52,14 +54,21 @@
   <class name="workcraft.spreadtoken.STModel"/>
 	<class name="workcraft.spreadtoken.STLogic"/>
 	<class name="workcraft.spreadtoken.STRegister"/>
+	<class name="workcraft.spreadtoken.STController"/>	
+		<class name="workcraft.spreadtoken.STPush"/>	
 	
   <class name="workcraft.counterflow.CFModel"/>
 	<class name="workcraft.counterflow.CFLogic"/>
 	<class name="workcraft.counterflow.CFRegister"/>
+	<class name="workcraft.counterflow.ClearRuleEditFlags"/>
 	
   <class name="workcraft.antitoken.ATModel"/>
 	<class name="workcraft.antitoken.ATLogic"/>
 	<class name="workcraft.antitoken.ATRegister"/>
+	
+<class name = "workcraft.hybridsdfs.HybridSDFSModel"/>
+<class name = "workcraft.hybridsdfs.ST2CFRegister"/>
+<class name = "workcraft.hybridsdfs.CF2STRegister"/>
 
   <class name="workcraft.gate.GateModel"/>
 	<class name="workcraft.gate.EnvironmentBox"/>  
@@ -76,7 +85,12 @@
 	<class name="workcraft.gate.BlackBox"/>
 	
 	<class name="workcraft.gate.ExtractInterface"/>
--->
+	<class name="workcraft.gate.GateSpeedIndependenceCheck"/>
+	
+  <class name="workcraft.stg.STGModel"/>	
+    <class name="workcraft.stg.STGDotGSaver"/>	
+     <class name="workcraft.stg.EditableSTGPlace"/>	
+    <class name="workcraft.stg.EditableSTGTransition"/>	
   <class name="workcraft.common.PetriNetMapper"/>
   <class name="workcraft.common.SchematicNetDeadlockCheck"/>
   <class name="workcraft.common.SchematicNetSemimodularityCheck"/>
