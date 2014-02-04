@@ -4,12 +4,12 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.UUID;
 
-
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.DocumentBase;
+import workcraft.ModelBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.XmlSerializable;
 import workcraft.editor.BasicEditable;
@@ -62,8 +62,8 @@ public class EnvironmentBox extends BasicEditable implements XmlSerializable {
 		if (selected)
 			p.setLineColor(selectedColor);
 		else
-			if (highlight && ((DocumentBase)ownerDocument).isShowHighlight())
-				p.setLineColor(((DocumentBase)ownerDocument).getHighlightColor());
+			if (highlight && ((ModelBase)ownerDocument).isShowHighlight())
+				p.setLineColor(((ModelBase)ownerDocument).getHighlightColor());
 			else
 				if (active)
 					p.setLineColor(activeColor);
@@ -109,7 +109,7 @@ public class EnvironmentBox extends BasicEditable implements XmlSerializable {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
-		org.w3c.dom.Document d = ee.getOwnerDocument();
+		Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("environment");
 		ppe.setAttribute("environment-stg-path", environmentStg);
 		ppe.setAttribute("active", Boolean.toString(active));

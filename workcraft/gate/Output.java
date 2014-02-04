@@ -3,10 +3,8 @@ package workcraft.gate;
 import java.util.List;
 import java.util.UUID;
 
-import workcraft.Document;
 import workcraft.UnsupportedComponentException;
 import workcraft.common.DefaultConnection;
-import workcraft.common.DefaultConnection.Type;
 import workcraft.editor.BasicEditable;
 import workcraft.util.Colorf;
 import workcraft.util.Vec2;
@@ -47,6 +45,7 @@ public class Output extends BasicGate {
 		max_outputs = 0;
 		initContacts();
 	}
+	
 
 	public void acceptTransform() {
 		super.acceptTransform();
@@ -80,10 +79,9 @@ public class Output extends BasicGate {
 			}
 		}
 	}
-	
+
 	public void doDraw(Painter p) {
 		super.doDraw(p);
-		
 		p.setTransform(transform.getLocalToViewMatrix());
 		p.setShapeMode(ShapeMode.FILL_AND_OUTLINE);
 		p.setLineMode(LineMode.SOLID);

@@ -1,12 +1,20 @@
 package workcraft.editor;
 
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.TreeSet;
+
+import org.python.core.PyObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
 import workcraft.DuplicateIdException;
-
-import workcraft.Document;
-
-import workcraft.DocumentBase;
+import workcraft.Model;
+import workcraft.ModelBase;
 import workcraft.UnsupportedComponentException;
-import workcraft.Framework;
+import workcraft.WorkCraftServer;
 import workcraft.XmlSerializable;
 import workcraft.petri.PetriModel;
 import workcraft.util.Colorf;
@@ -15,39 +23,26 @@ import workcraft.util.Vec2;
 import workcraft.visual.Painter;
 import workcraft.visual.TextAlign;
 
-import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeSet;
-
-
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 public abstract class BasicEditable extends EditableNode implements XmlSerializable, Comparable<BasicEditable>  {
 	protected int zOrder; 
 	protected BasicEditable parent;
 	protected TreeSet<BasicEditable> children;
 	protected BoundingBox boundingBox;
 	public TransformNode transform;
-	protected Integer id = -1;
+	protected String id = "unnamed";
 	private String label = "";
 	public boolean selected = false;
-	protected Document ownerDocument = null;
-	
+	protected Model ownerDocument = null;
 	protected Colorf labelColor = new Colorf (0.0f, 0.0f, 0.0f, 1.0f);
-	
 	public boolean highlight = false;
-
-	
 	
 	Hashtable<String, String> customProperties = new Hashtable<String, String>();
-
+	
 	private static int labelOrder = 0;
 
 	public LinkedList<EditableConnection> connections = new LinkedList<EditableConnection>();
 	protected int rotate = 0;
-	
+
 	protected float getLabelYOffset() {
 		return (labelOrder==0)?-0.05f:0.025f;
 	}
@@ -57,8 +52,6 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		return labelColor;
 	}
 	
-<<<<<<< TREE
-=======
 	protected Boolean getIsShorthandNotation() {
 		PetriModel pm = (PetriModel) this.getOwnerDocument();
 		Boolean isShorthandNotation = false;
@@ -68,10 +61,9 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 	}
 	
 	public void setId(String id) throws DuplicateIdException {
->>>>>>> MERGE-SOURCE
 		if (this.id.equals(id))
 			return;
-
+	
 		if (ownerDocument == null) {
 			this.id = id;
 			return;
@@ -79,10 +71,24 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 
 		if (ownerDocument.getComponentById(id) != null)
 			throw new DuplicateIdException(id);
-		((DocumentBase)ownerDocument).renameComponent(this, id);
+		((ModelBase)ownerDocument).renameComponent(this, id);
+		
+		WorkCraftServer server = ownerDocument.getServer();
+		if (server != null)
+		{
+			if (server.python.get(id)!=null)
+				throw new DuplicateIdException(id);
+			if(server.getObjectById(this.id)==this)
+				server.unregisterObject(this.id);
+			this.id = id;
+			server.registerObject(this, this.id);
+		} else
+			this.id = id;
+		
+
 	}
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -93,8 +99,8 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 	public void removeFromConnections(EditableConnection con) {
 		connections.remove(con);
 	}
-
-	public BasicEditable() {
+	
+	protected BasicEditable() {
 		this.zOrder = 0;
 		this.parent = null;
 		this.children = new TreeSet<BasicEditable>();
@@ -121,7 +127,7 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 	public BasicEditable getParent() {
 		return parent;
 	}
-
+	
 	public BasicEditable getTopParent(GroupNode root) {
 		return (parent==root)?this:parent.getTopParent(root);
 	}
@@ -143,26 +149,19 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		return (TreeSet<BasicEditable>) children.clone();
 	}
 
-	public void addChild (BasicEditable child) throws UnsupportedComponentException {
+	public void addChild (BasicEditable child) {
 		children.add(child);
 		child.setParent(this);
-
-		if (ownerDocument != null)
-			ownerDocument.addComponent(child, false);
 	}
 
 	public boolean removeChild(BasicEditable child) {
-		boolean isChild = children.remove(child);
-		if (isChild)
-			if (ownerDocument != null)
-				ownerDocument.removeComponent(child);
-		return isChild;
+		return children.remove(child);		
 	}
 
 	public BoundingBox getBoundingBox() {
 		return new BoundingBox(boundingBox);
 	}
-
+	
 	public BoundingBox getBoundingBoxInViewSpace() {
 		Vec2 ll = boundingBox.getLowerLeft();
 		Vec2 ur = boundingBox.getUpperRight();
@@ -197,24 +196,24 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 	}
 
 	public Element toXmlDom (Element parent_element) {
-		org.w3c.dom.Document d = parent_element.getOwnerDocument();
+		Document d = parent_element.getOwnerDocument();
 		Element ee = d.createElement("editable");
-		ee.setAttribute("id", Integer.toString(getId()));
+		ee.setAttribute("id", getId());
 		ee.setAttribute("label", label);
 		ee.setAttribute("selected", Boolean.toString(selected));
 		ee.setAttribute("rotation", Integer.toString(getRotate()));
 		ee.setAttribute("class", this.getClass().getName());
-
+		
 		Element cpe = d.createElement("custom-properties");
-
+		
 		for (String key : customProperties.keySet()) {
 			Element p = d.createElement("property");
 			p.setAttribute("key", key);
 			p.setAttribute("value", customProperties.get(key));
-
+			
 			cpe.appendChild(p);
 		}
-
+		
 		transform.toXmlDom(ee);
 		ee.appendChild(cpe);
 		parent_element.appendChild(ee);
@@ -223,18 +222,19 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 
 	public void fromXmlDom(Element e) throws DuplicateIdException {
 		String id = e.getAttribute("id");
-		label = e.getAttribute("label");
+		setLabel(e.getAttribute("label"));
+		
 		NodeList nl = e.getElementsByTagName("transform");
 		transform.fromXmlDom((Element)nl.item(0));
-
+		
 		String r = e.getAttribute("rotation");
 		if (r.length()>0)
 			setRotate(Integer.parseInt(r));
-
+		
 		nl = e.getElementsByTagName("custom-properties");
 		if (nl.getLength() > 0) {
 			nl = ((Element)nl.item(0)).getElementsByTagName("property");
-
+			
 			for (int i=0; i<nl.getLength(); i++) {
 				String k,v;
 				k = ((Element)nl.item(i)).getAttribute("key");
@@ -243,9 +243,8 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 					customProperties.put(k, v);
 			}
 		}
-
-//		System.out.println ("Finished loading BasicEditable...");
-		setId (Integer.parseInt(id));
+		
+		setId (id);
 		// selected = Boolean.parseBoolean(e.getAttribute("selected"));
 	}
 
@@ -267,7 +266,7 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		list.add("str,Label,getLabel,setLabel");
 		list.add("enum,^ Label order,getLabelOrder,setLabelOrder,ID on top,Label on top");
 		list.add("enum,Rotation,getRotate,setRotate,0,90,180,270");
-
+		
 		return list;
 	}
 
@@ -276,17 +275,17 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 	}
 
 	public abstract BasicEditable getChildAt(Vec2 point);
-
+	
 	public boolean cull(Painter p) {
 		return p.cull(getBoundingBoxInViewSpace());
 	}
-
+	
 	public void draw (Painter p) {
 		if (!cull(p))
 			doDraw(p);
 	}
-
-
+	
+	
 	private void recTraceChildren(BasicEditable n, int level) {
 		for (int i=0; i<level; i++)
 			System.out.print(' ');
@@ -294,19 +293,19 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		for (BasicEditable cn : n.getChildren())
 			recTraceChildren(cn, level+1);
 	}
-
+	
 	public void dbgChildren() {
 		recTraceChildren(this, 0);
 	}
-
+	
 	public String getCustomProperty(String key) {
 		return customProperties.get(key);
 	}
-
+	
 	public void setCustomProperty(String key, String value) {
 		customProperties.put(key, value);
 	}
-
+	
 	public void copyCustomProperties(BasicEditable other) {
 		customProperties = (Hashtable<String, String>)other.customProperties.clone();
 	}
@@ -318,36 +317,25 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 		Vec2 ur = boundingBox.getUpperRight();
 		Vec2 ul = new Vec2(ll.getX(), ur.getY());
 		Vec2 lr = new Vec2(ur.getX(), ll.getY());
-
+		
 		transform.getLocalToViewMatrix().transform(ll);
 		transform.getLocalToViewMatrix().transform(ur);
 		transform.getLocalToViewMatrix().transform(ul);
 		transform.getLocalToViewMatrix().transform(lr);
-
+		
 		BoundingBox superbb = new BoundingBox();
-
+		
 		superbb.addPoint(ll);
 		superbb.addPoint(ul);
 		superbb.addPoint(ur);
 		superbb.addPoint(lr);
-
 		
-<<<<<<< TREE
-=======
 		
->>>>>>> MERGE-SOURCE
 		Vec2 v1 = superbb.getLowerLeft();
 		Vec2 v2 = superbb.getUpperRight();
 		Vec2 center;
-		
+
 		p.setTextColor(getLabelColor());
-<<<<<<< TREE
-
-
-		if (ownerDocument.getDrawLabels() && !label.equals("")) {
-			if (labelOrder == 0)
-=======
->>>>>>> MERGE-SOURCE
 		
 		PyObject po;
 		if (server != null) 
@@ -359,30 +347,13 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 			if (!label.equals("")) {
 				if (labelOrder == 0)
 					center = new Vec2(0.5f*(v1.getX()+v2.getX()), v1.getY() + getLabelYOffset() );
-<<<<<<< TREE
-			else
-=======
 				else
->>>>>>> MERGE-SOURCE
 					center = new Vec2( (v1.getX()+v2.getX())*0.5f , v2.getY() + getLabelYOffset() );
-				
-<<<<<<< TREE
-			p.drawString(label, center, 0.05f, TextAlign.CENTER);
-		}
-=======
->>>>>>> MERGE-SOURCE
+
 		//		transform.getLocalToViewMatrix().transform(center);
 				p.drawString(label, center, 0.05f, TextAlign.CENTER);
 			}
 
-		if (ownerDocument.getDrawIds())
-		{
-			if (labelOrder == 0)
-				center = new Vec2( (v1.getX()+v2.getX())*0.5f , v2.getY()+0.025f );
-			else
-				center = new Vec2(0.5f*(v1.getX()+v2.getX()), v1.getY()-0.05f );
-			p.drawString(id.toString(), center, 0.05f, TextAlign.CENTER);
-		}
 		if (server != null) 
 			po = server.python.get("_draw_ids");
 		else
@@ -398,12 +369,12 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 				p.drawString(id, center, 0.05f, TextAlign.CENTER);
 			}
 	}
-	
+
 	public void dblClick() {
 		// qq
 	}
 
-	public void setOwnerDocument(Document ownerDocument) {
+	public void setOwnerDocument(Model ownerDocument) {
 		this.ownerDocument = ownerDocument;
 	}
 
@@ -411,7 +382,7 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 
 	}
 
-	public Document getOwnerDocument() {
+	public Model getOwnerDocument() {
 		return ownerDocument;
 	}
 
@@ -430,15 +401,21 @@ public abstract class BasicEditable extends EditableNode implements XmlSerializa
 	public static void setLabelOrder(Integer labelOrder) {
 		BasicEditable.labelOrder = labelOrder;
 	}
-
+	
 	public void mouseDown() {
 		System.out.println(id+": qwe");
 	}
-
+	
 	public void mouseUp() {
 		System.out.println(id+": xru");
 	}
-
+	
+	public void register(WorkCraftServer server) throws DuplicateIdException {
+		server.registerObject(this, id);
+		for (BasicEditable n: children)
+			n.register(server);
+	}
+	
 	public void acceptTransform() {
 		// do nothing: by default all transformations are valid 
 	}

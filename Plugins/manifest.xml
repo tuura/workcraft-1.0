@@ -1,26 +1,25 @@
 <manifest>
+  <class name="workcraft.unfolding.UnfoldingModel"/>
+	<class name="workcraft.unfolding.EditableCondition"/>
+	<class name="workcraft.unfolding.EditableEvent"/>
+	<class name="workcraft.unfolding.MCIImport"/>
 
   <class name="workcraft.petri.PetriModel"/>
 	<class name="workcraft.petri.EditablePetriTransition"/>
-	<class name="workcraft.petri.EditablePetriPlace"></class>
+	<class name="workcraft.petri.EditablePetriPlace"/>
 	<class name="workcraft.petri.PetriLabelSaver"/>	
 	<class name="workcraft.petri.PetriDotGSaver"/>
 	<class name="workcraft.petri.PetriDotGSaver2"/>
 	<class name="workcraft.petri.PetriDotGSaver3"/>
 	<class name="workcraft.petri.PetriDotPNTSaver"/>
-	<class name="workcraft.petri.PetriKiller"></class>
+	<class name="workcraft.petri.PetriKiller"/>
 	<class name="workcraft.petri.PetriUnfolder"/>
 	<class name="workcraft.petri.PetriMPSAT"/>	
 	<class name="workcraft.petri.ReadArcsComplexityReduction"/>
 	<class name="workcraft.petri.PetriSemimodularityChecker"/>
 	<class name="workcraft.petri.PetriTransitionMultiplier"/>	
-	<class name="workcraft.petri.ExternalInterfaceApplicator"/>
+		<class name="workcraft.petri.ExternalInterfaceApplicator"/>
 
-  <class name="workcraft.unfolding.UnfoldingModel"/>
-	<class name="workcraft.unfolding.EditableCondition"/>
-	<class name="workcraft.unfolding.EditableEvent"/>
-	<class name="workcraft.unfolding.MCIImport"/>
-	<!--
   <class name="workcraft.graph.GraphModel"/>
     <class name="workcraft.graph.EditableGraphVertex"/>
   
@@ -43,9 +42,9 @@
 	
   <class name="workcraft.chetri.ChetriModel"/>
 	<class name="workcraft.chetri.EditableChetriTransition"/>
-	<class name="workcraft.chetri.EditableChetriPlace"/><class
-		name="workcraft.stg.STGModel">
-</class>
+	<class name="workcraft.chetri.EditableChetriPlace"/>	
+
+	<class name="workcraft.stg.STGModel"></class>
 	<class name="workcraft.stg.EditableSTGPlace"></class>
 	<class name="workcraft.stg.EditableSTGTransition"></class>
 	<class name="workcraft.stg.STGDotGSaver"></class>
@@ -57,10 +56,9 @@
 	<class name="workcraft.stg.STGUnfolder"></class>
 	<class name="workcraft.stg.STGDeadlockCheck"></class>
 	<class name="workcraft.stg.STGSelectByID"></class>
+	<class name="workcraft.stg.STGMPSatChecker"></class>
 
-
-
-	<class name="workcraft.sdfs.SDFSCriticalCycleAnalyzer"/>
+ <class name="workcraft.sdfs.SDFSCriticalCycleAnalyzer"/>
  <class name="workcraft.sdfs.ASDFSMapper"/>
   <class name="workcraft.sdfs.SDFS2MGMapper"/>
   
@@ -72,21 +70,14 @@
   <class name="workcraft.spreadtoken.STModel"/>
 	<class name="workcraft.spreadtoken.STLogic"/>
 	<class name="workcraft.spreadtoken.STRegister"/>
-	<class name="workcraft.spreadtoken.STController"/>	
-		<class name="workcraft.spreadtoken.STPush"/>	
 	
   <class name="workcraft.counterflow.CFModel"/>
 	<class name="workcraft.counterflow.CFLogic"/>
 	<class name="workcraft.counterflow.CFRegister"/>
-	<class name="workcraft.counterflow.ClearRuleEditFlags"/>
 	
   <class name="workcraft.antitoken.ATModel"/>
 	<class name="workcraft.antitoken.ATLogic"/>
 	<class name="workcraft.antitoken.ATRegister"/>
-	
-<class name = "workcraft.hybridsdfs.HybridSDFSModel"/>
-<class name = "workcraft.hybridsdfs.ST2CFRegister"/>
-<class name = "workcraft.hybridsdfs.CF2STRegister"/>
 
   <class name="workcraft.gate.GateModel"/>
 	<class name="workcraft.gate.EnvironmentBox"/>  
@@ -100,17 +91,12 @@
 	<class name="workcraft.gate.Joint"/>
 	<class name="workcraft.gate.Input"/>
 	<class name="workcraft.gate.Output"/>
-	<class name="workcraft.gate.BlackBox"/><class name="workcraft.gate.MEElement"></class>
-
+	<class name="workcraft.gate.BlackBox"/>
+	
 	<class name="workcraft.gate.MEElement"/>
 	
 	<class name="workcraft.gate.ExtractInterface"/>
-	<class name="workcraft.gate.GateSpeedIndependenceCheck"/>
-	
-  <class name="workcraft.stg.STGModel"/>	
-    <class name="workcraft.stg.STGDotGSaver"/>	
-     <class name="workcraft.stg.EditableSTGPlace"/>	
-    <class name="workcraft.stg.EditableSTGTransition"/>	
+
   <class name="workcraft.common.PetriNetMapper"/>
   <class name="workcraft.common.SchematicNetDeadlockCheck"/>
   <class name="workcraft.common.SchematicNetSemimodularityCheck"/>

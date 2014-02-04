@@ -2,7 +2,7 @@ package workcraft.editor;
 
 import java.util.LinkedList;
 
-
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import workcraft.XmlSerializable;
@@ -43,11 +43,11 @@ public abstract class EditableConnection implements XmlSerializable, Drawable, P
 	}
 
 	public Element createEditableConnectionXmlElement (Element parent_element) {
-		org.w3c.dom.Document d = parent_element.getOwnerDocument();
+		Document d = parent_element.getOwnerDocument();
 		Element ee = d.createElement("editable-connection");
 		ee.setAttribute("selected", Boolean.toString(selected));
-		ee.setAttribute("first", first.getId().toString());
-		ee.setAttribute("second", second.getId().toString());
+		ee.setAttribute("first", first.getId());
+		ee.setAttribute("second", second.getId());
 		parent_element.appendChild(ee);
 		return ee;
 	}

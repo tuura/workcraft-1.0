@@ -6,17 +6,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.Document;
+import workcraft.Model;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.editor.BasicEditable;
 import workcraft.sdfs.RegisterState;
-import workcraft.sdfs.SDFSModelBase;
 import workcraft.sdfs.SDFSNode;
 import workcraft.sdfs.SDFSRegisterBase;
 import workcraft.util.Colorf;
@@ -29,8 +28,9 @@ import workcraft.visual.ShapeMode;
 
 public class STRegister extends SDFSRegisterBase   {
 	public static final UUID _modeluuid = UUID.fromString("a57b3350-73d3-11db-9fe1-0800200c9a66");
-	public static final UUID[] _modeluuidex = new UUID[] {UUID.fromString("aab78c50-e6bf-11dc-95ff-0800200c9a66")};
-	public static final String _displayname = "Spreadtoken Register";
+	public static final String _displayname = "Register";
+	public static final String _hotkey = "q";
+	public static final int  _hotkeyvk = KeyEvent.VK_Q;
 
 	private static Colorf token_color = new Colorf (0.0f, 0.0f, 0.0f, 1.0f);
 	private boolean marked;
@@ -130,7 +130,7 @@ public class STRegister extends SDFSRegisterBase   {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
-		org.w3c.dom.Document d = ee.getOwnerDocument();
+		Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("st-register");
 		ppe.setAttribute("marked", Boolean.toString(isMarked()));
 		ppe.setAttribute("mark-func", markFunc);
@@ -143,7 +143,7 @@ public class STRegister extends SDFSRegisterBase   {
 
 	public boolean simTick(int time_ms) {
 		WorkCraftServer server = ownerDocument.getServer();
-		SDFSModelBase doc = (SDFSModelBase)ownerDocument;
+		STModel doc = (STModel)ownerDocument;
 		
 		switch (state) {
 		case ENABLED:

@@ -6,11 +6,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.Document;
+import workcraft.Model;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.editor.BasicEditable;
@@ -129,7 +130,7 @@ public class ASDFSRegister extends SDFSRegisterBase {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
-		org.w3c.dom.Document d = ee.getOwnerDocument();
+		Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("st-register");
 		ppe.setAttribute("marked", Boolean.toString(isMarked()));
 		ppe.setAttribute("mark-func", markFunc);

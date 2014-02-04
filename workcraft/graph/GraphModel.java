@@ -8,8 +8,8 @@ import javax.swing.JPanel;
 
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
-import workcraft.Document;
-import workcraft.DocumentBase;
+import workcraft.Model;
+import workcraft.ModelBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;
@@ -18,7 +18,7 @@ import workcraft.editor.BasicEditable;
 import workcraft.editor.EditableConnection;
 import workcraft.editor.EditorPane;
 
-public class GraphModel extends DocumentBase {
+public class GraphModel extends ModelBase {
 	public static final UUID _modeluuid = UUID.fromString("dc03e740-a705-11db-befa-0800200c9a66");
 	public static final String _displayname = "Graph";
 

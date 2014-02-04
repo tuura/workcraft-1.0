@@ -1,6 +1,6 @@
 package workcraft.util;
 
-
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -58,7 +58,6 @@ public class ViewState implements XmlSerializable {
 	public float getWindowScale() {
 		return w_2*s;
 	}
-
 	public void scale(int steps) {
 		s /= Math.pow(scale_factor, steps);
 		if (s < 0.01f)
@@ -166,7 +165,7 @@ public class ViewState implements XmlSerializable {
 	}
 
 	public Element toXmlDom(Element parent_element) {
-		org.w3c.dom.Document d = parent_element.getOwnerDocument();
+		Document d = parent_element.getOwnerDocument();
 		Element ve = d.createElement("viewstate");
 		ve.setAttribute("s", Float.toString(s));
 		ve.setAttribute("tx", Float.toString(t_x));

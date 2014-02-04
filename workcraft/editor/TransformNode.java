@@ -1,7 +1,7 @@
 package workcraft.editor;
 import java.util.Properties;
 
-
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -200,7 +200,7 @@ public class TransformNode implements XmlSerializable {
 	}
 
 	public Element toXmlDom(Element e) {
-		org.w3c.dom.Document d = e.getOwnerDocument();
+		Document d = e.getOwnerDocument();
 		Element te = d.createElement("transform");
 		_t.toXmlDom(te);
 		_s.toXmlDom(te);

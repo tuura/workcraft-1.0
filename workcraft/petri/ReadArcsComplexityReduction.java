@@ -10,12 +10,12 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 import workcraft.InvalidConnectionException;
-import workcraft.Document;
-import workcraft.DocumentBase;
+import workcraft.Model;
+import workcraft.ModelBase;
 import workcraft.Tool;
 import workcraft.ToolType;
 import workcraft.UnsupportedComponentException;
-import workcraft.Framework;
+import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;
 import workcraft.DuplicateIdException;
 import workcraft.editor.EditableConnection;
@@ -46,7 +46,7 @@ public class ReadArcsComplexityReduction implements Tool {
 
 			for(EditablePetriPlace p : source.places)
 			{
-				EditablePetriPlace newp = new EditablePetriPlace();
+				EditablePetriPlace newp = new EditablePetriPlace(newdoc.getRoot());
 
 				newp.setId(p.getId());
 				newp.copyCustomProperties(p);
@@ -60,15 +60,13 @@ public class ReadArcsComplexityReduction implements Tool {
 				newp.setTokens(p.getTokens());
 
 				newp.transform.translateAbs(-x, -y, 0);
-				
-				newdoc.getRoot().addChild(newp);
 
-		//		id2p.put(p.getId(), newp);
+				id2p.put(p.getId(), newp);
 			}
 
 			for(EditablePetriTransition t : source.transitions)
 			{
-				EditablePetriTransition newt = new EditablePetriTransition();
+				EditablePetriTransition newt = new EditablePetriTransition(newdoc.getRoot());
 
 				newt.setId(t.getId());
 				newt.copyCustomProperties(t);
@@ -80,10 +78,8 @@ public class ReadArcsComplexityReduction implements Tool {
 				float y = v.getY();
 
 				newt.transform.translateAbs(-x, -y, 0);
-				
-				newdoc.getRoot().addChild(newt);
 
-			//	id2t.put(t.getId(), newt);
+				id2t.put(t.getId(), newt);
 			}
 
 			for(EditableConnection c : source.connections)
@@ -119,9 +115,9 @@ public class ReadArcsComplexityReduction implements Tool {
 					ps.add(p);
 					for(int i = 1; i < n; i++)
 					{
-						EditablePetriPlace pnew = new EditablePetriPlace();
+						EditablePetriPlace pnew = new EditablePetriPlace(newdoc.getRoot());
 
-				//		pnew.setId(p.getId() + "_" + i);
+						pnew.setId(p.getId() + "_" + i);
 
 						Vec2 v = new Vec2(0f, 0f);
 						p.transform.getLocalToViewMatrix().transform(v);
@@ -132,8 +128,6 @@ public class ReadArcsComplexityReduction implements Tool {
 						pnew.setTokens(p.getTokens());
 
 						pnew.transform.translateAbs(-(x + 0.025f), -y, 0);
-						
-						newdoc.getRoot().addChild(pnew);
 
 						ps.add(pnew);
 					}
@@ -180,10 +174,10 @@ public class ReadArcsComplexityReduction implements Tool {
 		return newdoc;		
 	}
 
-	public void run(Editor editor, Framework server)
+	public void run(Editor editor, WorkCraftServer server)
 	{
 		PetriModel doc = (PetriModel) (editor.getDocument());
-		DocumentBase newdoc = reduce(doc);
+		ModelBase newdoc = reduce(doc);
 		editor.setDocument(newdoc);
 	}
 
@@ -193,13 +187,13 @@ public class ReadArcsComplexityReduction implements Tool {
 		return false;
 	}
 
-	public void init(Framework server)
+	public void init(WorkCraftServer server)
 	{
 		// TODO Auto-generated method stub
 
 	}
 
-	public void deinit(Framework server) {
+	public void deinit(WorkCraftServer server) {
 		// TODO Auto-generated method stub
 
 	}

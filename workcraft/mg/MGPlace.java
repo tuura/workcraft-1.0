@@ -7,12 +7,12 @@ import java.util.UUID;
 
 import javax.media.opengl.GL;
 
-
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.Document;
+import workcraft.Model;
 import workcraft.UnsupportedComponentException;
 import workcraft.common.DefaultConnection;
 import workcraft.editor.BasicEditable;
@@ -219,7 +219,7 @@ public class MGPlace extends BasicEditable {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
-		org.w3c.dom.Document d = ee.getOwnerDocument();
+		Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("place");
 		ppe.setAttribute("tokens", Integer.toString(getTokens()));
 		ppe.setAttribute("delay.mean", Double.toString(getDelayMean()));

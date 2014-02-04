@@ -49,7 +49,7 @@ public class ModelManager {
 	}
 
 	public static boolean isValidModelClass(Class cls) {
-		boolean if_ok = DocumentBase.class.isAssignableFrom(cls);
+		boolean if_ok = ModelBase.class.isAssignableFrom(cls);
 
 		try
 		{
@@ -91,35 +91,10 @@ public class ModelManager {
 		return if_ok;
 	}
 
-	public  UUID getModelUUID(Class model_class) {
+	public static UUID getModelUUID(Class model_class) {
 		UUID uuid = null;
 		if (!isValidModelClass(model_class))
 			return null;
-		try
-		{
-			uuid = (UUID)model_class.getField("_modeluuid").get(null);
-		}
-		catch (NoSuchFieldException e) {
-			System.err.println("Model implementation class is improperly declared: static final String "+e.getMessage()+" is required");
-		}
-		catch (IllegalAccessException e) {
-			System.err.println("Model implementation class is improperly declared: static final String "+e.getMessage()+" is required");
-		}
-		return uuid;
-	}
-	
-	public  UUID getModelUUID(String modelClassName) {
-		UUID uuid = null;
-		Class model_class;
-		try {
-			model_class = ClassLoader.getSystemClassLoader().loadClass(modelClassName);
-		} catch (ClassNotFoundException e1) {
-			return null;
-		}
-		
-		if (!isValidModelClass(model_class))
-			return null;
-		
 		try
 		{
 			uuid = (UUID)model_class.getField("_modeluuid").get(null);
@@ -189,15 +164,7 @@ public class ModelManager {
 	public void addComponent (Class cls) {
 		try
 		{
-			
 			UUID uuid = (UUID)cls.getField("_modeluuid").get(null);
-			UUID[] uuidex = null;
-			try
-			{
-				uuidex = (UUID[])cls.getField("_modeluuidex").get(null);
-			}
-			catch (NoSuchFieldException e) {}
-			
 			String component_name = (String)cls.getField("_displayname").get(null);
 
 			if (uuid_model_map.get(uuid)==null) {
@@ -214,24 +181,6 @@ public class ModelManager {
 			}
 
 			list.add(cls);
-			
-			if (uuidex != null)
-				for (UUID id :uuidex) {
-					if (uuid_model_map.get(id)==null) {
-						System.err.println ("Component "+component_name+"(class "+cls.getName()+") refers to unknown model (id "+id.toString()+"), skipping");
-						;
-					}
-					
-					list = uuid_component_list_map.get(id);
-
-					if (list == null)
-					{
-						list = new LinkedList<Class>();
-						uuid_component_list_map.put(id, list);
-					}
-
-					list.add(cls);
-				}
 
 			System.out.println("\t"+component_name+" added");
 		}
@@ -243,7 +192,7 @@ public class ModelManager {
 		}		
 	}
 
-	public void addTool (Class cls, Framework server) {
+	public void addTool (Class cls, WorkCraftServer server) {
 		try
 		{
 			String model_uuid = (String)cls.getField("_modeluuid").get(null);

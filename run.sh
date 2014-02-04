@@ -1,5 +1,4 @@
 #!/bin/bash
-WORKCRAFT_HOME=/opt/share/workcraft
 SO_X86=so.x86
 SO_AMD64=so.amd64
 SO_DIR=
@@ -23,10 +22,5 @@ esac
 
 if [ SO_DIR ];
 then
-  if [ -d $WORKCRAFT_HOME ]
-  then
-    cd $WORKCRAFT_HOME
-  fi
-
   LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SO_DIR java -classpath ".:jogl.jar:jython.jar:gluegen-rt.jar" workcraft/JavaFrontend
 fi

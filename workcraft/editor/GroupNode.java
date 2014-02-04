@@ -8,7 +8,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.Document;
+import workcraft.Model;
 import workcraft.UnsupportedComponentException;
 import workcraft.util.Mat4x4;
 import workcraft.util.Vec2;
@@ -20,10 +20,10 @@ public class GroupNode extends BasicEditable {
 	 * @see workcraft.editor.EditableNode#getChildAt(workcraft.util.Vec2)
 	 */
 	
-	public GroupNode (Document owner)  {
+	public GroupNode (Model owner, String id)  {
 		this.zOrder = 0;
 		this.parent = null;
-		this.id = owner.getNextId();
+		this.id = id;
 		this.children = new TreeSet<BasicEditable>();
 		transform = new TransformNode(this);
 		boundingBox = new BoundingBox();
@@ -83,10 +83,9 @@ public class GroupNode extends BasicEditable {
 			String class_name = e.getAttribute("class");
 			try {
 				Class cls = ClassLoader.getSystemClassLoader().loadClass(class_name);
-				Constructor ctor = cls.getConstructor();
-				BasicEditable n = (BasicEditable)ctor.newInstance();
+				Constructor ctor = cls.getDeclaredConstructor(BasicEditable.class);
+				BasicEditable n = (BasicEditable)ctor.newInstance(this);
 				n.fromXmlDom(e);
-				
 				addChild(n);
 			} catch (ClassNotFoundException ex) {
 				System.err.println("Failed to load class: "+ex.getMessage());
@@ -103,8 +102,6 @@ public class GroupNode extends BasicEditable {
 			} catch (SecurityException ex) {
 				ex.printStackTrace();
 			} catch (NoSuchMethodException ex) {
-				ex.printStackTrace();
-			} catch (UnsupportedComponentException ex) {
 				ex.printStackTrace();
 			}
 		}

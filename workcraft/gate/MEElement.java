@@ -22,7 +22,8 @@ public class MEElement extends BasicGate {
 		min_inputs = 2;
 		max_inputs = 2;
 		min_outputs = 2;
-		max_outputs = 2;		
+		max_outputs = 2;
+
 		initContacts();
 		boundingBox.setExtents(new Vec2(-rad * width, -rad * height), new Vec2(rad * width, rad * height));
 	}
@@ -74,30 +75,38 @@ public class MEElement extends BasicGate {
 	{
 		// implements biased ME-element behaviour: in case of two requests the first request is granted
 
-		if (in.getFirst().getState() == GateContact.StateType.reset)
-		{
-			out.getFirst().setState(GateContact.StateType.reset);
-		}
+		int state = 0;
 		
-		if (in.getLast().getState() == GateContact.StateType.reset)
+		if (out.getFirst().getState() == GateContact.StateType.set) state = 1;
+		if (out.getLast().getState() == GateContact.StateType.set) state = 2;
+
+		if (state == 0)
 		{
-			out.getLast().setState(GateContact.StateType.reset);
-		}
-		
-		if (in.getFirst().getState() == GateContact.StateType.set)
-		{
-			if (out.getLast().getState() == GateContact.StateType.set)
-				out.getFirst().setState(GateContact.StateType.reset);
-			else
+			if (in.getFirst().getState() == GateContact.StateType.set)
+			{
 				out.getFirst().setState(GateContact.StateType.set);
-		}
-		else
-		if (in.getLast().getState() == GateContact.StateType.set)
-		{
-			if (out.getFirst().getState() == GateContact.StateType.set)
-				out.getLast().setState(GateContact.StateType.reset);
+			}
 			else
+			if (in.getLast().getState() == GateContact.StateType.set)
+			{
 				out.getLast().setState(GateContact.StateType.set);
+			}
+		}
+		
+		if (state == 1)
+		{
+			if (in.getFirst().getState() == GateContact.StateType.reset)
+			{
+				out.getFirst().setState(GateContact.StateType.reset);
+			}
+		}
+		
+		if (state == 2)
+		{
+			if (in.getLast().getState() == GateContact.StateType.reset)
+			{
+				out.getLast().setState(GateContact.StateType.reset);
+			}
 		}
 		
 		super.refresh();

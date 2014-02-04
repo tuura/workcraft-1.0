@@ -17,7 +17,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -25,8 +25,8 @@ import org.xml.sax.SAXException;
 
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
-import workcraft.Document;
-import workcraft.DocumentBase;
+import workcraft.Model;
+import workcraft.ModelBase;
 import workcraft.Tool;
 import workcraft.ToolType;
 import workcraft.UnsupportedComponentException;
@@ -108,25 +108,16 @@ public class PetriNetMapper implements Tool {
 			return v;
 		}
 
-		private EditablePetriTransition addPlusTransition(Document target, String tag) {
+		private EditablePetriTransition addPlusTransition(Model target, String tag) {
 			Vec2 vt = new Vec2();
 			DefaultConnection c;
 			EditablePetriTransition t = null;
 			try {
 				t = new EditablePetriTransition(target.getRoot());
 				if (def.suffix.length()>0)
-					
-					t.setId(
-							 //baseId + "_" + 
-							// def.suffix+
-							// "_plus"+
-							// plusCount);
+					t.setId(baseId + "_" + def.suffix+"_plus"+plusCount);
 				else
 					t.setId(baseId + "_plus"+plusCount);
-				
-				t.setLabel(baseId + "+/" + plusCount);
-				
-				
 				
 				if (tag != null)
 					t.setCustomProperty("mapping-tag", tag);
@@ -158,7 +149,7 @@ public class PetriNetMapper implements Tool {
 			return null;
 		}
 
-		private EditablePetriTransition addMinusTransition(Document target, String tag) {
+		private EditablePetriTransition addMinusTransition(Model target, String tag) {
 			Vec2 vt = new Vec2();
 			DefaultConnection c;
 			EditablePetriTransition t = null;
@@ -168,8 +159,6 @@ public class PetriNetMapper implements Tool {
 					t.setId(baseId + "_" + def.suffix+"_minus"+minusCount);
 				else
 					t.setId(baseId + "_minus"+minusCount);
-				
-				t.setLabel(baseId + "-/" + minusCount);
 
 				nodes.put(t.getId(), t);
 				
@@ -202,7 +191,7 @@ public class PetriNetMapper implements Tool {
 			return null;
 		}		
 
-		public void createPlaces(Document target, WorkCraftServer server) {
+		public void createPlaces(Model target, WorkCraftServer server) {
 			Vec2 vt = new Vec2();
 
 			try {
@@ -261,7 +250,7 @@ public class PetriNetMapper implements Tool {
 				p_false.setTokens(1);
 		}
 
-		public void createTransitions(Document target, HashMap<String, String> predicates, WorkCraftServer server) {
+		public void createTransitions(Model target, HashMap<String, String> predicates, WorkCraftServer server) {
 			Object o = server.getObjectById(baseId);
 			if (o==null) {
 				System.err.println ("Petri Net Mapper: server could not find object with id \""+baseId+"\"");
@@ -518,7 +507,7 @@ public class PetriNetMapper implements Tool {
 
 		for (File f : files) {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			org.w3c.dom.Document doc;
+			Document doc;
 			DocumentBuilder db;
 
 			try {
@@ -615,7 +604,7 @@ public class PetriNetMapper implements Tool {
 		}
 	}
 
-	public PetriModel map(WorkCraftServer server, Document source) {
+	public PetriModel map(WorkCraftServer server, Model source) {
 		UUID uuid = server.mmgr.getModelUUID(source.getClass());
 		Mapping mapping = map_uuid_mapping.get(uuid);
 
@@ -690,7 +679,7 @@ public class PetriNetMapper implements Tool {
 	}
 
 	public void run(Editor editor, WorkCraftServer server) {
-		Document doc = editor.getDocument(); 
+		Model doc = editor.getDocument(); 
 
 		PetriModel petri = map(server, doc);
 

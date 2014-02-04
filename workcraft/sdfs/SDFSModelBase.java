@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import workcraft.InvalidConnectionException;
-import workcraft.DocumentBase;
+import workcraft.ModelBase;
 import workcraft.ModelValidationException;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
@@ -20,7 +20,7 @@ import workcraft.editor.EditableConnection;
 import workcraft.spreadtoken.STLogic;
 import workcraft.spreadtoken.STRegister;
 
-public abstract class SDFSModelBase extends DocumentBase {
+public abstract class SDFSModelBase extends ModelBase {
 	protected static DefaultSimControls panelSimControls = null;
 
 	protected LinkedList<SDFSRegisterBase> registers;

@@ -3,10 +3,11 @@ package workcraft.common;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import workcraft.DocumentBase;
+import workcraft.ModelBase;
 import workcraft.editor.BasicEditable;
 import workcraft.editor.EditableAnchor;
 import workcraft.editor.EditableConnection;
@@ -40,12 +41,7 @@ public class DefaultConnection extends EditableConnection  {
 
 	public enum Type { straightConnection, polylineConnection, bezierConnection };
 
-	
-	// drawArrow == null means it should be automatic, depending on situation
-	// i.e., no arrow for incoming connection of Petri net place with
-	// exactly one incoming connection, one outgoing connection and short-hand notation on
 	public Boolean drawArrow = true;
-	
 	public Type connectionType = Type.straightConnection;
 
 //	public Vec2 firstFixedDir = null;
@@ -393,22 +389,16 @@ public class DefaultConnection extends EditableConnection  {
 		}
 		return ret;
 	}
-	
-	
-	
-	
+
 	public void draw(Painter p)
 	{
-		
 		updateStretch();
 
 		Colorf connectionColor = DefaultConnection.connectionColor;
 		if (colorOverride != null) connectionColor = colorOverride;
 		
-		if (first.highlight && second.highlight && ((DocumentBase)first.getOwnerDocument()).isShowHighlight())
-			connectionColor = (((DocumentBase)first.getOwnerDocument()).getHighlightColor());
-		
-		
+		if (first.highlight && second.highlight && ((ModelBase)first.getOwnerDocument()).isShowHighlight())
+			connectionColor = (((ModelBase)first.getOwnerDocument()).getHighlightColor());
 		
 		p.pushTransform();
 		p.setIdentityTransform();
@@ -424,7 +414,7 @@ public class DefaultConnection extends EditableConnection  {
 		case straightConnection:
 
 			p.drawLine(v1, v2);
-			
+
 			if (drawArrow) 
 			{
 				Vec2 v3 = this.getArrowPoint();
@@ -522,14 +512,13 @@ public class DefaultConnection extends EditableConnection  {
 
 			break;
 		}
-		
 		super.draw(p);
 
 		p.popTransform();
 	}
 
 	private void internalsToXml(Element parent_element) {
-		org.w3c.dom.Document d = parent_element.getOwnerDocument();
+		Document d = parent_element.getOwnerDocument();
 		Element ie = d.createElement("internal-points");
 		if(internal==null) {
 			ie.setAttribute("number", "0");
@@ -557,7 +546,7 @@ public class DefaultConnection extends EditableConnection  {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ce = createEditableConnectionXmlElement(parent_element);
-		org.w3c.dom.Document d = parent_element.getOwnerDocument();
+		Document d = parent_element.getOwnerDocument();
 		Element ppe = d.createElement("connection");
 		switch (connectionType) {
 		case bezierConnection:

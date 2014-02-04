@@ -5,15 +5,13 @@ import java.util.UUID;
 
 import javax.swing.JOptionPane;
 
+import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
-import workcraft.Model;
 import workcraft.Tool;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;
-import workcraft.DuplicateIdException;
 import workcraft.editor.Editor;
-import workcraft.editor.EditorPane;
 import workcraft.logic.DNF;
 import workcraft.logic.DNFClause;
 import workcraft.logic.DNFLiteral;
@@ -21,6 +19,8 @@ import workcraft.logic.InvalidExpressionException;
 import workcraft.petri.EditablePetriPlace;
 import workcraft.petri.EditablePetriTransition;
 import workcraft.petri.PetriModel;
+import workcraft.sdfs.LogicState;
+import workcraft.sdfs.RegisterState;
 import workcraft.util.Vec2;
 
 public class STPetriConverter implements Tool {

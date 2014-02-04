@@ -1,23 +1,15 @@
 package workcraft.stg;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.UUID;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import workcraft.Tool;
 import workcraft.ToolType;
 import workcraft.WorkCraftServer;
-import workcraft.common.ExternalProcess;
-import workcraft.common.MPSATOutputParser;
 import workcraft.editor.BasicEditable;
 import workcraft.editor.Editor;
-import workcraft.petri.EditablePetriTransition;
 
 public class STGSelectByID implements Tool {
 

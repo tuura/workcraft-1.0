@@ -51,7 +51,7 @@ public class PluginManager {
 
 				try {
 					DocumentBuilder builder = factory.newDocumentBuilder();
-					org.w3c.dom.Document document = builder.parse(stream);
+					Document document = builder.parse(stream);
 					Element el = document.getDocumentElement();
 					
 					if (el.getNodeName()!="manifest")

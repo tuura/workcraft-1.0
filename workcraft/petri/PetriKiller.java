@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 import workcraft.Tool;
 import workcraft.ToolType;
-import workcraft.Framework;
+import workcraft.WorkCraftServer;
 import workcraft.common.ExternalProcess;
 import workcraft.editor.Editor;
 
@@ -22,15 +22,15 @@ public class PetriKiller implements Tool {
 		return true;
 	}
 
-	public void init(Framework server) {
+	public void init(WorkCraftServer server) {
 		// TODO Auto-generated method stub
 	}
 
-	public void run(Editor editor, Framework server) {
+	public void run(Editor editor, WorkCraftServer server) {
 		PetriDotGSaver saver = new PetriDotGSaver();
 		
-		//JFrame frame = (JFrame)server.python.get("_main_frame", JFrame.class);
-		ExternalProcess p = new ExternalProcess(null);
+		JFrame frame = (JFrame)server.python.get("_main_frame", JFrame.class);
+		ExternalProcess p = new ExternalProcess(frame);
 		
 		try {
 			saver.writeFile("tmp/_pk_.g", (PetriModel)editor.getDocument());
@@ -43,7 +43,7 @@ public class PetriKiller implements Tool {
 		}		
 	}
 
-	public void deinit(Framework server) {
+	public void deinit(WorkCraftServer server) {
 		// TODO Auto-generated method stub
 		
 	}

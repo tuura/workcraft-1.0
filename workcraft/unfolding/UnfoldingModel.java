@@ -8,17 +8,17 @@ import javax.swing.JPanel;
 
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
-import workcraft.Document;
-import workcraft.DocumentBase;
+import workcraft.Model;
+import workcraft.ModelBase;
 import workcraft.UnsupportedComponentException;
-import workcraft.Framework;
+import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;
 import workcraft.common.DefaultSimControls;
 import workcraft.editor.BasicEditable;
 import workcraft.editor.EditableConnection;
 import workcraft.editor.EditorPane;
 
-public class UnfoldingModel extends DocumentBase {
+public class UnfoldingModel extends ModelBase {
 	public static final UUID _modeluuid = UUID.fromString("23a72f18-5c90-11dc-8314-0800200c9a66");
 	public static final String _displayname = "Unfolding with time annotation";
 
@@ -28,6 +28,7 @@ public class UnfoldingModel extends DocumentBase {
 				try {
 					sleep( (long)(100 / panelSimControls.getSpeedFactor()));
 					simStep();
+					server.execPython("_redraw()");
 				} catch (InterruptedException e) { break; }
 			}
 		}
@@ -70,17 +71,33 @@ public class UnfoldingModel extends DocumentBase {
 			EditableCondition p = (EditableCondition)c;
 			conditions.add(p);
 			p.setOwnerDocument(this);
+			if (auto_name)
+				for (;;) {
+					try {
+						p.setId(getNextPlaceID());
+						break;
+					} catch (DuplicateIdException e) {
+					}
+				}
 		}
 		else if (c instanceof EditableEvent) {
 			EditableEvent t = (EditableEvent)c;
 			events.add(t);
 			t.setOwnerDocument(this);
+			if (auto_name)
+				for (;;) {
+					try {
+						t.setId(getNextTransitionID());
+						break;
+					} catch (DuplicateIdException e) {
+					}
+				}			
 		} else throw new UnsupportedComponentException();
 		
 		super.addComponent(c, auto_name);
 	}
 
-	public void removeComponent(BasicEditable c) {
+	public void removeComponent(BasicEditable c) throws UnsupportedComponentException {
 		super.removeComponent(c);
 		if (c instanceof EditableCondition) {
 			EditableCondition p = (EditableCondition)c;
@@ -105,7 +122,7 @@ public class UnfoldingModel extends DocumentBase {
 
 			events.remove(c);
 
-		};	
+		} else throw new UnsupportedComponentException();	
 		
 		super.removeComponent(c);
 	}
@@ -290,7 +307,7 @@ public class UnfoldingModel extends DocumentBase {
 		this.editor = editor;
 	}
 
-	public Framework getServer() {
+	public WorkCraftServer getServer() {
 		return server;
 	}
 

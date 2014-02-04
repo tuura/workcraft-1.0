@@ -9,12 +9,15 @@ import java.util.UUID;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.python.core.Py;
+import org.python.core.PyObject;
+
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
 import workcraft.Tool;
 import workcraft.ToolType;
 import workcraft.UnsupportedComponentException;
-import workcraft.Framework;
+import workcraft.WorkCraftServer;
 import workcraft.editor.BasicEditable;
 import workcraft.editor.Editor;
 import workcraft.editor.EditorPane;
@@ -24,7 +27,7 @@ public class PetriTransitionMultiplier implements Tool {
 	public static final String _modeluuid = "65f89260-641d-11db-bd13-0800200c9a66";
 	public static final String _displayname = "Multiply selected transitions";
 
-	public void run(Editor editor, Framework server) {
+	public void run(Editor editor, WorkCraftServer server) {
 		for (BasicEditable n : editor.getSelection()) {
 			if (n instanceof EditablePetriTransition) {
 				EditablePetriTransition t = (EditablePetriTransition)n;
@@ -74,7 +77,7 @@ public class PetriTransitionMultiplier implements Tool {
 				
 				try {
 				for (int i=0; i<number; i++) {
-					EditablePetriTransition newt = new EditablePetriTransition();
+					EditablePetriTransition newt = new EditablePetriTransition(editor.getDocument().getRoot());
 					newt.transform.copy(t.transform);
 					
 					offsetx += dx;
@@ -82,9 +85,7 @@ public class PetriTransitionMultiplier implements Tool {
 					
 					newt.transform.translateRel(offsetx, offsety, 0.0f);
 					
-					String oldName = t.getId().toString();
-					
-					// newt
+					String oldName = t.getId();
 					
 					
 					int num = 0;
@@ -99,7 +100,7 @@ public class PetriTransitionMultiplier implements Tool {
 					
 					while (true) {
 						try {
-							newt.setId(500);
+							newt.setId(oldName+Integer.toString(++num));
 							break;
 						} catch (DuplicateIdException e) {}
 					}
@@ -120,14 +121,14 @@ public class PetriTransitionMultiplier implements Tool {
 		editor.refresh();
 	}
 
-	public void init(Framework server) {
+	public void init(WorkCraftServer server) {
 	}
 
 	public boolean isModelSupported(UUID modelUuid) {
 		return false;
 	}
 
-	public void deinit(Framework server) {
+	public void deinit(WorkCraftServer server) {
 		
 	}
 

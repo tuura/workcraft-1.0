@@ -11,13 +11,13 @@ import java.util.UUID;
 import javax.media.opengl.GL;
 
 import org.python.core.PyObject;
-
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.Document;
-import workcraft.DocumentBase;
+import workcraft.Model;
+import workcraft.ModelBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;
@@ -70,8 +70,8 @@ public abstract class SDFSLogic1Way extends SDFSLogicBase {
 		if (selected)
 			p.setLineColor(selectedColor);
 		else
-			if (highlight && ((DocumentBase)ownerDocument).isShowHighlight())
-				p.setLineColor(((DocumentBase)ownerDocument).getHighlightColor());
+			if (highlight && ((ModelBase)ownerDocument).isShowHighlight())
+				p.setLineColor(((ModelBase)ownerDocument).getHighlightColor());
 			else
 				p.setLineColor(frameColor);
 
@@ -130,7 +130,7 @@ public abstract class SDFSLogic1Way extends SDFSLogicBase {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
-		org.w3c.dom.Document d = ee.getOwnerDocument();
+		Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("st-logic");
 		ppe.setAttribute("eval-func", evalFunc);
 		ppe.setAttribute("reset-func", resetFunc);

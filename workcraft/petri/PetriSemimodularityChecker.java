@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 import workcraft.Tool;
 import workcraft.ToolType;
-import workcraft.Framework;
+import workcraft.WorkCraftServer;
 import workcraft.common.DefaultSimControls;
 import workcraft.common.ExternalProcess;
 import workcraft.common.MPSATOutputParser;
@@ -23,12 +23,12 @@ public class PetriSemimodularityChecker implements Tool {
 	public static final String _modeluuid = "65f89260-641d-11db-bd13-0800200c9a66";
 	public static final String _displayname = "Check for non-semi-modularity (PUNF/MPSAT)";
 
-	public void deinit(Framework server) {
+	public void deinit(WorkCraftServer server) {
 		// TODO Auto-generated method stub
 
 	}
 
-	public void init(Framework server) {
+	public void init(WorkCraftServer server) {
 		// TODO Auto-generated method stub
 
 	}
@@ -39,7 +39,7 @@ public class PetriSemimodularityChecker implements Tool {
 	}
 
 
-	public void run(Editor editor, Framework server) {
+	public void run(Editor editor, WorkCraftServer server) {
 		PetriModel model = (PetriModel) editor.getDocument();
 
 		PetriDotGSaver saver = (PetriDotGSaver)server.getToolInstance(PetriDotGSaver.class);
@@ -60,7 +60,8 @@ public class PetriSemimodularityChecker implements Tool {
 			e.printStackTrace();
 		}
 
-		ExternalProcess p = new ExternalProcess(null);
+		JFrame frame = (JFrame)server.python.get("_main_frame", JFrame.class);
+		ExternalProcess p = new ExternalProcess(frame);
 
 		String formula = "";
 

@@ -63,19 +63,15 @@ public class STGSemimodularityChecker implements Tool {
 
 			p.run(new String[] {"util/punf", "-s", "-t", "-p", "tmp/_net_.g"}, ".", "Unfolding report", true);
 
-
-/*			PrintWriter out = new PrintWriter(new FileWriter("tmp/_smodch"));
-			out.print(formula);
-			out.close();
-*/
-			
 			String name1, name2;
 			String[] strl = null;
 			int conflicts = 0;
 			
 			f = new File("tmp/_net_.mci");
 			if (f.exists()) {
-				for (String clause: model.buildSemimodularityCheckClauses()) {
+				
+/*				for (String clause: model.buildSemimodularityCheckClauses()) {
+					
 					strl  = clause.split(" ");
 					name1=strl[0];
 					name2=strl[1];
@@ -87,18 +83,17 @@ public class STGSemimodularityChecker implements Tool {
 					PrintWriter out = new PrintWriter(new FileWriter("tmp/_smodch"));
 					out.print(formula);
 					out.close();
+					*/
 //					System.out.println("Checking "+formula);
-					p.run(new String[] {"util/mpsat", "-F","-f" ,"-d", "@tmp/_smodch","tmp/_net_.mci"}, ".", "Model-checking report", false);
+					p.run(new String[] {"util/mpsat", 	"-Fs", "-f", "-d", "@reach/out-pers.re","tmp/_net_.mci"}, ".", "Model-checking report", true);
+//					p.run(new String[] {"util/mpsat", "-F","-f" ,"-d", "@tmp/_smodch","tmp/_net_.mci"}, ".", "Model-checking report", false);
 
-					f = new File ("tmp/_smodch");
-					f.delete();
-
-					
-//					p.run(new String[] {"util/mpsat", "-F", "-f", "-d", formula, "tmp/_new_net_.mci"}, ".", "Model-checking report", false);
+//					f = new File ("tmp/_smodch");
+//					f.delete();
 					
 					String badTrace = MPSATOutputParser.parsePetriNetTrace(p.getOutput());
 
-					if (badTrace != null) {
+/*					if (badTrace != null) {
 						System.out.println(name1+" disabled by "+name2+"    "+badTrace+"\n");
 						conflicts++;
 					}
@@ -111,6 +106,7 @@ public class STGSemimodularityChecker implements Tool {
 				} else {
 					JOptionPane.showMessageDialog(null, "STG is semimodular! There are no disabled transitions found", "Procedure report", JOptionPane.WARNING_MESSAGE);
 				}
+	*/				
 			} else {
 				JOptionPane.showMessageDialog(null, "File _net_.mci was not found", "Procedure report", JOptionPane.WARNING_MESSAGE);
 			}

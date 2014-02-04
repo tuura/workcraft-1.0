@@ -10,12 +10,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import org.python.core.Py;
+import org.python.core.PyObject;
 
 import workcraft.Tool;
 import workcraft.ToolType;
-import workcraft.Framework;
+import workcraft.WorkCraftServer;
 import workcraft.common.ExternalProcess;
-//import workcraft.common.PetriNetMapper;
+import workcraft.common.PetriNetMapper;
 import workcraft.editor.Editor;
 import workcraft.editor.EditorPane;
 import workcraft.petri.PetriModel;
@@ -26,7 +28,7 @@ public class PetriUnfolder implements Tool {
 	public static final String _modeluuid = "65f89260-641d-11db-bd13-0800200c9a66";
 	public static final String _displayname = "Unfold (PUNF)";
 
-	public void run(Editor editor, Framework server) {
+	public void run(Editor editor, WorkCraftServer server) {
 		PetriModel doc = (PetriModel) (editor.getDocument());
 
 		PetriDotGSaver saver = (PetriDotGSaver)server.getToolInstance(PetriDotGSaver.class);
@@ -54,7 +56,8 @@ public class PetriUnfolder implements Tool {
 			return;
 		}		
 		
-		ExternalProcess p = new ExternalProcess(null);
+		JFrame frame = (JFrame)server.python.get("_main_frame", JFrame.class);
+		ExternalProcess p = new ExternalProcess(frame);
 		
 
 		try {
@@ -79,14 +82,14 @@ public class PetriUnfolder implements Tool {
 	}
 
 
-	public void init(Framework server) {
+	public void init(WorkCraftServer server) {
 	}
 
 	public boolean isModelSupported(UUID modelUuid) {
 		return false;
 	}
 
-	public void deinit(Framework server) {
+	public void deinit(WorkCraftServer server) {
 		// TODO Auto-generated method stub
 
 	}

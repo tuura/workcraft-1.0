@@ -44,7 +44,7 @@ public class Trace {
 		for (String e : trace) {
 			if (s.length() > 0)
 				s += ";";
-			s += "<b>"+e+"</b>";
+			s += e;
 		}	
 		return s;
 	}
@@ -52,4 +52,6 @@ public class Trace {
 	public void clear() {
 		trace.clear();
 	}
+
+	
 }

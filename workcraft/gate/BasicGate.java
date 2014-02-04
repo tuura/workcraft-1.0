@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -15,7 +15,7 @@ import workcraft.util.Colorf;
 import workcraft.util.Vec2;
 import workcraft.visual.Painter;
 import workcraft.DuplicateIdException;
-import workcraft.Document;
+import workcraft.Model;
 import workcraft.UnsupportedComponentException;
 
 public abstract class BasicGate extends BasicEditable {
@@ -232,7 +232,7 @@ public abstract class BasicGate extends BasicEditable {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
-		org.w3c.dom.Document d = ee.getOwnerDocument();
+		Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("gate");
 		ppe.setAttribute("radius", Integer.toString(fixed_radius));
 		ppe.setAttribute("delay-min", Double.toString(delayMin));
@@ -265,10 +265,8 @@ public abstract class BasicGate extends BasicEditable {
 	}
 
 	public void setRotate(Integer rotate) {
-		if (this.rotate != rotate) {
-			this.rotate = rotate;
-			this.transform.rotateZ(rotate*90);
-		}
+		this.rotate = rotate;
+		this.transform.rotateZ(rotate*90);
 	}
 
 	public Integer getRadius() {

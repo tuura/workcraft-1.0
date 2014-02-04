@@ -3,7 +3,7 @@ package workcraft.antitoken;
 import java.awt.event.KeyEvent;
 import java.util.UUID;
 
-import workcraft.Document;
+import workcraft.Model;
 import workcraft.UnsupportedComponentException;
 import workcraft.editor.BasicEditable;
 import workcraft.sdfs.SDFSLogic2Way;

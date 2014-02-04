@@ -8,7 +8,7 @@ import java.util.UUID;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import workcraft.DocumentBase;
+import workcraft.ModelBase;
 import workcraft.Tool;
 import workcraft.ToolType;
 import workcraft.WorkCraftServer;
@@ -95,7 +95,7 @@ public class SDFSCriticalCycleAnalyzer implements Tool
 			LinkedList<MGTransition> ct = new LinkedList<MGTransition>();
 
 			doc.calculateCriticalCycle(cp, ct);
-			((DocumentBase)editor.getDocument()).setShowHighlight(true);
+			((ModelBase)editor.getDocument()).setShowHighlight(true);
 
 			double delay = 0.0;
 			int tokens = 0;
@@ -119,7 +119,7 @@ public class SDFSCriticalCycleAnalyzer implements Tool
 		}
 		else
 		{
-			((DocumentBase)editor.getDocument()).setShowHighlight(false);		
+			((ModelBase)editor.getDocument()).setShowHighlight(false);		
 		}
 
 		frame.repaint();

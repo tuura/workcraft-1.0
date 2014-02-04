@@ -3,13 +3,13 @@ package workcraft.sdfs;
 
 import java.awt.event.MouseEvent;
 import java.util.List;
-
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import workcraft.DuplicateIdException;
-import workcraft.Document;
-import workcraft.DocumentBase;
+import workcraft.Model;
+import workcraft.ModelBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.editor.BasicEditable;
 import workcraft.sdfs.SDFSNode;
@@ -61,7 +61,7 @@ public abstract class SDFSRegisterBase extends SDFSNode  {
 
 	public Element toXmlDom(Element parent_element) {
 		Element ee = super.toXmlDom(parent_element);
-		org.w3c.dom.Document d = ee.getOwnerDocument();
+		Document d = ee.getOwnerDocument();
 		Element ppe = d.createElement("sdfs-register");
 		ee.appendChild(ppe);
 		return ee;
@@ -76,8 +76,8 @@ public abstract class SDFSRegisterBase extends SDFSNode  {
 			if (can_work)
 				frame_color = active_frame_color;
 			else
-				if (highlight && ((DocumentBase)ownerDocument).isShowHighlight())
-					frame_color = (((DocumentBase)ownerDocument).getHighlightColor());
+				if (highlight && ((ModelBase)ownerDocument).isShowHighlight())
+					frame_color = (((ModelBase)ownerDocument).getHighlightColor());
 				else
 					frame_color = inactive_frame_color;
 

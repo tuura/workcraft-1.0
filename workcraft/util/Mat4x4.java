@@ -1,6 +1,6 @@
 package workcraft.util;
 
-
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import workcraft.XmlSerializable;
 
@@ -303,7 +303,7 @@ public class Mat4x4 implements XmlSerializable {
 	}
 
 	public Element toXmlDom(Element parent_element) {
-		org.w3c.dom.Document d = parent_element.getOwnerDocument();
+		Document d = parent_element.getOwnerDocument();
 		Element e = d.createElement(_xmlelementtag);
 		for (int i=0; i<16; i++) {
 			e.setAttribute("m"+i, Float.toString(_m[i]));
@@ -311,8 +311,6 @@ public class Mat4x4 implements XmlSerializable {
 		parent_element.appendChild(e);
 		return e;
 	}
-	
-	//public Vec3 
 
 	public String toString() {
 		String r ="{";

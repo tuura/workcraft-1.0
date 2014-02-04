@@ -11,16 +11,17 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLJPanel;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import workcraft.Document;
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
-import workcraft.DocumentBase;
+import workcraft.Model;
+import workcraft.ModelBase;
 import workcraft.ModelManager;
 import workcraft.UnsupportedComponentException;
-import workcraft.Framework;
+import workcraft.WorkCraftServer;
 import workcraft.XmlSerializable;
 import workcraft.util.Colorf;
 import workcraft.util.Vec2;
@@ -53,7 +54,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 	private Painter painter;
 	private JOGLPainter joglpainter;
 
-	private Document document = null;
+	private Model document = null;
 //	private Tester tester = new Tester();
 
 	private boolean pan_drag = false;
@@ -95,7 +96,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 
 	private GroupNode root = null;
 	private BasicEditable new_node;
-	private Framework server;
+	private WorkCraftServer server;
 	private PropertyEditor property_editor = null;
 	private ComponentHotkey hotkey = new ComponentHotkey();
 
@@ -326,7 +327,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		addMouseListener(new java.awt.event.MouseAdapter() {  
 
 			public void mouseClicked(java.awt.event.MouseEvent e) {
-				
+
 				if (e.getClickCount()==2 && e.getButton()==MouseEvent.BUTTON1) {
 					Vec2 v = view.WindowToView(e.getX(), e.getY());
 					BasicEditable n = null;
@@ -374,29 +375,14 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 				}
 
 			}
-			
 
 			public void mousePressed(java.awt.event.MouseEvent e) {
-
 				if (e.getButton()==MouseEvent.BUTTON3) {
-					
-					Vec2 v = view.WindowToView(e.getX(), e.getY());
-					BasicEditable n = null;
-					if (root!=null)
-						n = root.getChildAt(v); 
-
-					if (document!=null && document.simIsRunning()) {
-						if (n!=null)
-							n.simAction(e.getButton());
-					}
-
-					
 					prev_cursor.x = e.getX();
 					prev_cursor.y = e.getY();
 					pan_drag = true;
 					setCursor(new Cursor(Cursor.MOVE_CURSOR));
 				}
-					
 				if (e.getButton()==MouseEvent.BUTTON1) {
 					Vec2 v = view.WindowToView(e.getX(), e.getY());
 					BasicEditable n = null;
@@ -579,16 +565,12 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 
 
 	public void documentToXml(Element doc) {
-		org.w3c.dom.Document d = doc.getOwnerDocument();
+		Document d = doc.getOwnerDocument();
 		Element de = d.createElement("document");
-<<<<<<< TREE
-		de.setAttribute("model-uuid", server.getModelUUID(document.getClass()).toString());
-=======
 		de.setAttribute("model-uuid", ModelManager.getModelUUID(document.getClass()).toString());
-		
+
 		document.toXmlDom(de); // save document personal data
 		
->>>>>>> MERGE-SOURCE
 		root.toXmlDom(de);
 		doc.appendChild(de);
 		for (EditableConnection con : document.getConnections()) {
@@ -608,8 +590,8 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		}
 	}
 
-	public void pasteFromXml(org.w3c.dom.Document xmlDoc) {
-		NodeList nl = xmlDoc.getElementsByTagName("workcraft-document-fragment");
+	public void pasteFromXml(Document doc) {
+		NodeList nl = doc.getElementsByTagName("workcraft-document-fragment");
 
 		deselect();
 
@@ -618,7 +600,11 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 
 		Element re = (Element)nl.item(0);
 
-		HashMap<Integer, Integer> renamed = new HashMap<Integer, Integer>();
+
+		HashMap<String, String> renamed = new HashMap<String, String>();
+
+		server.python.set("_pasting", true);
+		server.python.set("_renamed", renamed);
 
 		nl = re.getElementsByTagName("editable");
 		for (int i=0; i<nl.getLength(); i++ ) {
@@ -632,11 +618,12 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 				try {
 					n.fromXmlDom(e);
 				} catch (DuplicateIdException e1) {
-					Integer old_id = Integer.parseInt(e.getAttribute("id"));
-					Integer new_id = new Integer(old_id);
+					String old_id = e.getAttribute("id");
+					String new_id = new String(old_id);
 					for (;;)
 						try {
-							n.setId(document.getNextId());
+							new_id += "_copy";							
+							n.setId(new_id);
 							break;
 						} catch (DuplicateIdException e2) 
 						{
@@ -665,20 +652,20 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 				ex.printStackTrace();
 			}
 		}		
-		nl = xmlDoc.getElementsByTagName("editable-connection");
+		nl = doc.getElementsByTagName("editable-connection");
 		for (int i=0; i<nl.getLength(); i++ ) {
 			Element e = (Element)nl.item(i);
 
-			Integer first_id = Integer.parseInt(e.getAttribute("first"));
+			String first_id = e.getAttribute("first");
 			if (renamed.containsKey(first_id))
 				first_id = renamed.get(first_id);
 
-			Integer second_id = Integer.parseInt(e.getAttribute("second"));
+			String second_id = e.getAttribute("second");
 			if (renamed.containsKey(second_id))
 				second_id = renamed.get(second_id);
 
-			BasicEditable first = (BasicEditable)document.getComponentById(first_id);
-			BasicEditable second = (BasicEditable)document.getComponentById(second_id);
+			BasicEditable first = (BasicEditable)server.getObjectById(first_id);
+			BasicEditable second = (BasicEditable)server.getObjectById(second_id);
 
 			// System.out.println("Connecting "+first_id+" and "+second_id+" "+first+";"+second);
 
@@ -691,6 +678,9 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 				ex.printStackTrace();
 			}
 		}
+
+		server.python.set("_pasting", false);
+		server.python.getLocals().__delitem__("_renamed".intern());
 
 		updateGuidelines();
 		repaint();
@@ -761,7 +751,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 	public void draw() {
 		painter.setIdentityTransform();
 		if (document != null)
-			painter.setClearColor( ((DocumentBase)document).getBackgroundColor() );
+			painter.setClearColor( ((ModelBase)document).getBackgroundColor() );
 		else
 			painter.setClearColor(clear_color);
 		painter.clear();
@@ -789,28 +779,28 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 			root.draw(painter);
 
 		if (new_node!=null) {
-			//painter.blendEnable();
-			//painter.setBlendConstantAlpha(0.3f);
-			//painter.setBlendMode(BlendMode.CONSTANT_ALPHA);
+			painter.blendEnable();
+			painter.setBlendConstantAlpha(0.3f);
+			painter.setBlendMode(BlendMode.CONSTANT_ALPHA);
 			new_node.draw(painter);
-			//painter.blendDisable();
+			painter.blendDisable();
 		}
 
 		// TODO
 
 		painter.setIdentityTransform();
 
-		//painter.setBlendConstantAlpha(0.3f);
-		///painter.setBlendMode(BlendMode.CONSTANT_ALPHA);
+		painter.setBlendConstantAlpha(0.3f);
+		painter.setBlendMode(BlendMode.CONSTANT_ALPHA);
 		painter.setLineMode(LineMode.HAIRLINE);
 
 		if (selection_drag) {
-//			painter.blendEnable();
+			painter.blendEnable();
 			painter.setFillColor(selectionBoxFillColor);
 			painter.setLineColor(selectionBoxOutlineColor);
-			painter.setShapeMode(ShapeMode.OUTLINE);
+			painter.setShapeMode(ShapeMode.FILL);
 			painter.drawRect(sel_ll, sel_ur);
-//			painter.blendDisable();
+			painter.blendDisable();
 			painter.setShapeMode(ShapeMode.OUTLINE);
 			painter.setLineMode(LineMode.HAIRLINE);
 			painter.setLineWidth(0.1f);
@@ -836,10 +826,10 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 				}
 				painter.setLineColor((selection_anchors)?selectionAnchorBoxOutlineColor:selectionOutlineColor);
 				painter.setFillColor((selection_anchors)?selectionAnchorBoxFillColor:selectionFillColor);
-				//painter.blendEnable();
-				//painter.setShapeMode(ShapeMode.O);
-				//painter.drawRect(q.getLowerLeft(), q.getUpperRight());
-				//painter.blendDisable();
+				painter.blendEnable();
+				painter.setShapeMode(ShapeMode.FILL);
+				painter.drawRect(q.getLowerLeft(), q.getUpperRight());
+				painter.blendDisable();
 				painter.setShapeMode(ShapeMode.OUTLINE);
 				painter.drawRect(q.getLowerLeft(), q.getUpperRight());
 			}
@@ -933,7 +923,12 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		grid.highlightEnable(false);
 
 		if (new_node != null) {
-			document.removeComponent(new_node);
+			try {
+				document.removeComponent(new_node);
+
+			} catch (UnsupportedComponentException ex) {
+				ex.printStackTrace();
+			}
 			new_node = null;
 		}
 		repaint();		
@@ -1010,11 +1005,11 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		view.fromXmlDom(ev);
 	}
 
-	public workcraft.Document getDocument() {
+	public Model getDocument() {
 		return document;
 	}
 
-	public Framework getServer() {
+	public WorkCraftServer getServer() {
 		return server;
 	}
 
@@ -1027,9 +1022,9 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		System.out.println("GL_RENDERER: " + gl.glGetString(GL.GL_RENDERER));
 		System.out.println("GL_VERSION: " + gl.glGetString(GL.GL_VERSION));		
 
-		// gl.glEnable(GL.GL_MULTISAMPLE);
+		gl.glEnable(GL.GL_MULTISAMPLE);
 
-		// gl.setSwapInterval(1);
+		gl.setSwapInterval(1);
 		joglpainter = new JOGLPainter(gl, view);
 		painter = joglpainter;
 		loadFonts("Fonts");
@@ -1072,11 +1067,15 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		}
 	}
 
-	public void setDocument(Document document) {
+	public void setDocument(Model document) {
 		if (document == this.document)
 			return;
 		this.document = document;
 		document.setEditor(this);
+
+		server.unbind();
+		document.bind(server);
+
 
 		root = (GroupNode)document.getRoot();
 
@@ -1090,9 +1089,10 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 		repaint();
 	}
 
-	public void setServer(Framework server) {
+	public void setServer(WorkCraftServer server) {
 		this.server = server;
-
+		server.python.set("_editor", this);
+		server.execPython("def _redraw():\n\t_editor.repaint()");
 	}
 
 	public void setPropertyEditor(PropertyEditor editor) {
@@ -1100,7 +1100,7 @@ public class EditorPane extends GLJPanel implements GLEventListener, DropTargetL
 	}
 
 	public Element toXmlDom(Element parent_element) {
-		org.w3c.dom.Document d = parent_element.getOwnerDocument();
+		Document d = parent_element.getOwnerDocument();
 		Element ee = d.createElement("editor");
 		Element eo = d.createElement("options");
 		eo.setAttribute("snap", Boolean.toString(snap_to_grid));

@@ -3,8 +3,11 @@ package workcraft.unfolding;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
@@ -12,19 +15,22 @@ import java.util.UUID;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.python.core.Py;
+import org.python.core.PyObject;
+
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
 import workcraft.Tool;
 import workcraft.ToolType;
 import workcraft.UnsupportedComponentException;
-import workcraft.Framework;
+import workcraft.WorkCraftServer;
 import workcraft.editor.Editor;
+import workcraft.editor.EditorPane;
 
 
 public class MCIImport implements Tool {
 
-	class BadTiming extends Exception {
-		private static final long serialVersionUID = 1L;};
+	class BadTiming extends Exception {};
 
 	public static final String _modeluuid = "23a72f18-5c90-11dc-8314-0800200c9a66";
 	public static final String _displayname = "Import unfolding (.mci)";
@@ -58,7 +64,7 @@ public class MCIImport implements Tool {
 	void putEvent (UnfoldingModel doc, Event e, float x, float y) throws UnsupportedComponentException, DuplicateIdException, InvalidConnectionException {
 		if (e.e == null) {
 			e.e = new EditableEvent(doc.getRoot());
-			e.e.setId(e.number);
+			e.e.setId("e"+Integer.toString(e.number));
 			
 			if (e.origTransId.startsWith("d."))
 				e.e.setLabel(e.origTransId.substring(2));
@@ -80,7 +86,6 @@ public class MCIImport implements Tool {
 			}
 		}
 	}
-	
 
 	public UnfoldingModel readMCIFile (String path, String tagsFilePath) throws IOException {
 		UnfoldingModel doc = new UnfoldingModel();
@@ -172,7 +177,7 @@ public class MCIImport implements Tool {
 		return null;
 	}
 
-	public void run(Editor editor, Framework server) {
+	public void run(Editor editor, WorkCraftServer server) {
 		String last_directory = editor.getLastDirectory();
 		JFileChooser fc = new JFileChooser();
 		fc.setFileFilter(new MCIFileFilter());
@@ -199,14 +204,14 @@ public class MCIImport implements Tool {
 		}
 	}
 
-	public void init(Framework server) {
+	public void init(WorkCraftServer server) {
 	}
 
 	public boolean isModelSupported(UUID modelUuid) {
 		return false;
 	}
 
-	public void deinit(Framework server) {
+	public void deinit(WorkCraftServer server) {
 		// TODO Auto-generated method stub
 
 	}

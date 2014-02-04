@@ -31,8 +31,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 
-import workcraft.common.GFileFilter;
-import workcraft.common.WTFileFilter;
+import workcraft.petri.EditablePetriPlace;
+import workcraft.petri.EditablePetriTransition;
+import workcraft.petri.GFileFilter;
+import workcraft.sdfs.WTFileFilter;
 import javax.swing.JSlider;
 
 public class DefaultSimControls extends JPanel {

@@ -1,19 +1,15 @@
 package workcraft.common;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.LinkedList;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import workcraft.DocumentOpenException;
-import workcraft.Document;
+import workcraft.Model;
 import workcraft.Tool;
 import workcraft.ToolType;
 import workcraft.WorkCraftServer;
@@ -21,6 +17,7 @@ import workcraft.counterflow.CFModel;
 import workcraft.editor.Editor;
 import workcraft.gate.GateModel;
 import workcraft.petri.PetriDotGSaver;
+import workcraft.petri.PetriDotGSaver2;
 import workcraft.petri.PetriModel;
 import workcraft.petri.ReadArcsComplexityReduction;
 import workcraft.spreadtoken.STModel;
@@ -34,6 +31,8 @@ public class SchematicNetSemimodularityCheck implements Tool {
 			return true;
 		if (modelUuid.compareTo(CFModel._modeluuid)==0)
 			return true;
+		if (modelUuid.compareTo(GateModel._modeluuid)==0)
+			return true;
 		return false;
 	}
 
@@ -42,14 +41,14 @@ public class SchematicNetSemimodularityCheck implements Tool {
 	}
 
 	public void run(Editor editor, WorkCraftServer server) {
-		Document doc = editor.getDocument();
+		Model doc = editor.getDocument();
 		PetriNetMapper mapper = (PetriNetMapper)server.getToolInstance(PetriNetMapper.class);
 		if (mapper == null) {
 			JOptionPane.showMessageDialog(null, "This tool requires Petri Net Mapper tool, which was not loaded", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
-		PetriDotGSaver saver = (PetriDotGSaver)server.getToolInstance(PetriDotGSaver.class);
+		PetriDotGSaver2 saver = (PetriDotGSaver2)server.getToolInstance(PetriDotGSaver2.class);
 		if (saver == null) {
 			JOptionPane.showMessageDialog(null, "This tool requires Petri Net .g export tool, which was not loaded", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
@@ -66,6 +65,21 @@ public class SchematicNetSemimodularityCheck implements Tool {
 
 		try {
 			PetriModel schematicNet =mapper.map(server, doc);
+
+			if (doc instanceof GateModel) {
+				GateModel gatedoc = (GateModel)doc;
+				File bojo = new File(gatedoc.getActiveInterfacePath());
+				if (bojo.exists()) {
+					PetriModel iface;
+					try {
+						iface = (PetriModel)editor.load(bojo.getAbsolutePath());
+						schematicNet.applyInterface(iface);
+					} catch (DocumentOpenException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
 			schematicNet = rd.reduce(schematicNet);
 
 
@@ -73,31 +87,33 @@ public class SchematicNetSemimodularityCheck implements Tool {
 
 			File mci = new File("tmp/_net_.mci");
 			if (mci.exists()) {
-				if (JOptionPane.showConfirmDialog(null, "Do you wish to reuse existing (dodgy) mci?", "Confirm", JOptionPane.YES_NO_OPTION)==JOptionPane.NO_OPTION) {
+				if (JOptionPane.showConfirmDialog(null, "Do you wish to reuse existing mci?", "Confirm", JOptionPane.YES_NO_OPTION)==JOptionPane.NO_OPTION) {
 					p.run(new String[] {"util/punf", "-s", "-t", "-p", "tmp/_net_.g"}, ".", "Unfolding report", true);
 				}
 			} else 
 				p.run(new String[] {"util/punf", "-s", "-t", "-p", "tmp/_net_.g"}, ".", "Unfolding report", true);
 
-			String formula = "";
+//			String formula = "";
 
-			for (String clause: schematicNet.buildSemimodularityCheckClauses()) {
+/*			for (String clause: schematicNet.buildSemimodularityCheckClauses()) {
 				if (formula.length()>0)
 					formula+="|";
 				formula+=clause;
 			}
-
-			PrintWriter out;
+*/
+//			PrintWriter out;
 			String badTrace;
 			
-			out = new PrintWriter(new FileWriter("tmp/_smodch"));
-			out.print(formula);
-			out.close();
+//			out = new PrintWriter(new FileWriter("tmp/_smodch"));
+//			out.print(formula);
+//			out.close();
 
-			if (JOptionPane.showConfirmDialog(null, "Enable shortest trace search option (may take a considerably longer time)?", "Confirm", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
+/*			if (JOptionPane.showConfirmDialog(null, "Enable shortest trace search option (may take a considerably longer time)?", "Confitm", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
 				p.run(new String[] {"util/mpsat", "-F", "-f", "-d", "@tmp/_smodch","tmp/_net_.mci"}, ".", "Model-checking report", false);
 			else
-				p.run(new String[] {"util/mpsat", "-F", "-d", "@tmp/_smodch","tmp/_net_.mci"}, ".", "Model-checking report", false);
+				p.run(new String[] {"util/mpsat", "-F", "-d", "@tmp/_smodch","tmp/_net_.mci"}, ".", "Model-checking report", false);*/
+			
+			p.run(new String[] {"util/mpsat", 	"-Fs", "-f", "-d", "@reach/out-pers.re","tmp/_net_.mci"}, ".", "Model-checking report", true);
 
 			badTrace = MPSATOutputParser.parseSchematicNetTrace(p.getOutput());
 

@@ -64,8 +64,27 @@ public class STGDotGSaver implements Tool {
 		LinkedList<EditablePetriTransition> transitions	= new LinkedList<EditablePetriTransition>();
 		
 		
-		
 		doc.getTransitions(transitions);
+		
+		// assign transition IDs to remove _copy_ stuff
+		int tnum=1;
+		for (BasicEditable be: transitions) {
+			if (be.getId().contains("copy")) {
+				while (doc.getServer().python.get("t"+tnum)!=null) {
+					tnum++;
+				}
+				
+				try {
+					be.setId("t"+tnum);
+				} catch (DuplicateIdException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		
+
+		
 		
 		Pattern p = Pattern.compile(STGModel.signalPattern);
 		String l;

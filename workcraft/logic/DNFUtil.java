@@ -2,17 +2,12 @@ package workcraft.logic;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import workcraft.Framework;
+import workcraft.WorkCraftServer;
 
 public class DNFUtil {
 
-<<<<<<< TREE
-	public static void resolveLiterals (DNF dnf, Framework server, HashMap<String,Object> resolved) {
-
-=======
 	public static void resolveLiterals (DNF dnf, WorkCraftServer server, HashMap<String,Object> resolved)
 	{
->>>>>>> MERGE-SOURCE
 		LinkedList markedClauses = new LinkedList();
 		LinkedList markedLiterals = new LinkedList();
 
@@ -23,8 +18,8 @@ public class DNFUtil {
 			for (DNFLiteral literal : clause.pos) {
 				if (resolved.containsKey(literal.id))
 					continue;
-				//if (server.testObject(literal.id))
-					//markedLiterals.add(literal);
+				if (server.testObject(literal.id))
+					markedLiterals.add(literal);
 				else {
 					markedClauses.add(clause);
 					clauseMarked = true;
@@ -42,11 +37,11 @@ public class DNFUtil {
 					if (resolved.containsKey(literal.id))
 						continue;
 
-				/*	if (server.testObject(literal.id)) {
+					if (server.testObject(literal.id)) {
 						markedClauses.add(clause);
 						clauseMarked = true;
 						break;
-					}*/
+					}
 					else 
 						markedLiterals.add(literal);
 				}

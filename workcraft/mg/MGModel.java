@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 
 import workcraft.DuplicateIdException;
 import workcraft.InvalidConnectionException;
-import workcraft.Document;
-import workcraft.DocumentBase;
+import workcraft.Model;
+import workcraft.ModelBase;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;
@@ -21,7 +21,7 @@ import workcraft.editor.EditableConnection;
 import workcraft.editor.EditorPane;
 import workcraft.util.Colorf;
 
-public class MGModel extends DocumentBase{
+public class MGModel extends ModelBase{
 	public static final UUID _modeluuid = UUID.fromString("4fbdb830-dba3-11db-8314-0800200c9a66");
 	public static final String _displayname = "Marked Graph";
 	

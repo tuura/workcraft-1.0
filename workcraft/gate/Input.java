@@ -10,9 +10,7 @@ import org.w3c.dom.NodeList;
 import workcraft.DuplicateIdException;
 import workcraft.UnsupportedComponentException;
 import workcraft.common.DefaultConnection;
-import workcraft.common.DefaultConnection.Type;
 import workcraft.editor.BasicEditable;
-import workcraft.editor.EditableConnection;
 import workcraft.util.Colorf;
 import workcraft.util.Vec2;
 import workcraft.visual.LineMode;
@@ -81,9 +79,7 @@ public class Input extends BasicGate {
 		}
 	}
 	
-	
 	public void doDraw(Painter p) {
-			
 		super.doDraw(p);
 		p.setTransform(transform.getLocalToViewMatrix());
 		p.setShapeMode(ShapeMode.FILL_AND_OUTLINE);
@@ -98,20 +94,15 @@ public class Input extends BasicGate {
 		super.acceptTransform();
 		doAutoRotate();
 	}
-	
+
 	protected void updateContactOffsets() {
-		
 		if(shape==null)
 			shape = createGateShape();
-
 		boundingBox.setExtents(new Vec2(-0.02f, -0.015f), new Vec2(0.04f, 0.015f));
-		
 		for(GateContact c : out) {
 			Vec2 offs = new Vec2(0.0f, 0.0f);
 			c.setOffs(offs);
 		}
-
-		
 	}
 	
 	@Override
@@ -162,7 +153,6 @@ public class Input extends BasicGate {
 	public String getResetFunction() {
 		return "ALWAYS";
 	}
-
 	public void fromXmlDom(Element element) throws DuplicateIdException {
 		NodeList nl = element.getElementsByTagName("input");
 		if(nl!=null) {
@@ -182,5 +172,4 @@ public class Input extends BasicGate {
 		ee.appendChild(ppe);
 		return ee;
 	}
-
 }

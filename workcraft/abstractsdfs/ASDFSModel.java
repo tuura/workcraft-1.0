@@ -8,10 +8,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import workcraft.DuplicateIdException;
-import workcraft.DocumentBase;
+import workcraft.ModelBase;
 import workcraft.ModelValidationException;
 import workcraft.InvalidConnectionException;
-import workcraft.Document;
+import workcraft.Model;
 import workcraft.UnsupportedComponentException;
 import workcraft.WorkCraftServer;
 import workcraft.common.DefaultConnection;

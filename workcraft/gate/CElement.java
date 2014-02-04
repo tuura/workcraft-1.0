@@ -2,7 +2,7 @@ package workcraft.gate;
 
 import java.util.UUID;
 
-import workcraft.Document;
+import workcraft.Model;
 import workcraft.UnsupportedComponentException;
 import workcraft.editor.BasicEditable;
 import workcraft.util.Vec2;
